@@ -8,6 +8,7 @@
     "build": "vite build",
     "dev": "concurrently \"vite\" \"NODE_ENV=development nodemon server/server.js\""
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
