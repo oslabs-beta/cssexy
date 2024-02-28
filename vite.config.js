@@ -1,14 +1,23 @@
+// vite.config.js
 import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
 export default defineConfig({
-  // points Vite to the correct directory where index.html is located
-  root: './client',
-  // sets the development server to run on port 8080
+  plugins: [react()],
+  root: path.join(__dirname, '/'),
+  build: {
+    outDir: path.join(__dirname, 'dist'),
+    sourcemap: true,
+  },
+  css: {
+    devSourcemap: true
+  },
   server: {
     port: 8080,
-    // proxy API requests to the Express server
+    // proxy requests to API endpoint to the Express server
     proxy: {
-      'api': 'http://localhost:3000'
-    }
+      '/api': 'http://localhost:5555'
+}
   }
 });
