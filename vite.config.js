@@ -18,6 +18,6 @@ export default defineConfig({
     // proxy requests to API endpoint to the Express server
     proxy: {
       '/api': 'http://localhost:5555'
-}
+    }
   }
 });

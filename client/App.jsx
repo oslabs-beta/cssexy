@@ -3,10 +3,12 @@ import React from 'react';
 import Sidebar from './components/Sidebar';
 
 const App = () => {
+
   return (
     <div className="app-container">
       <Sidebar />
       <iframe
+        id="site-frame"
         src="/api/site"
         width="100%"
         height="100%"
@@ -14,7 +16,6 @@ const App = () => {
         className="site-frame"
       ></iframe>
     </div>
-
   )
 };
 
