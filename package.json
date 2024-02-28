@@ -1,14 +1,28 @@
 {
   "name": "cssxe",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "A tool for live editing and syncing CSS directly from the browser to your source files",
   "main": "index.jsx",
   "scripts": {
     "start": "NODE_ENV=production node server/server.js",
     "build": "vite build",
-    "dev": "concurrently \"vite\" \"NODE_ENV=development nodemon server/server.js\""
+    "dev": "concurrently \"vite\" \"NODE_ENV=development nodemon server/server.js\"",
+    "preview": "vite preview"
   },
-  "keywords": [],
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oslabs-beta/cssxe.git"
+  },
+  "keywords": [
+    "CSS",
+    "live-edit",
+    "web-development",
+    "tooling",
+    "devtools",
+    "workspace",
+    "source-maps"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
