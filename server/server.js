@@ -1,6 +1,8 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+
 
 const app = express();
 const PORT = 5555;
@@ -12,9 +14,17 @@ const __dirname = path.dirname(__filename);
 app.use(express());
 
 // right now hardcoded to 8000, but should be whatever port the user's target repo is served to.
-app.get('/api/site', (req, res) => {
-  res.redirect('http://localhost:8000');
-});
+// app.get('/api/site', (req, res) => {
+//   res.redirect('http://localhost:8000');
+// });
+
+app.use('/api/site', createProxyMiddleware({
+  target: 'http://localhost:8000', // Target host
+  changeOrigin: true, // needed for virtual hosted sites
+  pathRewrite: {
+    '^/api/site': '/', // rewrite path
+  },
+}));
 
 // test endpoint
 app.get('/api/proxy', (req, res) => {

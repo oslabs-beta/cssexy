@@ -14,7 +14,7 @@ export default defineConfig({
     devSourcemap: true
   },
   server: {
-    port: 8080,
+    port: 8888,
     // proxy requests to API endpoint to the Express server
     proxy: {
       '/api': 'http://localhost:5555'

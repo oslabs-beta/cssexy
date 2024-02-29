@@ -1,16 +1,11 @@
 h1 {
-    color: red;
+    color: fuchsia;
 }
-
 .app-container {
     display: flex;
     height: 100vh;
   }
-
 .sidebar {
-    width: 250px;
-    border-right: 5px solid purple;
-    padding: 20px;
     font-size: 20px;
     font-weight: bold;
 }
