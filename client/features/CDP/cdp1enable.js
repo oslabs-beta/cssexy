@@ -3,11 +3,11 @@
  * Enables the necessary CDP listeners and state on the browser side to interact with the specified domain.
  *
  * @param {object} client - The client object for interacting with the browser.
- * @param {string} userUrl - The URL of the page to navigate to.
+ * @param {string} port - The URL of the page to navigate to.
  * @return {object} An object containing the enabled DOM, CSS, Network, and Page domains.
  */
 
-const cdpEnable= async (client, userUrl) => {
+const cdpEnable= async (client, host) => {
   // extract the different 'domains' from the client.
   const { DOM, CSS, Network, Page } = client;
 
@@ -27,7 +27,7 @@ const cdpEnable= async (client, userUrl) => {
   console.log('CSS, DOM, Network, and Page domains are enabled');
 
   // navigating to the desired page, i.e. the port the user's site is served to.
-  await Page.navigate({url: userUrl});
+  await Page.navigate({url: `http://localhost:${host}`});
 
   // wait for the 'loadEventFired' event which signals that the page has finished loading
   // now that the page has loaded, we can start listening for events

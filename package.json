@@ -7,7 +7,9 @@
     "start": "NODE_ENV=production node server/server.js",
     "build": "vite build",
     "dev": "concurrently \"vite\" \"NODE_ENV=development nodemon server/server.js\"",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "presexy": "chmod +x ./client/features/CDP/startRemoteChrome.sh",
+    "sexy": "./client/features/CDP/startRemoteChrome.sh"
   },
   "type": "module",
   "repository": {

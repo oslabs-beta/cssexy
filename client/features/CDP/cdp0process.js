@@ -17,11 +17,13 @@ import CDP from 'chrome-remote-interface';
 import cdpEnable from './cdp1enable.js';
 import cdpStyles from './cdp2styles.js';
 
-// the url that we want to query with CDP. in this case, its set to query cssxe itself.
-const userUrl = 'http://localhost:8888';
-
-
-const cdpProcess = async (selector) => {
+/**
+ * cdpProcess
+ * @param {string} selector - The target selector for which styles are to be retrieved
+ * @param {string} host - The host to connect to for the Chrome DevTools Protocol
+ *
+ */
+const cdpProcess = async (selector, host) => {
   let cdpClient;
   try {
       // this creates a 'client' object that serves as our interface to send commands
@@ -30,7 +32,7 @@ const cdpProcess = async (selector) => {
       console.log('Connected to Chrome DevTools Protocol');
 
       // extracting the 'domains' from the CDP client.
-      const {DOM, CSS, Network, Page} = await cdpEnable(cdpClient, userUrl);
+      const {DOM, CSS, Network, Page} = await cdpEnable(cdpClient, host);
       // retrieve styles for the target selector
       // this is the core functionality of cssxe that retrieves styles from a website
       await cdpStyles(DOM, CSS, selector);
@@ -47,7 +49,7 @@ const cdpProcess = async (selector) => {
   }
 }
 
-// processCDP('#loadingText');
-// processCDP('.topAlbumsDisplay');
-cdpProcess('.sidebar');
-// processCDP('.app-container');
+// cdpProcess('#loadingText', '8000');
+// cdpProcess('.topAlbumsDisplay');
+cdpProcess('.sidebar', '8888');
+// cdpProcess('.app-container');

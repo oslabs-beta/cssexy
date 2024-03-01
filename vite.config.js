@@ -10,9 +10,9 @@ export default defineConfig({
     outDir: path.join(__dirname, 'dist'),
     sourcemap: true,
   },
-  css: {
-    devSourcemap: true
-  },
+  // css: {
+  //   devSourcemap: true
+  // },
   server: {
     port: 8888,
     // proxy requests to API endpoint to the Express server
