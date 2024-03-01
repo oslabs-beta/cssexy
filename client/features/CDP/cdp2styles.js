@@ -65,7 +65,7 @@ const cdpStyles = async (DOM, CSS, selector) => {
   console.log(selector, 'nodeId:', nodeId);
 
   // Get and log the inline styles
-  const inlineStyle = await cdpInlineStyles(CSS, nodeId);
+  await cdpInlineStyles(CSS, nodeId);
 
   // get all CSS rules that are applied to the node
   // => matchedCSSRules contains CSS rules that are directly applied to the node

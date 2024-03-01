@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
+import WebSocket from 'ws';
 
 const app = express();
 const PORT = 5555;
@@ -21,6 +22,7 @@ app.use(express());
 app.use('/api/site', createProxyMiddleware({
   target: 'http://localhost:8000', // Target host
   changeOrigin: true, // needed for virtual hosted sites
+  ws: true, // enable WebSocket proxy
   pathRewrite: {
     '^/api/site': '/', // rewrite path
   },
@@ -44,5 +46,25 @@ if (process.env.NODE_ENV === 'production') {
 app.use((req, res) => res.sendStatus(404));
 
 // global error handler to be added
+
+// Connect to the WebSocket server
+var ws = new WebSocket('ws://localhost:3000');
+
+// When the connection is open, send some data to the server
+ws.onopen = function (event) {
+  console.log('WEBSOCKET: connection opened');
+  ws.send('Hello, server!');
+};
+
+// Log errors
+ws.onerror = function (error) {
+ const data = error.message;
+  console.log('WEBSOCKET: Error: ' + data);
+};
+
+// Log messages from the server
+ws.onmessage = function (event) {
+  console.log('WEBSOCKET: Received message from server: ' + event.data);
+};
 
 app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));

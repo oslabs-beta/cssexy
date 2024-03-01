@@ -50,6 +50,6 @@ const cdpProcess = async (selector, host) => {
 }
 
 // cdpProcess('#loadingText', '8000');
-// cdpProcess('.topAlbumsDisplay');
+// cdpProcess('.topAlbumsDisplay', '8000');
 cdpProcess('.sidebar', '8888');
 // cdpProcess('.app-container');
