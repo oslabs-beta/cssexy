@@ -7,6 +7,16 @@
   </head>
   <body>
     <div id="root"></div>
+    <iframe id="site-frame"></iframe>
+
     <script type="module" src="index.jsx"></script>
+    <script type="module" src="client/features/iframeListener.js"></script>
   </body>
 </html>
+
+<!--     <script type="module">
+      import './index.jsx';
+
+      window.addEventListener('load', () => {
+        import('./client/features/iframeListener.js');
+      }); -->
