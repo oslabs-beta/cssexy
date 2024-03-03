@@ -9,6 +9,8 @@
  * @return {Promise} - a Promise that resolves when all styles are logged
  */
 
+import fs from 'fs';
+
 const cdpInlineStyles = async(CSS, nodeId) => {
   // retrieve the inline styles for the node with the provided nodeId
   const { inlineStyle } = await CSS.getInlineStylesForNode({ nodeId });
@@ -65,7 +67,9 @@ const cdpStyles = async (DOM, CSS, selector) => {
   console.log(selector, 'nodeId:', nodeId);
 
   // Get and log the inline styles
-  await cdpInlineStyles(CSS, nodeId);
+  const inlineCSSRules = await cdpInlineStyles(CSS, nodeId);
+
+  fs.writeFileSync('./client/features/CDP/inlineStyles.js', JSON.stringify(inlineCSSRules, null, 2));
 
   // get all CSS rules that are applied to the node
   // => matchedCSSRules contains CSS rules that are directly applied to the node
@@ -73,6 +77,7 @@ const cdpStyles = async (DOM, CSS, selector) => {
   // => cssKeyframesRules includes all the @keyframes rules applied to the node
   const { matchedCSSRules, inherited, cssKeyframesRules } = await CSS.getMatchedStylesForNode({ nodeId });
   console.log('Matched CSS Rules:');
+  fs.writeFileSync('./client/features/CDP/matchedStyles.js', JSON.stringify(matchedCSSRules, null, 2));
 
   // console logging the matched css-file styles of the passed in element, in a more readable way.
   // mimics pretty print
