@@ -4,23 +4,24 @@ import { useSelector } from 'react-redux';
 function StylesSection() {
     const inlineStyles = useSelector(state => state.styles.inlineStyles);
     
-    const inlineStyleBlocks = inlineStyles.cssText.split('; ').map(style => {
+    const inlineStyleParagraphs = inlineStyles.cssText.split('; ').map(style => {
         const property = style.split(': ');
         return (
-            <div>
-                <div>
-                    <p>element.style {'{'}</p>
-                    <p>FileName: LineNumber</p>
-                </div>
-                <p>{property[0]}: <span>{property[1]}</span></p>
-            </div>
+            <p className='style-paragraph'>
+                <span className='style-property-span'>{property[0]}</span>:
+                <span className='style-value-span'>{property[1]}</span>
+            </p>
         )
     });
 
     return (
-        <div>
-            <h4>Styles Section</h4>
-            {inlineStyleBlocks}
+        <div className='style-container'>
+            <div className='selector-div'>
+                <p>element.style {'{'}</p>
+                <p>FileName: LineNumber</p>
+            </div>
+            {inlineStyleParagraphs}
+            <p>{'}'}</p>
         </div>
     )
 };
