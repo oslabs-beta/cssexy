@@ -61,7 +61,7 @@
   },
   {
     "rule": {
-      "styleSheetId": "style-sheet-27164-1",
+      "styleSheetId": "style-sheet-24352-1",
       "selectorList": {
         "selectors": [
           {
@@ -83,7 +83,7 @@
       },
       "origin": "regular",
       "style": {
-        "styleSheetId": "style-sheet-27164-1",
+        "styleSheetId": "style-sheet-24352-1",
         "cssProperties": [
           {
             "name": "color",

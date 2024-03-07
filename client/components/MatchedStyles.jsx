@@ -7,9 +7,10 @@ import Style from './Style';
 2) default browser styles called 'user-agent' styles*/
 
 function MatchedStyles(){
-    const inlineStyles = useSelector(state => state.styles.inlineStyles);
+    // const inlineStyles = useSelector(state => state.styles.inlineStyles);
     const matchedStyles = useSelector(state => state.styles.matchedStyles);
 
+    const inlineStyles = [];
     const regularStyles = [];
     const userAgentStyles = [];
 
@@ -17,7 +18,7 @@ function MatchedStyles(){
         const styleComp = (
             <Style 
                 key={`style-${idx}`}
-                selector={style.rule.selectorList.selectors[0].text}
+                selector={style.rule.selectorList ? style.rule.selectorList.selectors[0].text : null}
                 cssProperties={style.rule.style.cssProperties}
                 origin={style.rule.origin}
             />            
@@ -25,10 +26,13 @@ function MatchedStyles(){
 
         if (style.rule.origin === 'regular') regularStyles.push(styleComp);
         else if (style.rule.origin === 'user-agent') userAgentStyles.push(styleComp);
+        else if (style.rule.origin === 'inline') inlineStyles.push(styleComp);
     });
 
     return (
         <div>
+            <h3>Inline styles</h3>
+            {inlineStyles}            
             <h3>Styles from .css</h3>
             {regularStyles}
             <h3>Browser default styles</h3>
