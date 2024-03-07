@@ -77,6 +77,14 @@ const cdpStyles = async (DOM, CSS, selector) => {
   // => cssKeyframesRules includes all the @keyframes rules applied to the node
   const { matchedCSSRules, inherited, cssKeyframesRules } = await CSS.getMatchedStylesForNode({ nodeId });
   console.log('Matched CSS Rules:');
+
+  // add inline styles obj to matchedStyles array following the same properties format which MatchedStyles components and Style components need
+  matchedCSSRules.push({
+    "rule": {
+      "origin": "inline",
+      "style": inlineCSSRules
+    }
+  });
   fs.writeFileSync('./client/features/CDP/matchedStyles.js', JSON.stringify(matchedCSSRules, null, 2));
 
   // console logging the matched css-file styles of the passed in element, in a more readable way.

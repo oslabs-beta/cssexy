@@ -2,19 +2,19 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Style from './Style';
 
-/* Matched styles include:
+/* All styles include:
 1) styles defined in .css files called 'regular' styles
-2) default browser styles called 'user-agent' styles*/
+2) default browser styles called 'user-agent' styles
+3) inline styles defined directly on components*/
 
-function MatchedStyles(){
-    // const inlineStyles = useSelector(state => state.styles.inlineStyles);
-    const matchedStyles = useSelector(state => state.styles.matchedStyles);
+function AllStyles(){
+    const allStyles = useSelector(state => state.styles.allStyles);
 
     const inlineStyles = [];
     const regularStyles = [];
     const userAgentStyles = [];
 
-    matchedStyles.forEach((style, idx) => {
+    allStyles.forEach((style, idx) => {
         const styleComp = (
             <Style 
                 key={`style-${idx}`}
@@ -41,4 +41,4 @@ function MatchedStyles(){
     )
 };
 
-export default MatchedStyles;
+export default AllStyles;
