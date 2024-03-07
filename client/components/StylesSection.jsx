@@ -18,7 +18,6 @@ function StylesSection() {
         <div className='style-container'>
             <div className='selector-div'>
                 <p>element.style {'{'}</p>
-                <p>FileName: LineNumber</p>
             </div>
             {inlineStyleParagraphs}
             <p>{'}'}</p>
