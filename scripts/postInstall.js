@@ -8,7 +8,7 @@ const __dirname = dirname(__filename);
 
 // new script commands. examples for now
 const newScripts = {
-  "sexy": "cssxe dev -p 6969",
+  "dev-sexy": "cssxe dev -p 8888",
   "build-sexy": "cssxe build"
 };
 /*
@@ -25,7 +25,7 @@ function updateScripts(scripts) {
 }
 
 // path to package.json
-const packageJsonPath = path.join(__dirname, 'package.json');
+const packageJsonPath = path.join(path.dirname(__dirname), 'package.json');
 
 // get the package.json object
 // parse: parse json

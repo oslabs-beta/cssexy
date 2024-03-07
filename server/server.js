@@ -2,11 +2,9 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import http from 'http';
-import httpProxy from 'http-proxy';
 
 const app = express();
-const PORT = 5555;
+const PORT = 8888;
 
 
 // need to do this when doing ES modules

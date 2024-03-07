@@ -1,24 +1,22 @@
 import React from 'react';
 
-import Sidebar from './components/SidebarComp';
+import SidebarComp from './components/SidebarComp';
+import IframeComp from './components/iFrameComp';
 
 const App = () => {
-  addEventListener('click', function(e){
-    console.log(e);
-  })
+
+
   return (
     <div className="app-container">
-      <Sidebar />
-      <iframe
-        id="site-frame"
-        src="/api/site"
-        width="100%"
-        height="100%"
-        title="User Site"
-        className="site-frame"
-      ></iframe>
+      <SidebarComp />
+      <IframeComp src="/api/site" className="site-frame" />
     </div>
   )
 };
 
+
 export default App;
+
+/*
+
+*/

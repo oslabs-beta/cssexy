@@ -93,7 +93,7 @@ const cdpStyles = async (DOM, CSS, selector) => {
         return;
       }
       console.log(`Saved matched styles to ${fileName}`);
-      opn(filePath);
+      open(filePath);
     });
   });
 
