@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded',
 function() {
   console.log('Document loaded');
   let iframe = document.getElementById('site-frame');
-  console.log('frame origin', iframe.contentWindow.location.origin);
+  console.log('iframe',iframe);
+  // console.log('frame origin', iframe.contentWindow.location.origin);
     if (iframe) {
       console.log('iframe',iframe);
         iframe.onload = function() {

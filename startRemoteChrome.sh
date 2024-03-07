@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Starting the first line with a shebang specifies the interpreter.
+# in this case, bash.
+# which means this script will be executed by bash.
+
 # Start Chrome with remote debugging and direct the window to port 8000
 DIR="$(dirname "$0")/CSSxe/Chrome/Profiles"
 /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \

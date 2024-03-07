@@ -1,15 +1,17 @@
 import React from 'react';
 
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/SidebarComp';
 
 const App = () => {
-
+  addEventListener('click', function(e){
+    console.log(e);
+  })
   return (
     <div className="app-container">
       <Sidebar />
       <iframe
         id="site-frame"
-        src="http://localhost:8000"
+        src="/api/site"
         width="100%"
         height="100%"
         title="User Site"
