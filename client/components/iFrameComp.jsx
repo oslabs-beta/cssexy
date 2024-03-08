@@ -1,14 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 const iFrameComp = ({ src, className }) => {
-  const iframeRef = useRef(null);
-
   useEffect(() => {
-    const iframe = iframeRef.current;
+    const iframe = document.querySelector(`.${className}`);
+
+    // console.log('iframe', iframe);
 
     const handleLoad = () => {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+        console.log('iframeDoc', iframeDoc);
 
         const handleClick = (event) => {
           const element = event.target;
@@ -18,7 +20,11 @@ const iFrameComp = ({ src, className }) => {
               attrs[attributes[i].name] = attributes[i].value;
           }
           console.log('attrs', attrs);
+
+          // Send a message to the parent window
+          window.parent.postMessage(attrs, '*');
         };
+
 
         iframeDoc.addEventListener('click', handleClick, false);
 
@@ -33,23 +39,22 @@ const iFrameComp = ({ src, className }) => {
 
     if (iframe) {
       iframe.addEventListener('load', handleLoad);
-
-      // Cleanup
+      // Cleanup function to remove event listener
       return () => {
         iframe.removeEventListener('load', handleLoad);
       };
     }
-  }, [src]); // Re-run effect if `src` changes
+  }, [className]);
 
   return (
     <iframe
-      ref={iframeRef}
       src={src}
       width="100%"
       height="100%"
       title="User Site"
       className={className}
-    ></iframe>
+      sandbox="allow-scripts allow-same-origin"
+    />
   );
 };
 

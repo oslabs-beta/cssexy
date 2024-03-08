@@ -24,8 +24,11 @@ import cdpStyles from './cdp2styles.js';
  *
  */
 const cdpProcess = async (selector, host) => {
+    console.log('cdpProcess: selector:', selector);
+    console.log('cdpProcess: host:', host);
   let cdpClient;
   try {
+    console.log('cdpProcess: trying to connect to CDP');
       // this creates a 'client' object that serves as our interface to send commands
       // and listen to events in Chrome via the Chrome DevTools Protocol (CDP).
       cdpClient = await CDP();
@@ -50,6 +53,8 @@ const cdpProcess = async (selector, host) => {
 }
 
 // cdpProcess('#loadingText', '8000');
-cdpProcess('.topAlbumsDisplay', '8000');
+// cdpProcess('.topAlbumsDisplay', '8000');
 // cdpProcess('.sidebar', '8888');
 // cdpProcess('.app-container');
+
+export default cdpProcess;

@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview --port 8888",
     "dev": "concurrently \"vite\" \"NODE_ENV=development nodemon server/server.js\"",
-    "sexy": "concurrently \"npm run dev\" \"npm run startRemoteChrome\"",
+    "sexydev": "concurrently \"npm run dev\" \"npm run startRemoteChrome\"",
+    "sexyprod": "npm run build && npm run startRemoteChrome && npm run start",
+    "bs": "npm run build && npm run start",
     "startRemoteChrome": "./scripts/startRemoteChrome.sh",
     "cdp": "node ./client/features/CDP/cdp0process.js",
     "postInstall": "node ./scripts/postInstall.js",
@@ -40,7 +42,9 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "http-proxy-middleware": "^2.0.6",
-    "react-redux": "^9.1.0"
+    "puppeteer": "^22.4.0",
+    "react-redux": "^9.1.0",
+    "url": "^0.11.3"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",

@@ -12,5 +12,6 @@ DIR="$(dirname "$(dirname "$0")")/data/Chrome/Profiles"
   --no-first-run \
   --no-default-browser-check \
   --auto-open-devtools-for-tabs \
+  --disable-web-security \
   --new-window \
   http://localhost:8888 &

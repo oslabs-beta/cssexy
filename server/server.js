@@ -11,8 +11,8 @@ const PORT = 8888;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(express());
 
+// Proxy requests to /api/site to the site running on port 8000
 app.use('/api/site', createProxyMiddleware({
   target: 'http://localhost:8000', // Target host
   changeOrigin: true, // needed for virtual hosted sites
@@ -21,16 +21,28 @@ app.use('/api/site', createProxyMiddleware({
   },
 }));
 
+// Serve static files (CSSxe UI)
+app.use(express.static(path.join(__dirname, '../dist')));
 
-app.use('/stylesheets', express.static(path.join(__dirname, '../client/stylesheets')));
+// Fallback to serving the index.html for SPA routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../dist')))
+// app.use(express());
 
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dist/index.html'));
-  })
-}
+
+
+
+// app.use('/stylesheets', express.static(path.join(__dirname, '../client/stylesheets')));
+
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static(path.join(__dirname, '../dist')))
+
+//   app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../dist/index.html'));
+//   })
+// }
 
 app.use((req, res) => res.sendStatus(404));
 
