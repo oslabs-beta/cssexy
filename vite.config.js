@@ -13,10 +13,10 @@ export default defineConfig({
   css: {
     devSourcemap: true
   },
-  // server: {
-  //   port: 8888,
-  //   proxy: {
-  //     '/api': 'http://localhost:5555'
-  //   }
-  // }
+  server: {
+    port: 5555,
+    proxy: {
+      '/cdp': 'http://localhost:8888'
+    }
+  }
 });

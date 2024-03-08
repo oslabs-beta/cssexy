@@ -11,6 +11,7 @@
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
+
 const cdpInlineStyles = async(CSS, nodeId) => {
   // retrieve the inline styles for the node with the provided nodeId
   const { inlineStyle } = await CSS.getInlineStylesForNode({ nodeId });
@@ -93,16 +94,17 @@ const cdpStyles = async (DOM, CSS, selector) => {
         return;
       }
       console.log(`Saved matched styles to ${fileName}`);
-      open(filePath);
+      // open(filePath);
     });
   });
 
   // console logging the matched css-file styles of the passed in element, in a more readable way.
   // mimics pretty print
+  console.log('Matched CSS Rules:');
   recursiveConsoleLog(matchedCSSRules);
 
-  // console.log('Inherited styles:');
-  // recursiveConsoleLog(inherited);
+  console.log('Inherited styles:');
+  recursiveConsoleLog(inherited);
   // console.log('CSS Keyframes Rules:');
   // recursiveConsoleLog(cssKeyframesRules);
 }

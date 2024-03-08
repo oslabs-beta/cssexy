@@ -7,15 +7,11 @@
     "start": "NODE_ENV=production node server/server.js",
     "build": "vite build",
     "preview": "vite preview --port 8888",
-    "dev": "concurrently \"vite\" \"NODE_ENV=development nodemon server/server.js\"",
-    "sexydev": "concurrently \"npm run dev\" \"npm run startRemoteChrome\"",
-    "sexyprod": "npm run build && npm run startRemoteChrome && npm run start",
-    "bs": "npm run build && npm run start",
-    "startRemoteChrome": "./scripts/startRemoteChrome.sh",
-    "cdp": "node ./client/features/CDP/cdp0process.js",
-    "postInstall": "node ./scripts/postInstall.js",
-    "dev-sexy": "cssxe dev --port 8888",
-    "build-sexy": "cssxe build"
+    "vite-dev": "concurrently \"vite\" \"NODE_ENV=development nodemon server/server.js\"",
+    "dev": "port=5555 npm run startRemoteChrome && npm run vite-dev",
+    "prod": "npm run build && port=8888 npm run startRemoteChrome && npm run start",
+    "startRemoteChrome": "PORT=$port ./scripts/startRemoteChrome.sh",
+    "postInstall": "node ./scripts/postInstall.js"
   },
   "type": "module",
   "repository": {

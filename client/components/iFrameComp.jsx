@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
-const iFrameComp = ({ src, className }) => {
+const iFrameComp = ({ src, className, proxy }) => {
+
   useEffect(() => {
     const iframe = document.querySelector(`.${className}`);
 
@@ -12,17 +13,36 @@ const iFrameComp = ({ src, className }) => {
 
         console.log('iframeDoc', iframeDoc);
 
-        const handleClick = (event) => {
+        const handleClick = async (event) => {
           const element = event.target;
-          const attributes = element.attributes;
-          const attrs = {};
-          for (let i = 0; i < attributes.length; i++) {
-              attrs[attributes[i].name] = attributes[i].value;
-          }
-          console.log('attrs', attrs);
+          console.log('iFrameComp: element', element);
+          const data = {
+            nodeName: element.nodeName,
+            nodeType: element.nodeType,
+            textContent: element.textContent,
+            innerHTML: element.innerHTML,
+            id: element.id,
+            className: element.className,
+            attributes: {},
+          };
 
-          // Send a message to the parent window
-          window.parent.postMessage(attrs, '*');
+          const attributes = element.attributes;
+          console.log('iFrameComp: attributes', attributes);
+          for (let i = 0; i < attributes.length; i++) {
+            data.attributes[attributes[i].name] = attributes[i].value;
+          }
+          console.log('iFrameComp: data', data);
+
+          // a POST request to the /cdp endpoint
+          const response = await fetch('/cdp', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+          const result = await response.json();
+          console.log('Result from /cdp:', result);
         };
 
 
@@ -44,7 +64,7 @@ const iFrameComp = ({ src, className }) => {
         iframe.removeEventListener('load', handleLoad);
       };
     }
-  }, [className]);
+  }, []);
 
   return (
     <iframe
@@ -53,7 +73,6 @@ const iFrameComp = ({ src, className }) => {
       height="100%"
       title="User Site"
       className={className}
-      sandbox="allow-scripts allow-same-origin"
     />
   );
 };

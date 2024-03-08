@@ -1,11 +1,9 @@
 import puppeteer from 'puppeteer'
 
-const pupArgs =
-  [
+const pupArgs =[
     '--app=http://localhost:8888', // Replace with your desired URL
     '--disable-web-security',
-  ]
-
+]
 
 const browser = await puppeteer.launch({
   headless: false,
@@ -23,12 +21,9 @@ if (pupArgs[0].includes('--app')) {
 else {
   console.log('pupArgs does not include --app');
 
-const page = await browser.newPage();
-await page.goto('http://localhost:8888'); // Replace with your desired URL
+  const page = await browser.newPage();
+  await page.goto('http://localhost:8888');
 }
-
-// const page = await browser.newPage();
-// await page.goto('http://localhost:8888'); // Replace with your desired URL
 
 const session = await page.createCDPSession()
 const sessionId = session.id();
