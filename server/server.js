@@ -3,7 +3,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { getBrowser } from '../client/puppeteer/pup.js';
-import axios from 'axios';
 const app = express();
 const PORT = 5555;
 
@@ -41,31 +40,9 @@ app.use('/cdp', async (req, res)=>{
 let htmlData = null;
 let cssData = null;
 let jsData = null;
-async function fetchFiles(url) {
-  try {
-      const htmlResponse = await fetch(`${url}/index.html`);
-      htmlData = await htmlResponse.text();
 
-      const cssResponse = await fetch(`${url}/styles.css`);
-      cssData = await cssResponse.text();
 
-      const jsResponse = await fetch(`${url}/bundle.js`);
-      jsData = await jsResponse.text();
-  } catch (error) {
-      console.error('Error fetching files:', error);
-  }
-}
 
-app.use('/frame', async (req, res)=>{
-const url = req.query.url;
-const response = await fetchFiles(url)
-
-if (htmlData && cssData && jsData) {
-  res.send({ html: htmlData, css: cssData, js: jsData });
-} else {
-  res.status(500).send('Files not available yet');
-}
-})
 
 app.use('/stylesheets', express.static(path.join(__dirname, '../client/stylesheets')));
 
