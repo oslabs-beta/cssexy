@@ -17,7 +17,17 @@ export default defineConfig({
     port: 8888,
     // proxy requests to API endpoint to the Express server
     proxy: {
-      '/api': 'http://localhost:5555'
+
+      '/cdp':{
+       target: 'http://localhost:5555',
+       changeOrigin: true,
+       secure:false
+      },
+      '/frame':{
+        target: 'http://localhost:5555',
+       
+       }
+
     }
   }
 });
