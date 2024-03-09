@@ -1,5 +1,15 @@
 import React, { useEffect } from 'react';
 
+/**
+ * Renders an iframe component with event handling for click events.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.src - The source URL for the iframe.
+ * @param {string} props.className - The CSS class name for the iframe.
+ * @param {boolean} props.proxy - Whether to use a proxy for the iframe.
+ * @returns {JSX.Element} The rendered iframe component.
+ */
+
 const iFrameComp = ({ src, className, proxy }) => {
 
   useEffect(() => {
@@ -25,6 +35,7 @@ const iFrameComp = ({ src, className, proxy }) => {
             className: element.className,
             attributes: {},
           };
+
 
           const attributes = element.attributes;
           console.log('iFrameComp: attributes', attributes);

@@ -2,8 +2,6 @@ import React from 'react';
 
 import SidebarComp from './components/SidebarComp';
 import IframeComp from './components/iFrameComp';
-import cdpProcess from './features/CDP/cdp0process';
-
 
 const App = () => {
   const proxy = 8000;
@@ -11,7 +9,6 @@ const App = () => {
   return (
     <div className="app-container">
       <SidebarComp />
-      {/* <IframeComp src="/api/site" className="site-frame" /> */}
       <IframeComp
         src={targetUrl}
         className="site-frame"
@@ -22,7 +19,3 @@ const App = () => {
 };
 
 export default App;
-
-/*
-
-*/

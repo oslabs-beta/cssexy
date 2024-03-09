@@ -23,6 +23,7 @@ import cdpStyles from './cdp2styles.js';
  * @param {string} proxy - The proxy to connect to for the Chrome DevTools Protocol
  *
  */
+
 const cdpProcess = async (data) => {
     const nodeName = data?.nodeName;
     const nodeType = data?.nodeType;

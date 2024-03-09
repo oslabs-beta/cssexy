@@ -17,7 +17,7 @@ app.use(express.json());
 
 console.log('Current environment:', process.env.NODE_ENV);
 
-// app.use(express());
+app.use(express());
 
 if (process.env.NODE_ENV === 'production') {
   // Serve static files (CSSxe UI)
