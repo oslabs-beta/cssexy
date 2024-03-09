@@ -61,7 +61,7 @@
   },
   {
     "rule": {
-      "styleSheetId": "style-sheet-24352-1",
+      "styleSheetId": "style-sheet-68563-4",
       "selectorList": {
         "selectors": [
           {
@@ -83,7 +83,7 @@
       },
       "origin": "regular",
       "style": {
-        "styleSheetId": "style-sheet-24352-1",
+        "styleSheetId": "style-sheet-68563-4",
         "cssProperties": [
           {
             "name": "color",
@@ -99,60 +99,16 @@
             }
           },
           {
-            "name": "border-bottom",
-            "value": "3px solid blueviolet",
-            "implicit": false,
-            "text": "border-bottom: 3px solid blueviolet;",
-            "disabled": false,
-            "range": {
-              "startLine": 2,
-              "startColumn": 2,
-              "endLine": 2,
-              "endColumn": 38
-            },
-            "longhandProperties": [
-              {
-                "name": "border-bottom-width",
-                "value": "3px"
-              },
-              {
-                "name": "border-bottom-style",
-                "value": "solid"
-              },
-              {
-                "name": "border-bottom-color",
-                "value": "blueviolet"
-              }
-            ]
-          },
-          {
             "name": "color",
             "value": "fuchsia"
-          },
-          {
-            "name": "border-bottom-width",
-            "value": "3px"
-          },
-          {
-            "name": "border-bottom-style",
-            "value": "solid"
-          },
-          {
-            "name": "border-bottom-color",
-            "value": "blueviolet"
           }
         ],
-        "shorthandEntries": [
-          {
-            "name": "border-bottom",
-            "value": "3px solid blueviolet"
-          }
-        ],
-        "cssText": "\n  color: fuchsia;\n  border-bottom: 3px solid blueviolet;\n",
+        "shorthandEntries": [],
+        "cssText": "\n  color: fuchsia;\n",
         "range": {
           "startLine": 0,
           "startColumn": 4,
-          "endLine": 3,
+          "endLine": 2,
           "endColumn": 0
         }
       },

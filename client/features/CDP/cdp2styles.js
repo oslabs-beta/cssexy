@@ -11,7 +11,7 @@
 
 import fs from 'fs';
 
-const cdpInlineStyles = async(CSS, nodeId) => {
+const cdpInlineStyles = async (CSS, nodeId) => {
   // retrieve the inline styles for the node with the provided nodeId
   const { inlineStyle } = await CSS.getInlineStylesForNode({ nodeId });
 
@@ -21,8 +21,8 @@ const cdpInlineStyles = async(CSS, nodeId) => {
     console.log('Inline styles:', inlineStyle.cssText);
     console.log('range:', inlineStyle.range);
   } else {
-      // if no inline styles are present
-      console.log(`No inline styles found for nodeId ${nodeId}.`);
+    // if no inline styles are present
+    console.log(`No inline styles found for nodeId ${nodeId}.`);
   }
   return inlineStyle;
 }
@@ -48,8 +48,8 @@ const recursiveConsoleLog = (object, indent = 0) => {
     // end the object with a closing curly brace on a new line
     console.log(indentation + '}');
   } else {
-      // if the object is a primitive, log it followed by a comma
-      console.log(object + ',');
+    // if the object is a primitive, log it followed by a comma
+    console.log(object + ',');
   }
 }
 
@@ -60,8 +60,8 @@ const cdpStyles = async (DOM, CSS, selector) => {
 
   // find a specific node within the DOM tree by using the provided CSS selector
   const { nodeId } = await DOM.querySelector({
-      nodeId: root.nodeId,
-      selector: selector
+    nodeId: root.nodeId,
+    selector: selector
   });
   console.log('Getting styles for element:', selector);
   console.log(selector, 'nodeId:', nodeId);
@@ -77,6 +77,8 @@ const cdpStyles = async (DOM, CSS, selector) => {
   // => cssKeyframesRules includes all the @keyframes rules applied to the node
   const { matchedCSSRules, inherited, cssKeyframesRules } = await CSS.getMatchedStylesForNode({ nodeId });
   console.log('Matched CSS Rules:');
+
+  console.log(`StyleSheetText: ${matchedCSSRules[1].rule.styleSheetId}`);
   fs.writeFileSync('./client/features/CDP/matchedStyles.js', JSON.stringify(matchedCSSRules, null, 2));
 
   // console logging the matched css-file styles of the passed in element, in a more readable way.
