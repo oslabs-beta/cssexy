@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Style from './Style';
+import UserAgentStylesComp from './UserAgentStylesComp';
 
 /* All styles include:
 1) styles defined in .css files called 'regular' styles
@@ -12,8 +13,13 @@ function AllStyles(){
 
     const inlineStyles = [];
     const regularStyles = [];
-    const userAgentStyles = [];
-    let userAgentSelector;
+    // const userAgentStyles = [];
+
+    // let userAgentSelector;
+    // const shorthandPropertiesMap = {};
+    // const userAgentCssProperties = [];
+
+    // useEffect(() => console.log('SHORTHAND PROPERTIES MAP:   ', shorthandPropertiesMap), shorthandPropertiesMap);
 
     allStyles.forEach((style, idx) => {
         if (style.rule.origin === 'inline' || style.rule.origin === 'regular') {
@@ -30,12 +36,14 @@ function AllStyles(){
             // else if (style.rule.origin === 'user-agent') userAgentStyles.push(styleComp);
             else if (style.rule.origin === 'inline') inlineStyles.push(styleComp);
         }
-        else if (style.rule.origin === 'user-agent') {
-            // grab only first selector (assuming this is the main selector we want to show)
-            if (!userAgentSelector) userAgentSelector = style.rule.selectorList.selectors[0].text;
+        // else if (style.rule.origin === 'user-agent') {
+        //     // grab only first selector (assuming this is the main selector we want to show)
+        //     if (!userAgentSelector) userAgentSelector = style.rule.selectorList.selectors[0].text;
 
-            
-        }
+        //     for (let shorthandProp of style.rule.style.shorthandEntries) {
+        //         shorthandPropertiesMap[shorthandProp.name] = shorthandProp.value;
+        //     }
+        // }
     });
 
     return (
@@ -44,8 +52,9 @@ function AllStyles(){
             {inlineStyles}            
             <h3>Styles from .css</h3>
             {regularStyles}
-            <h3>Browser default styles</h3>
-            {userAgentStyles}
+            {/* <h3>Browser default styles</h3>
+            {userAgentStyles} */}
+            <UserAgentStylesComp/>
         </div>
     )
 };
