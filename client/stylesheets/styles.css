@@ -4,6 +4,8 @@ h1 {
 .app-container {
     display: flex;
     height: 100vh;
+    background-color: black;
+    color: white;
   }
 .sidebar {
     font-size: 20px;

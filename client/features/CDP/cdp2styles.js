@@ -8,6 +8,9 @@
  * @param {string} selector - the CSS selector for the specific node
  * @return {Promise} - a Promise that resolves when all styles are logged
  */
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 const cdpInlineStyles = async(CSS, nodeId) => {
   // retrieve the inline styles for the node with the provided nodeId
@@ -74,12 +77,34 @@ const cdpStyles = async (DOM, CSS, selector) => {
   const { matchedCSSRules, inherited, cssKeyframesRules } = await CSS.getMatchedStylesForNode({ nodeId });
   console.log('Matched CSS Rules:');
 
+  const fileName = 'matchedStyles.json';
+  const currentDir = path.dirname(fileURLToPath(import.meta.url));
+  const dirPath = path.join(currentDir, '..', '..', 'data');
+  const filePath = path.join(dirPath, fileName);
+
+  fs.mkdir(dirPath, { recursive: true }, (err) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    fs.writeFile(filePath, JSON.stringify(matchedCSSRules, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log(`Saved matched styles to ${fileName}`);
+      // open(filePath);
+    });
+  });
+
   // console logging the matched css-file styles of the passed in element, in a more readable way.
   // mimics pretty print
+  console.log('Matched CSS Rules:');
   recursiveConsoleLog(matchedCSSRules);
 
-  // console.log('Inherited styles:');
-  // recursiveConsoleLog(inherited);
+  console.log('Inherited styles:');
+  recursiveConsoleLog(inherited);
   // console.log('CSS Keyframes Rules:');
   // recursiveConsoleLog(cssKeyframesRules);
 }
