@@ -1,20 +1,19 @@
 import React from 'react';
 
-import Sidebar from './components/Sidebar';
+import SidebarComp from './components/SidebarComp';
+import IframeComp from './components/iFrameComp';
 
 const App = () => {
-
+  const proxy = 8000;
+  const targetUrl = `http://localhost:${proxy}`
   return (
     <div className="app-container">
-      <Sidebar />
-      <iframe
-        id="site-frame"
-        src="http://localhost:8000"
-        width="100%"
-        height="100%"
-        title="User Site"
+      <SidebarComp />
+      <IframeComp
+        src={targetUrl}
         className="site-frame"
-      ></iframe>
+        proxy={proxy}
+      />
     </div>
   )
 };
