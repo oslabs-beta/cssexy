@@ -4,31 +4,7 @@
       "selectorList": {
         "selectors": [
           {
-            "text": "input",
-            "specificity": {
-              "a": 0,
-              "b": 0,
-              "c": 1
-            }
-          },
-          {
-            "text": "textarea",
-            "specificity": {
-              "a": 0,
-              "b": 0,
-              "c": 1
-            }
-          },
-          {
-            "text": "select",
-            "specificity": {
-              "a": 0,
-              "b": 0,
-              "c": 1
-            }
-          },
-          {
-            "text": "button",
+            "text": "body",
             "specificity": {
               "a": 0,
               "b": 0,
@@ -36,136 +12,36 @@
             }
           }
         ],
-        "text": "input, textarea, select, button"
+        "text": "body"
       },
       "origin": "user-agent",
       "style": {
         "cssProperties": [
           {
+            "name": "display",
+            "value": "block"
+          },
+          {
             "name": "margin-top",
-            "value": "0em"
+            "value": "8px"
           },
           {
             "name": "margin-right",
-            "value": "0em"
+            "value": "8px"
           },
           {
             "name": "margin-bottom",
-            "value": "0em"
+            "value": "8px"
           },
           {
             "name": "margin-left",
-            "value": "0em"
-          },
-          {
-            "name": "font-style",
-            "value": ""
-          },
-          {
-            "name": "font-variant-ligatures",
-            "value": ""
-          },
-          {
-            "name": "font-variant-caps",
-            "value": ""
-          },
-          {
-            "name": "font-variant-numeric",
-            "value": ""
-          },
-          {
-            "name": "font-variant-east-asian",
-            "value": ""
-          },
-          {
-            "name": "font-variant-alternates",
-            "value": ""
-          },
-          {
-            "name": "font-variant-position",
-            "value": ""
-          },
-          {
-            "name": "font-weight",
-            "value": ""
-          },
-          {
-            "name": "font-stretch",
-            "value": ""
-          },
-          {
-            "name": "font-size",
-            "value": ""
-          },
-          {
-            "name": "font-family",
-            "value": ""
-          },
-          {
-            "name": "font-optical-sizing",
-            "value": ""
-          },
-          {
-            "name": "font-kerning",
-            "value": ""
-          },
-          {
-            "name": "font-feature-settings",
-            "value": ""
-          },
-          {
-            "name": "font-variation-settings",
-            "value": ""
-          },
-          {
-            "name": "text-rendering",
-            "value": "auto"
-          },
-          {
-            "name": "color",
-            "value": "fieldtext"
-          },
-          {
-            "name": "letter-spacing",
-            "value": "normal"
-          },
-          {
-            "name": "word-spacing",
-            "value": "normal"
-          },
-          {
-            "name": "line-height",
-            "value": "normal"
-          },
-          {
-            "name": "text-transform",
-            "value": "none"
-          },
-          {
-            "name": "text-indent",
-            "value": "0px"
-          },
-          {
-            "name": "text-shadow",
-            "value": "none"
-          },
-          {
-            "name": "display",
-            "value": "inline-block"
-          },
-          {
-            "name": "text-align",
-            "value": "start"
+            "value": "8px"
           }
         ],
         "shorthandEntries": [
           {
             "name": "margin",
-            "value": "0em"
-          },
-          {
-            "name": "font",
-            "value": ""
+            "value": "8px"
           }
         ]
       },
@@ -182,695 +58,305 @@
   },
   {
     "rule": {
+      "styleSheetId": "style-sheet-26012-9",
       "selectorList": {
         "selectors": [
           {
-            "text": "input",
-            "specificity": {
-              "a": 0,
-              "b": 0,
-              "c": 1
-            }
-          }
-        ],
-        "text": "input"
-      },
-      "origin": "user-agent",
-      "style": {
-        "cssProperties": [
-          {
-            "name": "appearance",
-            "value": "auto"
-          },
-          {
-            "name": "padding-top",
-            "value": "1px"
-          },
-          {
-            "name": "padding-right",
-            "value": "0px"
-          },
-          {
-            "name": "padding-bottom",
-            "value": "1px"
-          },
-          {
-            "name": "padding-left",
-            "value": "0px"
-          },
-          {
-            "name": "border-top-width",
-            "value": "2px"
-          },
-          {
-            "name": "border-right-width",
-            "value": "2px"
-          },
-          {
-            "name": "border-bottom-width",
-            "value": "2px"
-          },
-          {
-            "name": "border-left-width",
-            "value": "2px"
-          },
-          {
-            "name": "border-top-style",
-            "value": "inset"
-          },
-          {
-            "name": "border-right-style",
-            "value": "inset"
-          },
-          {
-            "name": "border-bottom-style",
-            "value": "inset"
-          },
-          {
-            "name": "border-left-style",
-            "value": "inset"
-          },
-          {
-            "name": "border-top-color",
-            "value": "-internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133))"
-          },
-          {
-            "name": "border-right-color",
-            "value": "-internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133))"
-          },
-          {
-            "name": "border-bottom-color",
-            "value": "-internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133))"
-          },
-          {
-            "name": "border-left-color",
-            "value": "-internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133))"
-          },
-          {
-            "name": "border-image-source",
-            "value": "initial"
-          },
-          {
-            "name": "border-image-slice",
-            "value": "initial"
-          },
-          {
-            "name": "border-image-width",
-            "value": "initial"
-          },
-          {
-            "name": "border-image-outset",
-            "value": "initial"
-          },
-          {
-            "name": "border-image-repeat",
-            "value": "initial"
-          },
-          {
-            "name": "-webkit-rtl-ordering",
-            "value": "logical"
-          },
-          {
-            "name": "cursor",
-            "value": "text"
-          },
-          {
-            "name": "background-color",
-            "value": "field"
-          }
-        ],
-        "shorthandEntries": [
-          {
-            "name": "padding",
-            "value": "1px 0px"
-          },
-          {
-            "name": "border-width",
-            "value": "2px"
-          },
-          {
-            "name": "border-style",
-            "value": "inset"
-          },
-          {
-            "name": "border-color",
-            "value": "-internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133))"
-          },
-          {
-            "name": "border-image",
-            "value": "initial"
-          }
-        ]
-      },
-      "media": [],
-      "containerQueries": [],
-      "supports": [],
-      "layers": [],
-      "scopes": [],
-      "ruleTypes": []
-    },
-    "matchingSelectors": [
-      0
-    ]
-  },
-  {
-    "rule": {
-      "selectorList": {
-        "selectors": [
-          {
-            "text": "input",
-            "specificity": {
-              "a": 0,
-              "b": 0,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"email\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"number\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"password\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"search\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"tel\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"text\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"url\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          }
-        ],
-        "text": "input, input[type=\"email\" i], input[type=\"number\" i], input[type=\"password\" i], input[type=\"search\" i], input[type=\"tel\" i], input[type=\"text\" i], input[type=\"url\" i]"
-      },
-      "origin": "user-agent",
-      "style": {
-        "cssProperties": [
-          {
-            "name": "padding-block-start",
-            "value": "1px"
-          },
-          {
-            "name": "padding-block-end",
-            "value": "1px"
-          },
-          {
-            "name": "padding-inline-start",
-            "value": "2px"
-          },
-          {
-            "name": "padding-inline-end",
-            "value": "2px"
-          }
-        ],
-        "shorthandEntries": [
-          {
-            "name": "padding-block",
-            "value": "1px"
-          },
-          {
-            "name": "padding-inline",
-            "value": "2px"
-          }
-        ]
-      },
-      "media": [],
-      "containerQueries": [],
-      "supports": [],
-      "layers": [],
-      "scopes": [],
-      "ruleTypes": []
-    },
-    "matchingSelectors": [
-      0
-    ]
-  },
-  {
-    "rule": {
-      "selectorList": {
-        "selectors": [
-          {
-            "text": "input:not([type=\"file\" i], [type=\"image\" i], [type=\"checkbox\" i], [type=\"radio\" i])",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          }
-        ],
-        "text": "input:not([type=\"file\" i], [type=\"image\" i], [type=\"checkbox\" i], [type=\"radio\" i])"
-      },
-      "origin": "user-agent",
-      "style": {
-        "cssProperties": [],
-        "shorthandEntries": []
-      },
-      "media": [],
-      "containerQueries": [],
-      "supports": [],
-      "layers": [],
-      "scopes": [],
-      "ruleTypes": []
-    },
-    "matchingSelectors": [
-      0
-    ]
-  },
-  {
-    "rule": {
-      "selectorList": {
-        "selectors": [
-          {
-            "text": "input",
-            "specificity": {
-              "a": 0,
-              "b": 0,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"email\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"number\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"password\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"search\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"tel\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"text\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          },
-          {
-            "text": "input[type=\"url\" i]",
-            "specificity": {
-              "a": 0,
-              "b": 1,
-              "c": 1
-            }
-          }
-        ],
-        "text": "input, input[type=\"email\" i], input[type=\"number\" i], input[type=\"password\" i], input[type=\"search\" i], input[type=\"tel\" i], input[type=\"text\" i], input[type=\"url\" i]"
-      },
-      "origin": "user-agent",
-      "style": {
-        "cssProperties": [
-          {
-            "name": "padding-block-start",
-            "value": "1px"
-          },
-          {
-            "name": "padding-block-end",
-            "value": "1px"
-          },
-          {
-            "name": "padding-inline-start",
-            "value": "2px"
-          },
-          {
-            "name": "padding-inline-end",
-            "value": "2px"
-          }
-        ],
-        "shorthandEntries": [
-          {
-            "name": "padding-block",
-            "value": "1px"
-          },
-          {
-            "name": "padding-inline",
-            "value": "2px"
-          }
-        ]
-      },
-      "media": [],
-      "containerQueries": [],
-      "supports": [],
-      "layers": [],
-      "scopes": [],
-      "ruleTypes": []
-    },
-    "matchingSelectors": [
-      6
-    ]
-  },
-  {
-    "rule": {
-      "styleSheetId": "style-sheet-9976-26",
-      "selectorList": {
-        "selectors": [
-          {
-            "text": ".authenticationComp--container input",
+            "text": "body",
             "range": {
-              "startLine": 456,
+              "startLine": 14,
               "startColumn": 0,
-              "endLine": 456,
-              "endColumn": 36
+              "endLine": 14,
+              "endColumn": 4
             },
             "specificity": {
               "a": 0,
-              "b": 1,
+              "b": 0,
               "c": 1
             }
           }
         ],
-        "text": ".authenticationComp--container input"
+        "text": "body"
       },
       "origin": "regular",
       "style": {
-        "styleSheetId": "style-sheet-9976-26",
+        "styleSheetId": "style-sheet-26012-9",
         "cssProperties": [
           {
-            "name": "margin-bottom",
-            "value": "17px",
+            "name": "background",
+            "value": "#07004e",
             "implicit": false,
-            "text": "margin-bottom: 17px;",
+            "text": "background: #07004e;",
             "disabled": false,
             "range": {
-              "startLine": 457,
+              "startLine": 15,
               "startColumn": 2,
-              "endLine": 457,
+              "endLine": 15,
               "endColumn": 22
+            },
+            "longhandProperties": [
+              {
+                "name": "background-image",
+                "value": "initial"
+              },
+              {
+                "name": "background-position-x",
+                "value": "initial"
+              },
+              {
+                "name": "background-position-y",
+                "value": "initial"
+              },
+              {
+                "name": "background-size",
+                "value": "initial"
+              },
+              {
+                "name": "background-repeat",
+                "value": "initial"
+              },
+              {
+                "name": "background-attachment",
+                "value": "initial"
+              },
+              {
+                "name": "background-origin",
+                "value": "initial"
+              },
+              {
+                "name": "background-clip",
+                "value": "initial"
+              },
+              {
+                "name": "background-color",
+                "value": "rgb(7, 0, 78)"
+              }
+            ]
+          },
+          {
+            "name": "background-size",
+            "value": "200% 200%",
+            "implicit": false,
+            "text": "background-size: 200% 200%;",
+            "disabled": false,
+            "range": {
+              "startLine": 16,
+              "startColumn": 2,
+              "endLine": 16,
+              "endColumn": 29
             }
           },
           {
             "name": "width",
-            "value": "260px",
+            "value": "1200",
             "implicit": false,
-            "text": "width: 260px;",
+            "text": "width: 1200;",
+            "parsedOk": false,
             "disabled": false,
             "range": {
-              "startLine": 458,
+              "startLine": 17,
               "startColumn": 2,
-              "endLine": 458,
-              "endColumn": 15
+              "endLine": 17,
+              "endColumn": 14
             }
           },
           {
-            "name": "height",
-            "value": "25px",
+            "name": "margin",
+            "value": "0px",
             "implicit": false,
-            "text": "height: 25px;",
+            "text": "margin: 0px;",
             "disabled": false,
             "range": {
-              "startLine": 459,
+              "startLine": 18,
               "startColumn": 2,
-              "endLine": 459,
-              "endColumn": 15
-            }
+              "endLine": 18,
+              "endColumn": 14
+            },
+            "longhandProperties": [
+              {
+                "name": "margin-top",
+                "value": "0px"
+              },
+              {
+                "name": "margin-right",
+                "value": "0px"
+              },
+              {
+                "name": "margin-bottom",
+                "value": "0px"
+              },
+              {
+                "name": "margin-left",
+                "value": "0px"
+              }
+            ]
           },
           {
-            "name": "font",
-            "value": "inherit",
+            "name": "display",
+            "value": "flex",
             "implicit": false,
-            "text": "font: inherit;",
+            "text": "display: flex;",
             "disabled": false,
             "range": {
-              "startLine": 460,
+              "startLine": 19,
               "startColumn": 2,
-              "endLine": 460,
+              "endLine": 19,
               "endColumn": 16
             }
           },
           {
-            "name": "font-size",
-            "value": "12px",
+            "name": "align-items",
+            "value": "center",
             "implicit": false,
-            "text": "font-size: 12px;",
+            "text": "align-items: center;",
             "disabled": false,
             "range": {
-              "startLine": 461,
+              "startLine": 20,
               "startColumn": 2,
-              "endLine": 461,
-              "endColumn": 18
+              "endLine": 20,
+              "endColumn": 22
             }
           },
           {
-            "name": "border-radius",
-            "value": "5px",
+            "name": "flex-direction",
+            "value": "column",
             "implicit": false,
-            "text": "border-radius: 5px;",
+            "text": "flex-direction: column;",
             "disabled": false,
             "range": {
-              "startLine": 462,
+              "startLine": 21,
               "startColumn": 2,
-              "endLine": 462,
-              "endColumn": 21
-            },
-            "longhandProperties": [
-              {
-                "name": "border-top-left-radius",
-                "value": "5px"
-              },
-              {
-                "name": "border-top-right-radius",
-                "value": "5px"
-              },
-              {
-                "name": "border-bottom-right-radius",
-                "value": "5px"
-              },
-              {
-                "name": "border-bottom-left-radius",
-                "value": "5px"
-              }
-            ]
-          },
-          {
-            "name": "padding",
-            "value": "5px 10px",
-            "implicit": false,
-            "text": "padding: 5px 10px;",
-            "disabled": false,
-            "range": {
-              "startLine": 463,
-              "startColumn": 2,
-              "endLine": 463,
-              "endColumn": 20
-            },
-            "longhandProperties": [
-              {
-                "name": "padding-top",
-                "value": "5px"
-              },
-              {
-                "name": "padding-right",
-                "value": "10px"
-              },
-              {
-                "name": "padding-bottom",
-                "value": "5px"
-              },
-              {
-                "name": "padding-left",
-                "value": "10px"
-              }
-            ]
-          },
-          {
-            "name": "margin-bottom",
-            "value": "17px"
-          },
-          {
-            "name": "width",
-            "value": "260px"
-          },
-          {
-            "name": "height",
-            "value": "25px"
-          },
-          {
-            "name": "font-style",
-            "value": "inherit"
-          },
-          {
-            "name": "font-variant-ligatures",
-            "value": "inherit"
-          },
-          {
-            "name": "font-variant-caps",
-            "value": "inherit"
-          },
-          {
-            "name": "font-variant-numeric",
-            "value": "inherit"
-          },
-          {
-            "name": "font-variant-east-asian",
-            "value": "inherit"
-          },
-          {
-            "name": "font-variant-alternates",
-            "value": "inherit"
-          },
-          {
-            "name": "font-variant-position",
-            "value": "inherit"
-          },
-          {
-            "name": "font-weight",
-            "value": "inherit"
-          },
-          {
-            "name": "font-stretch",
-            "value": "inherit"
-          },
-          {
-            "name": "line-height",
-            "value": "inherit"
+              "endLine": 21,
+              "endColumn": 25
+            }
           },
           {
             "name": "font-family",
-            "value": "inherit"
+            "value": "\"Red Hat Mono\", monospace",
+            "implicit": false,
+            "text": "font-family: \"Red Hat Mono\", monospace;",
+            "disabled": false,
+            "range": {
+              "startLine": 22,
+              "startColumn": 2,
+              "endLine": 22,
+              "endColumn": 41
+            }
           },
           {
-            "name": "font-optical-sizing",
-            "value": "inherit"
+            "name": "color",
+            "value": "#efefef",
+            "implicit": false,
+            "text": "color: #efefef;",
+            "disabled": false,
+            "range": {
+              "startLine": 23,
+              "startColumn": 2,
+              "endLine": 23,
+              "endColumn": 17
+            }
           },
           {
-            "name": "font-kerning",
-            "value": "inherit"
+            "name": "background-attachment",
+            "value": "fixed",
+            "implicit": false,
+            "text": "background-attachment: fixed;",
+            "disabled": false,
+            "range": {
+              "startLine": 24,
+              "startColumn": 2,
+              "endLine": 24,
+              "endColumn": 31
+            }
           },
           {
-            "name": "font-feature-settings",
-            "value": "inherit"
+            "name": "background-image",
+            "value": "initial"
           },
           {
-            "name": "font-variation-settings",
-            "value": "inherit"
+            "name": "background-position-x",
+            "value": "initial"
           },
           {
-            "name": "font-size",
-            "value": "12px"
+            "name": "background-position-y",
+            "value": "initial"
           },
           {
-            "name": "border-top-left-radius",
-            "value": "5px"
+            "name": "background-repeat",
+            "value": "initial"
           },
           {
-            "name": "border-top-right-radius",
-            "value": "5px"
+            "name": "background-origin",
+            "value": "initial"
           },
           {
-            "name": "border-bottom-right-radius",
-            "value": "5px"
+            "name": "background-clip",
+            "value": "initial"
           },
           {
-            "name": "border-bottom-left-radius",
-            "value": "5px"
+            "name": "background-color",
+            "value": "rgb(7, 0, 78)"
           },
           {
-            "name": "padding-top",
-            "value": "5px"
+            "name": "background-size",
+            "value": "200% 200%"
           },
           {
-            "name": "padding-right",
-            "value": "10px"
+            "name": "margin-top",
+            "value": "0px"
           },
           {
-            "name": "padding-bottom",
-            "value": "5px"
+            "name": "margin-right",
+            "value": "0px"
           },
           {
-            "name": "padding-left",
-            "value": "10px"
+            "name": "margin-bottom",
+            "value": "0px"
+          },
+          {
+            "name": "margin-left",
+            "value": "0px"
+          },
+          {
+            "name": "display",
+            "value": "flex"
+          },
+          {
+            "name": "align-items",
+            "value": "center"
+          },
+          {
+            "name": "flex-direction",
+            "value": "column"
+          },
+          {
+            "name": "font-family",
+            "value": "\"Red Hat Mono\", monospace"
+          },
+          {
+            "name": "color",
+            "value": "rgb(239, 239, 239)"
+          },
+          {
+            "name": "background-attachment",
+            "value": "fixed"
           }
         ],
         "shorthandEntries": [
           {
-            "name": "font",
-            "value": "inherit inherit inherit inherit inherit inherit inherit inherit inherit inherit inherit inherit inherit inherit inherit"
+            "name": "background",
+            "value": " 0% 0% / 200% 200% fixed rgb(7, 0, 78)"
           },
           {
-            "name": "border-radius",
-            "value": "5px"
-          },
-          {
-            "name": "padding",
-            "value": "5px 10px"
+            "name": "margin",
+            "value": "0px"
           }
         ],
-        "cssText": "\n  margin-bottom: 17px;\n  width: 260px;\n  height: 25px;\n  font: inherit;\n  font-size: 12px;\n  border-radius: 5px;\n  padding: 5px 10px;\n",
+        "cssText": "\n  background: #07004e;\n  background-size: 200% 200%;\n  width: 1200;\n  margin: 0px;\n  display: flex;\n  align-items: center;\n  flex-direction: column;\n  font-family: \"Red Hat Mono\", monospace;\n  color: #efefef;\n  background-attachment: fixed;\n",
         "range": {
-          "startLine": 456,
-          "startColumn": 38,
-          "endLine": 464,
+          "startLine": 14,
+          "startColumn": 6,
+          "endLine": 25,
           "endColumn": 0
         }
       },
@@ -889,7 +375,7 @@
     "rule": {
       "origin": "inline",
       "style": {
-        "styleSheetId": "9976.1",
+        "styleSheetId": "26012.0",
         "cssProperties": [],
         "shorthandEntries": [],
         "cssText": "",

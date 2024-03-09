@@ -2,62 +2,71 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Style from './Style.jsx';
 
+/* Styles included: default browser styles*/
+
 function UserAgentStylesComp() {
-    const allStyles = useSelector(state => state.styles.allStyles);
+    const userAgentStylesData = useSelector(state => state.styles.userAgentStyles);
     const [longhandGetter, setLonghandGetter] = useState(null);
-    let selector;
-    const longShortMap = new Set();
+    let userAgentSelector;
     const userAgentStyles = {};
-    const userAgentStylesAr = [];
 
-    useEffect(() => {
-        setLonghandGetter(document.querySelector('#longhand-getter'));
-    }, []);
-
-    if (longhandGetter) {
-        allStyles.forEach((style) => {
-            if (style.rule.origin === 'user-agent') {
-                // get only the first selector, because this is how it is in the chrome dev tools 
-                if (!selector) selector = style.rule.selectorList?.selectors[0].text;
-    
-                // iterate through shorthand styles and generate the map, which will be used to ignore all longhand styles corresponding to the shorthand styles
-                // ex of shorthand style: padding
-                // ex of longhand styles: padding-left, padding-right, padding-top, padding-bottom
-                const shorthandStyles = style.rule.style.shorthandEntries;
-                if (shorthandStyles.length) {
-                    for (let shortStyle of shorthandStyles) {
-                        if (shortStyle.value) userAgentStyles[shortStyle.name] = shortStyle.value;
-                        // get all longhand properties, save them to the map and reset dummy html el for the next iteration
-                        longhandGetter.style.setProperty(shortStyle.name, shortStyle.value);
-                        const longhandStyles = [...longhandGetter.style];
-                        longhandStyles.forEach(ls => longShortMap.add(ls));
-                        longhandGetter.style.removeProperty(shortStyle.name);
-                    }
-                };
-
-                for (let cssProperty of style.rule.style.cssProperties) {
-                    if (!longShortMap.has(cssProperty.name) && cssProperty.value) userAgentStyles[cssProperty.name] = cssProperty.value;
-                }
-            };
-        })
-
-        for (let style in userAgentStyles) {
-            userAgentStylesAr.push({
+    const ObjToArr = stylesObj => {
+        const arr = [];
+        for (let style in stylesObj) {
+            arr.push({
                 name: style,
-                value: userAgentStyles[style]
+                value: stylesObj[style]
             })
         }
+        return arr;
     };
-    
+
+    const removeDuplicates = (dummy, styleName, styleVal, stylesObj) => {
+        // assign 1 shorthand property to a dummy DOM element
+        dummy.style.setProperty(styleName, styleVal);
+        // get names of all longhand properties corresponding to the shorthand property
+        const longhandStyles = [...dummy.style];
+        // delete duplicate longhand properties from userAgentStyles obj
+        longhandStyles.forEach(ls => {
+            if (stylesObj[ls]) delete stylesObj[ls];
+        });
+        // reset the dummy element for the next iteration
+        dummy.style.removeProperty(styleName);
+    }
+
+    // grab dummy DOM element for building shorthand-longhand css properties map
+    useEffect(() => setLonghandGetter(document.querySelector('#longhand-getter')), []);
+
+    if (longhandGetter) {
+        userAgentStylesData.forEach(style => {
+            // get only the first selector, because this is how it is in the chrome dev tools 
+            if (!userAgentSelector) userAgentSelector = style.rule.selectorList?.selectors[0].text;
+
+            // add all longhand properties
+            for (let cssProperty of style.rule.style.cssProperties) {
+                if (cssProperty.value) userAgentStyles[cssProperty.name] = cssProperty.value;
+            }
+            const shorthandStyles = style.rule.style.shorthandEntries;
+            if (shorthandStyles.length) {
+                for (let shortStyle of shorthandStyles) {
+                    // add all shorthand properties
+                    if (shortStyle.value) userAgentStyles[shortStyle.name] = shortStyle.value;
+                    // get and remove longhand properties corresponding to each shorthand
+                    removeDuplicates(longhandGetter, shortStyle.name, shortStyle.value, userAgentStyles);
+                }
+            }
+        })
+    }
+
     return (
         <div>
             <h3>Browser default styles</h3>
             <Style 
-                selector={selector}
-                cssProperties={userAgentStylesAr}
+                selector={userAgentSelector}
+                cssProperties={ObjToArr(userAgentStyles)}
                 origin={'user-agent'}
             />
-        </div>
+        </div>   
     )
 };
 

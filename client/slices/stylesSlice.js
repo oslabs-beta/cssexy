@@ -4,421 +4,7 @@ const initialState = {
   // allStyles property includes both matchedCSSRules and inlineCSSRules
   // matchedCSSRules are styles specified in .css files (origin=regular) and default browser styles (origin=user-agent)
   // inlineCSSRules are styles specified directly on components (origin=inline)
-  allStyles: [
-    {
-      "rule": {
-        "selectorList": {
-          "selectors": [
-            {
-              "text": "button",
-              "specificity": {
-                "a": 0,
-                "b": 0,
-                "c": 1
-              }
-            }
-          ],
-          "text": "button"
-        },
-        "origin": "user-agent",
-        "style": {
-          "cssProperties": [
-            {
-              "name": "appearance",
-              "value": "auto"
-            }
-          ],
-          "shorthandEntries": []
-        },
-        "media": [],
-        "containerQueries": [],
-        "supports": [],
-        "layers": [],
-        "scopes": [],
-        "ruleTypes": []
-      },
-      "matchingSelectors": [
-        0
-      ]
-    },
-    {
-      "rule": {
-        "selectorList": {
-          "selectors": [
-            {
-              "text": "input",
-              "specificity": {
-                "a": 0,
-                "b": 0,
-                "c": 1
-              }
-            },
-            {
-              "text": "textarea",
-              "specificity": {
-                "a": 0,
-                "b": 0,
-                "c": 1
-              }
-            },
-            {
-              "text": "select",
-              "specificity": {
-                "a": 0,
-                "b": 0,
-                "c": 1
-              }
-            },
-            {
-              "text": "button",
-              "specificity": {
-                "a": 0,
-                "b": 0,
-                "c": 1
-              }
-            }
-          ],
-          "text": "input, textarea, select, button"
-        },
-        "origin": "user-agent",
-        "style": {
-          "cssProperties": [
-            {
-              "name": "margin-top",
-              "value": "0em"
-            },
-            {
-              "name": "margin-right",
-              "value": "0em"
-            },
-            {
-              "name": "margin-bottom",
-              "value": "0em"
-            },
-            {
-              "name": "margin-left",
-              "value": "0em"
-            },
-            {
-              "name": "font-style",
-              "value": ""
-            },
-            {
-              "name": "font-variant-ligatures",
-              "value": ""
-            },
-            {
-              "name": "font-variant-caps",
-              "value": ""
-            },
-            {
-              "name": "font-variant-numeric",
-              "value": ""
-            },
-            {
-              "name": "font-variant-east-asian",
-              "value": ""
-            },
-            {
-              "name": "font-variant-alternates",
-              "value": ""
-            },
-            {
-              "name": "font-variant-position",
-              "value": ""
-            },
-            {
-              "name": "font-weight",
-              "value": ""
-            },
-            {
-              "name": "font-stretch",
-              "value": ""
-            },
-            {
-              "name": "font-size",
-              "value": ""
-            },
-            {
-              "name": "font-family",
-              "value": ""
-            },
-            {
-              "name": "font-optical-sizing",
-              "value": ""
-            },
-            {
-              "name": "font-kerning",
-              "value": ""
-            },
-            {
-              "name": "font-feature-settings",
-              "value": ""
-            },
-            {
-              "name": "font-variation-settings",
-              "value": ""
-            },
-            {
-              "name": "text-rendering",
-              "value": "auto"
-            },
-            {
-              "name": "color",
-              "value": "fieldtext"
-            },
-            {
-              "name": "letter-spacing",
-              "value": "normal"
-            },
-            {
-              "name": "word-spacing",
-              "value": "normal"
-            },
-            {
-              "name": "line-height",
-              "value": "normal"
-            },
-            {
-              "name": "text-transform",
-              "value": "none"
-            },
-            {
-              "name": "text-indent",
-              "value": "0px"
-            },
-            {
-              "name": "text-shadow",
-              "value": "none"
-            },
-            {
-              "name": "display",
-              "value": "inline-block"
-            },
-            {
-              "name": "text-align",
-              "value": "start"
-            }
-          ],
-          "shorthandEntries": [
-            {
-              "name": "margin",
-              "value": "0em"
-            },
-            {
-              "name": "font",
-              "value": ""
-            }
-          ]
-        },
-        "media": [],
-        "containerQueries": [],
-        "supports": [],
-        "layers": [],
-        "scopes": [],
-        "ruleTypes": []
-      },
-      "matchingSelectors": [
-        3
-      ]
-    },
-    {
-      "rule": {
-        "selectorList": {
-          "selectors": [
-            {
-              "text": "input[type=\"button\" i]",
-              "specificity": {
-                "a": 0,
-                "b": 1,
-                "c": 1
-              }
-            },
-            {
-              "text": "input[type=\"submit\" i]",
-              "specificity": {
-                "a": 0,
-                "b": 1,
-                "c": 1
-              }
-            },
-            {
-              "text": "input[type=\"reset\" i]",
-              "specificity": {
-                "a": 0,
-                "b": 1,
-                "c": 1
-              }
-            },
-            {
-              "text": "input[type=\"file\" i]::-webkit-file-upload-button",
-              "specificity": {
-                "a": 0,
-                "b": 2,
-                "c": 1
-              }
-            },
-            {
-              "text": "button",
-              "specificity": {
-                "a": 0,
-                "b": 0,
-                "c": 1
-              }
-            }
-          ],
-          "text": "input[type=\"button\" i], input[type=\"submit\" i], input[type=\"reset\" i], input[type=\"file\" i]::-webkit-file-upload-button, button"
-        },
-        "origin": "user-agent",
-        "style": {
-          "cssProperties": [
-            {
-              "name": "align-items",
-              "value": "flex-start"
-            },
-            {
-              "name": "text-align",
-              "value": "center"
-            },
-            {
-              "name": "cursor",
-              "value": "default"
-            },
-            {
-              "name": "padding-block-start",
-              "value": "1px"
-            },
-            {
-              "name": "padding-block-end",
-              "value": "1px"
-            },
-            {
-              "name": "padding-inline-start",
-              "value": "6px"
-            },
-            {
-              "name": "padding-inline-end",
-              "value": "6px"
-            },
-            {
-              "name": "border-top-width",
-              "value": "2px"
-            },
-            {
-              "name": "border-right-width",
-              "value": "2px"
-            },
-            {
-              "name": "border-bottom-width",
-              "value": "2px"
-            },
-            {
-              "name": "border-left-width",
-              "value": "2px"
-            },
-            {
-              "name": "border-top-style",
-              "value": "outset"
-            },
-            {
-              "name": "border-right-style",
-              "value": "outset"
-            },
-            {
-              "name": "border-bottom-style",
-              "value": "outset"
-            },
-            {
-              "name": "border-left-style",
-              "value": "outset"
-            },
-            {
-              "name": "border-top-color",
-              "value": "buttonborder"
-            },
-            {
-              "name": "border-right-color",
-              "value": "buttonborder"
-            },
-            {
-              "name": "border-bottom-color",
-              "value": "buttonborder"
-            },
-            {
-              "name": "border-left-color",
-              "value": "buttonborder"
-            },
-            {
-              "name": "border-image-source",
-              "value": "initial"
-            },
-            {
-              "name": "border-image-slice",
-              "value": "initial"
-            },
-            {
-              "name": "border-image-width",
-              "value": "initial"
-            },
-            {
-              "name": "border-image-outset",
-              "value": "initial"
-            },
-            {
-              "name": "border-image-repeat",
-              "value": "initial"
-            },
-            {
-              "name": "box-sizing",
-              "value": "border-box"
-            },
-            {
-              "name": "background-color",
-              "value": "buttonface"
-            },
-            {
-              "name": "color",
-              "value": "buttontext"
-            }
-          ],
-          "shorthandEntries": [
-            {
-              "name": "padding-block",
-              "value": "1px"
-            },
-            {
-              "name": "padding-inline",
-              "value": "6px"
-            },
-            {
-              "name": "border-width",
-              "value": "2px"
-            },
-            {
-              "name": "border-style",
-              "value": "outset"
-            },
-            {
-              "name": "border-color",
-              "value": "buttonborder"
-            },
-            {
-              "name": "border-image",
-              "value": "initial"
-            }
-          ]
-        },
-        "media": [],
-        "containerQueries": [],
-        "supports": [],
-        "layers": [],
-        "scopes": [],
-        "ruleTypes": []
-      },
-      "matchingSelectors": [
-        4
-      ]
-    },
+  regularStyles: [
     {
       "rule": {
         "styleSheetId": "style-sheet-36416-2",
@@ -911,23 +497,544 @@ const initialState = {
       "matchingSelectors": [
         0
       ]
-    },
+    }
+  ],
+  inlineStyles: [
     {
       "rule": {
         "origin": "inline",
         "style": {
-          "styleSheetId": "36416.0",
-          "cssProperties": [],
+          "styleSheetId": "4138.6",
+          "cssProperties": [
+            {
+              "name": "translate",
+              "value": "none",
+              "implicit": false,
+              "text": "translate: none;",
+              "disabled": false,
+              "range": {
+                "startLine": 0,
+                "startColumn": 0,
+                "endLine": 0,
+                "endColumn": 16
+              }
+            },
+            {
+              "name": "rotate",
+              "value": "none",
+              "implicit": false,
+              "text": "rotate: none;",
+              "disabled": false,
+              "range": {
+                "startLine": 0,
+                "startColumn": 17,
+                "endLine": 0,
+                "endColumn": 30
+              }
+            },
+            {
+              "name": "scale",
+              "value": "none",
+              "implicit": false,
+              "text": "scale: none;",
+              "disabled": false,
+              "range": {
+                "startLine": 0,
+                "startColumn": 31,
+                "endLine": 0,
+                "endColumn": 43
+              }
+            },
+            {
+              "name": "opacity",
+              "value": "1",
+              "implicit": false,
+              "text": "opacity: 1;",
+              "disabled": false,
+              "range": {
+                "startLine": 0,
+                "startColumn": 44,
+                "endLine": 0,
+                "endColumn": 55
+              }
+            },
+            {
+              "name": "transform",
+              "value": "translate(0px, 0px)",
+              "implicit": false,
+              "text": "transform: translate(0px, 0px);",
+              "disabled": false,
+              "range": {
+                "startLine": 0,
+                "startColumn": 56,
+                "endLine": 0,
+                "endColumn": 87
+              }
+            },
+            {
+              "name": "color",
+              "value": "rgb(255, 255, 255)",
+              "implicit": false,
+              "text": "color: rgb(255, 255, 255);",
+              "disabled": false,
+              "range": {
+                "startLine": 0,
+                "startColumn": 88,
+                "endLine": 0,
+                "endColumn": 114
+              }
+            },
+            {
+              "name": "translate",
+              "value": "none"
+            },
+            {
+              "name": "rotate",
+              "value": "none"
+            },
+            {
+              "name": "scale",
+              "value": "none"
+            },
+            {
+              "name": "opacity",
+              "value": "1"
+            },
+            {
+              "name": "transform",
+              "value": "translate(0px, 0px)"
+            },
+            {
+              "name": "color",
+              "value": "rgb(255, 255, 255)"
+            }
+          ],
           "shorthandEntries": [],
-          "cssText": "",
+          "cssText": "translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px); color: rgb(255, 255, 255);",
           "range": {
             "startLine": 0,
             "startColumn": 0,
             "endLine": 0,
-            "endColumn": 0
+            "endColumn": 114
           }
         }
       }
+    }
+  ],
+  userAgentStyles: [
+    {
+      "rule": {
+        "selectorList": {
+          "selectors": [
+            {
+              "text": "button",
+              "specificity": {
+                "a": 0,
+                "b": 0,
+                "c": 1
+              }
+            }
+          ],
+          "text": "button"
+        },
+        "origin": "user-agent",
+        "style": {
+          "cssProperties": [
+            {
+              "name": "appearance",
+              "value": "auto"
+            }
+          ],
+          "shorthandEntries": []
+        },
+        "media": [],
+        "containerQueries": [],
+        "supports": [],
+        "layers": [],
+        "scopes": [],
+        "ruleTypes": []
+      },
+      "matchingSelectors": [
+        0
+      ]
+    },
+    {
+      "rule": {
+        "selectorList": {
+          "selectors": [
+            {
+              "text": "input",
+              "specificity": {
+                "a": 0,
+                "b": 0,
+                "c": 1
+              }
+            },
+            {
+              "text": "textarea",
+              "specificity": {
+                "a": 0,
+                "b": 0,
+                "c": 1
+              }
+            },
+            {
+              "text": "select",
+              "specificity": {
+                "a": 0,
+                "b": 0,
+                "c": 1
+              }
+            },
+            {
+              "text": "button",
+              "specificity": {
+                "a": 0,
+                "b": 0,
+                "c": 1
+              }
+            }
+          ],
+          "text": "input, textarea, select, button"
+        },
+        "origin": "user-agent",
+        "style": {
+          "cssProperties": [
+            {
+              "name": "margin-top",
+              "value": "0em"
+            },
+            {
+              "name": "margin-right",
+              "value": "0em"
+            },
+            {
+              "name": "margin-bottom",
+              "value": "0em"
+            },
+            {
+              "name": "margin-left",
+              "value": "0em"
+            },
+            {
+              "name": "font-style",
+              "value": ""
+            },
+            {
+              "name": "font-variant-ligatures",
+              "value": ""
+            },
+            {
+              "name": "font-variant-caps",
+              "value": ""
+            },
+            {
+              "name": "font-variant-numeric",
+              "value": ""
+            },
+            {
+              "name": "font-variant-east-asian",
+              "value": ""
+            },
+            {
+              "name": "font-variant-alternates",
+              "value": ""
+            },
+            {
+              "name": "font-variant-position",
+              "value": ""
+            },
+            {
+              "name": "font-weight",
+              "value": ""
+            },
+            {
+              "name": "font-stretch",
+              "value": ""
+            },
+            {
+              "name": "font-size",
+              "value": ""
+            },
+            {
+              "name": "font-family",
+              "value": ""
+            },
+            {
+              "name": "font-optical-sizing",
+              "value": ""
+            },
+            {
+              "name": "font-kerning",
+              "value": ""
+            },
+            {
+              "name": "font-feature-settings",
+              "value": ""
+            },
+            {
+              "name": "font-variation-settings",
+              "value": ""
+            },
+            {
+              "name": "text-rendering",
+              "value": "auto"
+            },
+            {
+              "name": "color",
+              "value": "fieldtext"
+            },
+            {
+              "name": "letter-spacing",
+              "value": "normal"
+            },
+            {
+              "name": "word-spacing",
+              "value": "normal"
+            },
+            {
+              "name": "line-height",
+              "value": "normal"
+            },
+            {
+              "name": "text-transform",
+              "value": "none"
+            },
+            {
+              "name": "text-indent",
+              "value": "0px"
+            },
+            {
+              "name": "text-shadow",
+              "value": "none"
+            },
+            {
+              "name": "display",
+              "value": "inline-block"
+            },
+            {
+              "name": "text-align",
+              "value": "start"
+            }
+          ],
+          "shorthandEntries": [
+            {
+              "name": "margin",
+              "value": "0em"
+            },
+            {
+              "name": "font",
+              "value": ""
+            }
+          ]
+        },
+        "media": [],
+        "containerQueries": [],
+        "supports": [],
+        "layers": [],
+        "scopes": [],
+        "ruleTypes": []
+      },
+      "matchingSelectors": [
+        3
+      ]
+    },
+    {
+      "rule": {
+        "selectorList": {
+          "selectors": [
+            {
+              "text": "input[type=\"button\" i]",
+              "specificity": {
+                "a": 0,
+                "b": 1,
+                "c": 1
+              }
+            },
+            {
+              "text": "input[type=\"submit\" i]",
+              "specificity": {
+                "a": 0,
+                "b": 1,
+                "c": 1
+              }
+            },
+            {
+              "text": "input[type=\"reset\" i]",
+              "specificity": {
+                "a": 0,
+                "b": 1,
+                "c": 1
+              }
+            },
+            {
+              "text": "input[type=\"file\" i]::-webkit-file-upload-button",
+              "specificity": {
+                "a": 0,
+                "b": 2,
+                "c": 1
+              }
+            },
+            {
+              "text": "button",
+              "specificity": {
+                "a": 0,
+                "b": 0,
+                "c": 1
+              }
+            }
+          ],
+          "text": "input[type=\"button\" i], input[type=\"submit\" i], input[type=\"reset\" i], input[type=\"file\" i]::-webkit-file-upload-button, button"
+        },
+        "origin": "user-agent",
+        "style": {
+          "cssProperties": [
+            {
+              "name": "align-items",
+              "value": "flex-start"
+            },
+            {
+              "name": "text-align",
+              "value": "center"
+            },
+            {
+              "name": "cursor",
+              "value": "default"
+            },
+            {
+              "name": "padding-block-start",
+              "value": "1px"
+            },
+            {
+              "name": "padding-block-end",
+              "value": "1px"
+            },
+            {
+              "name": "padding-inline-start",
+              "value": "6px"
+            },
+            {
+              "name": "padding-inline-end",
+              "value": "6px"
+            },
+            {
+              "name": "border-top-width",
+              "value": "2px"
+            },
+            {
+              "name": "border-right-width",
+              "value": "2px"
+            },
+            {
+              "name": "border-bottom-width",
+              "value": "2px"
+            },
+            {
+              "name": "border-left-width",
+              "value": "2px"
+            },
+            {
+              "name": "border-top-style",
+              "value": "outset"
+            },
+            {
+              "name": "border-right-style",
+              "value": "outset"
+            },
+            {
+              "name": "border-bottom-style",
+              "value": "outset"
+            },
+            {
+              "name": "border-left-style",
+              "value": "outset"
+            },
+            {
+              "name": "border-top-color",
+              "value": "buttonborder"
+            },
+            {
+              "name": "border-right-color",
+              "value": "buttonborder"
+            },
+            {
+              "name": "border-bottom-color",
+              "value": "buttonborder"
+            },
+            {
+              "name": "border-left-color",
+              "value": "buttonborder"
+            },
+            {
+              "name": "border-image-source",
+              "value": "initial"
+            },
+            {
+              "name": "border-image-slice",
+              "value": "initial"
+            },
+            {
+              "name": "border-image-width",
+              "value": "initial"
+            },
+            {
+              "name": "border-image-outset",
+              "value": "initial"
+            },
+            {
+              "name": "border-image-repeat",
+              "value": "initial"
+            },
+            {
+              "name": "box-sizing",
+              "value": "border-box"
+            },
+            {
+              "name": "background-color",
+              "value": "buttonface"
+            },
+            {
+              "name": "color",
+              "value": "buttontext"
+            }
+          ],
+          "shorthandEntries": [
+            {
+              "name": "padding-block",
+              "value": "1px"
+            },
+            {
+              "name": "padding-inline",
+              "value": "6px"
+            },
+            {
+              "name": "border-width",
+              "value": "2px"
+            },
+            {
+              "name": "border-style",
+              "value": "outset"
+            },
+            {
+              "name": "border-color",
+              "value": "buttonborder"
+            },
+            {
+              "name": "border-image",
+              "value": "initial"
+            }
+          ]
+        },
+        "media": [],
+        "containerQueries": [],
+        "supports": [],
+        "layers": [],
+        "scopes": [],
+        "ruleTypes": []
+      },
+      "matchingSelectors": [
+        4
+      ]
     }
   ]
 };
