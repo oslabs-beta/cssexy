@@ -8,6 +8,9 @@
  * @param {string} selector - the CSS selector for the specific node
  * @return {Promise} - a Promise that resolves when all styles are logged
  */
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 import fs from 'fs';
 
@@ -89,10 +92,11 @@ const cdpStyles = async (DOM, CSS, selector) => {
 
   // console logging the matched css-file styles of the passed in element, in a more readable way.
   // mimics pretty print
+  console.log('Matched CSS Rules:');
   recursiveConsoleLog(matchedCSSRules);
 
-  // console.log('Inherited styles:');
-  // recursiveConsoleLog(inherited);
+  console.log('Inherited styles:');
+  recursiveConsoleLog(inherited);
   // console.log('CSS Keyframes Rules:');
   // recursiveConsoleLog(cssKeyframesRules);
 }

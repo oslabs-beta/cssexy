@@ -1,6 +1,6 @@
 import AllStyles from "./AllStyles.jsx";
 
-function Sidebar() {
+function SidebarComp() {
   return (
     <div className="sidebar">
       <h3>Styles Editor</h3>
@@ -9,4 +9,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default SidebarComp;

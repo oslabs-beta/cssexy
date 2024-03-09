@@ -1,3 +1,5 @@
 node_modules
 dist/
-/CSSxe/Chrome
+data/Chrome
+client/data
+.env
