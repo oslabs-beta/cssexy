@@ -16,6 +16,7 @@ body {
     width: 33%;
     padding: 10px 15px;
     background: #FAF0CA;
+    overflow: scroll;
 }
 
 .style-container {
