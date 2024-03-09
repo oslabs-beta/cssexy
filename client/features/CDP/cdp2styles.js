@@ -12,8 +12,6 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
-import fs from 'fs';
-
 const cdpInlineStyles = async(CSS, nodeId) => {
   // retrieve the inline styles for the node with the provided nodeId
   const { inlineStyle } = await CSS.getInlineStylesForNode({ nodeId });

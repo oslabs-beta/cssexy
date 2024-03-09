@@ -6,8 +6,7 @@ body {
 .app-container {
     display: flex;
     height: 100vh;
-    background-color: black;
-    color: white;
+    color: #2B283A;
   }
 
 .site-frame {
