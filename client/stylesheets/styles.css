@@ -1,13 +1,43 @@
-h1 {
-    color: fuchsia;
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
 }
+
 .app-container {
     display: flex;
     height: 100vh;
-    background-color: black;
-    color: white;
+    color: #2B283A;
   }
+
+.site-frame {
+    border: none;
+}
+
 .sidebar {
-    font-size: 20px;
-    font-weight: bold;
+    width: 33%;
+    padding: 10px 15px;
+    background: #FAF0CA;
+    overflow: scroll;
+}
+
+.style-container {
+    border-bottom: 1px solid #0D3B66;
+    font-size: 14px;
+}
+
+.selector-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.style-container p {
+    margin: 0;
+}
+
+.style-paragraph, .style-value-span {
+    padding-left: 20px;
+}
+
+.style-property-span {
+    color: #F95738;
 }
