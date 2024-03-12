@@ -9,12 +9,10 @@
  * @return {Promise} - a Promise that resolves when all styles are logged
  */
 import fs from 'fs';
-import { fileURLToPath } from 'url';
-import path from 'path';
-
 const cdpInlineStyles = async(CSS, nodeId) => {
   // retrieve the inline styles for the node with the provided nodeId
   const { inlineStyle } = await CSS.getInlineStylesForNode({ nodeId });
+
 
   // check if there are any inline styles for this node
   if (inlineStyle) {
@@ -54,49 +52,47 @@ const recursiveConsoleLog = (object, indent = 0) => {
   }
 }
 
-const cdpStyles = async (DOM, CSS, selector) => {
 
-  // get the root DOM node of the document, which is the starting point for DOM traversal
-  const { root } = await DOM.getDocument();
+const cdpStyles = async (DOM, CSS, Network, Page, iframeDoc, selector) => {
 
-  // find a specific node within the DOM tree by using the provided CSS selector
-  const { nodeId } = await DOM.querySelector({
-      nodeId: root.nodeId,
-      selector: selector
+// Get the nodeId of the node based on its CSS selector
+
+const iframeNodeId  = iframeDoc.nodeId;
+console.log('root frame node id:', iframeNodeId);
+
+const { nodeId } = await DOM.querySelector({
+    nodeId: iframeNodeId,
+    selector: selector
   });
-  console.log('Getting styles for element:', selector);
-  console.log(selector, 'nodeId:', nodeId);
 
+  console.log('nodeId for selector', selector, 'is:', nodeId);
+
+  console.log('Getting styles for element:', selector);
   // Get and log the inline styles
   const inlineCSSRules = await cdpInlineStyles(CSS, nodeId);
 
-  fs.writeFileSync('./client/features/CDP/inlineStyles.js', JSON.stringify(inlineCSSRules, null, 2));
+  // fs.writeFileSync('./data/styles/inlineStyles.json', JSON.stringify(inlineCSSRules, null, 2));
 
   // get all CSS rules that are applied to the node
   // => matchedCSSRules contains CSS rules that are directly applied to the node
   // => inherited contains the CSS rules that are passed down from the node's ancestors
   // => cssKeyframesRules includes all the @keyframes rules applied to the node
   const { matchedCSSRules, inherited, cssKeyframesRules } = await CSS.getMatchedStylesForNode({ nodeId });
-  console.log('Matched CSS Rules:');
 
   // add inline styles obj to matchedStyles array following the same properties format which MatchedStyles components and Style components need
-  matchedCSSRules.push({
+
+  const appliedRules = [...matchedCSSRules];
+  appliedRules.push({
     "rule": {
       "origin": "inline",
       "style": inlineCSSRules
     }
   });
-  fs.writeFileSync('./client/features/CDP/matchedStyles.js', JSON.stringify(matchedCSSRules, null, 2));
 
-  // console logging the matched css-file styles of the passed in element, in a more readable way.
-  // mimics pretty print
-  console.log('Matched CSS Rules:');
-  recursiveConsoleLog(matchedCSSRules);
+  fs.writeFileSync('./data/styles/appliedStyles.json', JSON.stringify(appliedRules, null, 2));
 
-  console.log('Inherited styles:');
-  recursiveConsoleLog(inherited);
-  // console.log('CSS Keyframes Rules:');
-  // recursiveConsoleLog(cssKeyframesRules);
+  console.log('cdpStyles: returning appliedRules');
+  return appliedRules;
 }
 
 export default cdpStyles

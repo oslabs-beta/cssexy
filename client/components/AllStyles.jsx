@@ -8,44 +8,45 @@ import Style from './Style';
 3) inline styles defined directly on components*/
 
 function AllStyles(){
-    const allStyles = useSelector(state => state.styles.allStyles);
+    const allRules = useSelector(state => state.styles.allRules);
+    console.log('allRules', allRules);
 
-    const inlineStyles = [];
-    const regularStyles = [];
-    const userAgentStyles = [];
+    const inlineRules = [];
+    const regularRules = [];
+    const userAgentRules = [];
     let userAgentSelector;
 
-    allStyles.forEach((style, idx) => {
+    allRules.forEach((style, idx) => {
         if (style.rule.origin === 'inline' || style.rule.origin === 'regular') {
             const styleComp = (
-                <Style 
+                <Style
                     key={`style-${idx}`}
                     selector={style.rule.selectorList?.selectors[0].text}
                     cssProperties={style.rule.style.cssProperties}
                     origin={style.rule.origin}
-                />            
+                />
             );
 
-            if (style.rule.origin === 'regular') regularStyles.push(styleComp);
-            // else if (style.rule.origin === 'user-agent') userAgentStyles.push(styleComp);
-            else if (style.rule.origin === 'inline') inlineStyles.push(styleComp);
+            if (style.rule.origin === 'regular') regularRules.push(styleComp);
+            // else if (style.rule.origin === 'user-agent') userAgentRules.push(styleComp);
+            else if (style.rule.origin === 'inline') inlineRules.push(styleComp);
         }
         else if (style.rule.origin === 'user-agent') {
             // grab only first selector (assuming this is the main selector we want to show)
             if (!userAgentSelector) userAgentSelector = style.rule.selectorList.selectors[0].text;
 
-            
+
         }
     });
 
     return (
         <div>
             <h3>Inline styles</h3>
-            {inlineStyles}            
-            <h3>Styles from .css</h3>
-            {regularStyles}
+            {inlineRules}
+            <h3>Rules from .css</h3>
+            {regularRules}
             <h3>Browser default styles</h3>
-            {userAgentStyles}
+            {userAgentRules}
         </div>
     )
 };

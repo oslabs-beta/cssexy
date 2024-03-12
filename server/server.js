@@ -31,13 +31,15 @@ if (process.env.NODE_ENV === 'production') {
 
 app.post('/cdp', async (req, res) => {
   console.log('POST /cdp');
-  console.log(req.body);
+  // console.log(req.body);
   const data = req.body;
 
   try {
-    console.log('trying to connect to CDP');
+    console.log('server: /cdp: cdpProcess about to start');
     const result = await cdpProcess(data);
-    return res.json({ result });
+    console.log('server: /cdp: result should be returning now');
+// console.log('server: cdp: result:', result);
+    return res.json( result );
   } catch (error) {
     console.error('Error processing data:', error);
     return res.status(500).json({ error: 'Failed to process data' });

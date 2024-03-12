@@ -1,0 +1,20 @@
+{
+  "favorites.resources": [
+    {
+      "filePath": "client/features/CDP/nodes.json",
+      "group": "Default"
+    },
+    {
+      "filePath": "client/features/CDP/iframeNodes.json",
+      "group": "Default"
+    }
+  ],
+  "files.exclude": {
+    ".vscode": true,
+    "bin": true,
+    "LICENSE": true,
+    "README.md": true,
+    "package-lock.json": true,
+    "node_modules": true
+  }
+}

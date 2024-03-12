@@ -1,5 +1,9 @@
 import React, { useEffect } from 'react';
 
+import { useDispatch } from 'react-redux';
+
+import { updateAllRules } from '../slices/stylesSlice.js';
+
 /**
  * Renders an iframe component with event handling for click events.
  *
@@ -11,6 +15,8 @@ import React, { useEffect } from 'react';
  */
 
 const iFrameComp = ({ src, className, proxy }) => {
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     const iframe = document.querySelector(`.${className}`);
@@ -38,11 +44,11 @@ const iFrameComp = ({ src, className, proxy }) => {
 
 
           const attributes = element.attributes;
-          console.log('iFrameComp: attributes', attributes);
+          // console.log('iFrameComp: attributes', attributes);
           for (let i = 0; i < attributes.length; i++) {
             data.attributes[attributes[i].name] = attributes[i].value;
           }
-          console.log('iFrameComp: data', data);
+          // console.log('iFrameComp: data', data);
 
           // a POST request to the /cdp endpoint
           const response = await fetch('/cdp', {
@@ -52,8 +58,12 @@ const iFrameComp = ({ src, className, proxy }) => {
             },
             body: JSON.stringify(data),
           });
+
           const result = await response.json();
-          console.log('Result from /cdp:', result);
+
+          // console.log('iFrameComp: Result from /cdp:', result);
+          dispatch(updateAllRules(result));
+
         };
 
 
