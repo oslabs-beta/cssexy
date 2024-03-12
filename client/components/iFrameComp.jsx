@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
 
-import { updateAllRules } from '../slices/stylesSlice.js';
+import { updateAllRules } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component with event handling for click events.

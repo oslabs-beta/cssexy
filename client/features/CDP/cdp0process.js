@@ -15,7 +15,7 @@
 import CDP from 'chrome-remote-interface';
 
 import cdpEnable from './cdp1enable.js';
-import cdpStyles from './cdp2styles.js';
+import cdpRules from './cdp2rules.js';
 
 /**
  * cdpProcess
@@ -25,22 +25,14 @@ import cdpStyles from './cdp2styles.js';
  */
 
 const cdpProcess = async (data) => {
-    const nodeName = data?.nodeName;
-    const nodeType = data?.nodeType;
-    const textContent = data?.textContent;
-    const innerHTML = data?.innerHTML;
     const id = data?.id;
+    const nodeName = data?.nodeName;
     const className = data?.className;
-    const attributes = data?.attributes;
     const proxy = 8000;
-
-    // console.log('cdpProcess: nodeName:', nodeName);
-    // console.log('cdpProcess: nodeType:', nodeType);
-    // console.log('cdpProcess: textContent:', textContent);
-    // console.log('cdpProcess: innerHTML:', innerHTML);
-    // console.log('cdpProcess: id:', id);
-    // console.log('cdpProcess: className:', className);
-    // console.log('cdpProcess: attributes:', attributes);
+    // const nodeType = data?.nodeType;
+    // const textContent = data?.textContent;
+    // const innerHTML = data?.innerHTML;
+    // const attributes = data?.attributes;
 
     console.log('cdpProcess: proxy:', proxy);
     let cdpClient;
@@ -60,40 +52,44 @@ const cdpProcess = async (data) => {
         }
         console.log('cdpProcess: selector:', selector);
 
-    console.log('cdpProcess: trying to connect to CDP');
+        console.log('cdpProcess: trying to connect to CDP');
+        // CDP is a built-in Node.js module for interacting with Chrome DevTools Protocol
+        // await is used to wait for the promise to be resolved before continuing
+        // cdpClient is a newly created object that serves as our interface to send commands
+        // and listen to events in Chrome via the Chrome DevTools Protocol (CDP)
 
-      // this creates a 'client' object that serves as our interface to send commands
-      // and listen to events in Chrome via the Chrome DevTools Protocol (CDP).
-      cdpClient = await CDP();
+        // this creates a 'client' object that serves as our interface to send commands
+        // and listen to events in Chrome via the Chrome DevTools Protocol (CDP).
+        cdpClient = await CDP();
 
-      console.log('Connected to Chrome DevTools Protocol');
+        console.log('Connected to Chrome DevTools Protocol');
 
-      // extracting the 'domains' from the CDP client.
-      const {DOM, CSS, Network, Page, iframeDoc} = await cdpEnable(cdpClient, proxy);
+        // extracting the 'domains' from the CDP client.
+        const {DOM, CSS, Network, Page, iframeDoc} = await cdpEnable(cdpClient, proxy);
 
-      // retrieve styles for the target selector
-      // this is the core functionality of cssxe that retrieves styles from a website
-      console.log('cdpProcess: calling cdpStyles');
+        // retrieve styles for the target selector
+        // this is the core functionality of cssxe that retrieves styles from a website
+        console.log('cdpProcess: calling cdpRules');
 
-      const result = await cdpStyles(DOM, CSS, Network, Page, iframeDoc, selector);
-    //   console.log(`Styles for ${selector} retrieved`, result);
+        const result = await cdpRules(DOM, CSS, Network, Page, iframeDoc, selector);
+    //   console.log(`Rules for ${selector} retrieved`, result);
       return result;
 
 
   } catch (err) {
       console.error('Error connecting to Chrome', err);
   }
-//   finally {
-//       if (cdpClient) { // always close the connection
-//           await cdpClient.close();
-//           console.log('CDP client closed');
-//       }
-//   }
+  finally {
+    // It is considered a best practice to close resources such as connections in a finally block.
+  // This ensures they are properly cleaned up, even in the event of an error.
+  // Leaving connections open can lead to resource leaks and potential issues with system performance.
+      if (cdpClient) {
+          await cdpClient.close();
+          console.log('CDP client closed');
+      }
+  }
 }
 
-// cdpProcess('#loadingText', '8000');
-// cdpProcess('.topAlbumsDisplay', '8000');
-// cdpProcess('.sidebar', '8888');
-// cdpProcess('.app-container');
+
 
 export default cdpProcess;

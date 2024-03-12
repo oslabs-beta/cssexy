@@ -13,8 +13,8 @@ const initialState = {
   error: null, // if we want to track errors
 };
 
-const stylesSlice = createSlice({
-  name: 'styles',
+const rulesSlice = createSlice({
+  name: 'rules',
   initialState,
   reducers: {
     // every time user selects a DOM element, allRules is dispatched by the iFrameComp
@@ -41,6 +41,6 @@ const stylesSlice = createSlice({
   },
 });
 
-export const { updateAllRules, updateInlineRules, updateMatchedRules, updateInheritedRules, updateKeyframeRules } = stylesSlice.actions;
+export const { updateAllRules, updateInlineRules, updateMatchedRules, updateInheritedRules, updateKeyframeRules } = rulesSlice.actions;
 
-export default stylesSlice.reducer;
+export default rulesSlice.reducer;

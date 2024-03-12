@@ -9,7 +9,7 @@
  * @return {Promise} - a Promise that resolves when all styles are logged
  */
 import fs from 'fs';
-const cdpInlineStyles = async(CSS, nodeId) => {
+const cdpInlineRules = async(CSS, nodeId) => {
   // retrieve the inline styles for the node with the provided nodeId
   const { inlineStyle } = await CSS.getInlineStylesForNode({ nodeId });
 
@@ -53,7 +53,7 @@ const recursiveConsoleLog = (object, indent = 0) => {
 }
 
 
-const cdpStyles = async (DOM, CSS, Network, Page, iframeDoc, selector) => {
+const cdpRules = async (DOM, CSS, Network, Page, iframeDoc, selector) => {
 
 // Get the nodeId of the node based on its CSS selector
 
@@ -69,9 +69,9 @@ const { nodeId } = await DOM.querySelector({
 
   console.log('Getting styles for element:', selector);
   // Get and log the inline styles
-  const inlineCSSRules = await cdpInlineStyles(CSS, nodeId);
+  const inlineCSSRules = await cdpInlineRules(CSS, nodeId);
 
-  // fs.writeFileSync('./data/styles/inlineStyles.json', JSON.stringify(inlineCSSRules, null, 2));
+  // fs.writeFileSync('./data/styles/inlineRules.json', JSON.stringify(inlineCSSRules, null, 2));
 
   // get all CSS rules that are applied to the node
   // => matchedCSSRules contains CSS rules that are directly applied to the node
@@ -79,7 +79,7 @@ const { nodeId } = await DOM.querySelector({
   // => cssKeyframesRules includes all the @keyframes rules applied to the node
   const { matchedCSSRules, inherited, cssKeyframesRules } = await CSS.getMatchedStylesForNode({ nodeId });
 
-  // add inline styles obj to matchedStyles array following the same properties format which MatchedStyles components and Style components need
+  // add inline styles obj to matchedRules array following the same properties format which MatchedRules components and Style components need
 
   const appliedRules = [...matchedCSSRules];
   appliedRules.push({
@@ -89,10 +89,10 @@ const { nodeId } = await DOM.querySelector({
     }
   });
 
-  fs.writeFileSync('./data/styles/appliedStyles.json', JSON.stringify(appliedRules, null, 2));
+  fs.writeFileSync('./data/output/appliedRules.json', JSON.stringify(appliedRules, null, 2));
 
-  console.log('cdpStyles: returning appliedRules');
+  console.log('cdpRules: returning appliedRules');
   return appliedRules;
 }
 
-export default cdpStyles
+export default cdpRules

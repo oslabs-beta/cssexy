@@ -42,13 +42,13 @@ const nodes = await session.send('DOM.querySelectorAll', {
 const stylesForNodes = []
 
 for (const id of nodes.nodeIds) {
-  stylesForNodes.push(await session.send('CSS.getMatchedStylesForNode', {nodeId: id}));
+  stylesForNodes.push(await session.send('CSS.getMatchedRulesForNode', {nodeId: id}));
 }
 //See all the Nodes Requested
-console.log("Styles for Nodes Array ===>", stylesForNodes)
+console.log("Rules for Nodes Array ===>", stylesForNodes)
 
-//Get Styles for single Node Id
-const styleForSingleNode = await session.send('CSS.getMatchedStylesForNode', {nodeId: 4});
+//Get Rules for single Node Id
+const styleForSingleNode = await session.send('CSS.getMatchedRulesForNode', {nodeId: 4});
 console.log("Single Node Id: 4 ===>", styleForSingleNode)
 
 

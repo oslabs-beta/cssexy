@@ -2,14 +2,14 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import Style from './Style';
 
-/* All styles include:
-1) styles defined in .css files called 'regular' styles
-2) default browser styles called 'user-agent' styles
-3) inline styles defined directly on components*/
+/* All rules include:
+1) rules defined in .css files called 'regular' rules
+2) default browser rules called 'user-agent' rules
+3) inline rules defined directly on components*/
 
-function AllStyles(){
-    const allRules = useSelector(state => state.styles.allRules);
-    console.log('allRules', allRules);
+function AllRules(){
+    const allRules = useSelector(state => state.rules.allRules);
+    // console.log('allRules', allRules);
 
     const inlineRules = [];
     const regularRules = [];
@@ -39,16 +39,23 @@ function AllStyles(){
         }
     });
 
+
     return (
         <div>
-            <h3>Inline styles</h3>
+            {inlineRules[0]?.props.cssProperties.length > 0 && <h3>inline:</h3>}
+            {/* <h3>inline:</h3> */}
             {inlineRules}
-            <h3>Rules from .css</h3>
+
+            {regularRules[0]?.props.cssProperties.length > 0 && <h3>.css:</h3>}
+            {/* <h3>.css:</h3> */}
             {regularRules}
-            <h3>Browser default styles</h3>
+
+            {userAgentRules[0]?.props.cssProperties.length > 0 && <h3>userAgent:</h3>}
+            {/* <h3>userAgent:</h3> */}
             {userAgentRules}
+
         </div>
     )
 };
 
-export default AllStyles;
+export default AllRules;

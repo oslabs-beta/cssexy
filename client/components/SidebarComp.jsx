@@ -1,10 +1,10 @@
-import AllStyles from "./AllStyles.jsx";
+import AllRules from "./AllRules.jsx";
 
 function SidebarComp() {
   return (
     <div className="sidebar">
       <h3>Styles Editor</h3>
-      <AllStyles/>
+      <AllRules/>
     </div>
   );
 }
