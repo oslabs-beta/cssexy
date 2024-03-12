@@ -11,7 +11,7 @@
  * @param {string} selector - The CSS selector to be processed
  * @return {Promise<void>} A promise that resolves when the processing is complete
  */
-
+import fs from 'fs';
 import CDP from 'chrome-remote-interface';
 
 import cdpEnable from './cdp1enable.js';
@@ -62,16 +62,24 @@ const cdpProcess = async (data) => {
         // and listen to events in Chrome via the Chrome DevTools Protocol (CDP).
         cdpClient = await CDP();
 
-        console.log('Connected to Chrome DevTools Protocol');
+        console.log('Connected to Chrome DevTools Protocol via chrome-remote-interface');
 
         // extracting the 'domains' from the CDP client.
-        const {DOM, CSS, Network, Page, iframeDoc} = await cdpEnable(cdpClient, proxy);
+        const {DOM, CSS, Network, Page, iframeNode} = await cdpEnable(cdpClient, proxy);
+
+
+
+        fs.writeFileSync('./data/domains/DOM.json', JSON.stringify(Object.entries(DOM), null, 2));
+        fs.writeFileSync('./data/domains/Network.json', JSON.stringify(Object.entries(Network), null, 2));
+        fs.writeFileSync('./data/domains/Page.json', JSON.stringify(Object.entries(Page), null, 2));
+        fs.writeFileSync('./data/domains/CSS.json', JSON.stringify(Object.entries(CSS), null, 2));
+
 
         // retrieve styles for the target selector
         // this is the core functionality of cssxe that retrieves styles from a website
         console.log('cdpProcess: calling cdpRules');
 
-        const result = await cdpRules(DOM, CSS, Network, Page, iframeDoc, selector);
+        const result = await cdpRules(cdpClient, DOM, CSS, Network, Page, iframeNode, selector);
     //   console.log(`Rules for ${selector} retrieved`, result);
       return result;
 

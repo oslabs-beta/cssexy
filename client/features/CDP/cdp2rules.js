@@ -51,9 +51,28 @@ const recursiveConsoleLog = (object, indent = 0) => {
       console.log(object + ',');
   }
 }
+const recursiveFileWrite = (object, indent = 0) => {
+  const indentation = ' '.repeat(indent);
+  let fileOutput = '';
+
+  if (object !== null && typeof object === 'object') {
+    fileOutput += indentation + '{\n';
+
+    for (const [key, value] of Object.entries(object)) {
+      fileOutput += indentation + `  ${key}: `;
+      fileOutput += recursiveFileWrite(value, indent + 2);
+    }
+
+    fileOutput += indentation + '}\n';
+  } else {
+    fileOutput += object + ',\n';
+  }
+
+  return fileOutput;
+}
 
 
-const cdpRules = async (DOM, CSS, Network, Page, iframeDoc, selector) => {
+const cdpRules = async (cdpClient, DOM, CSS, Network, Page, iframeDoc, selector) => {
 
 // Get the nodeId of the node based on its CSS selector
 
@@ -71,13 +90,50 @@ const { nodeId } = await DOM.querySelector({
   // Get and log the inline styles
   const inlineCSSRules = await cdpInlineRules(CSS, nodeId);
 
-  // fs.writeFileSync('./data/styles/inlineRules.json', JSON.stringify(inlineCSSRules, null, 2));
+  fs.writeFileSync('./data/output/inlineRules.json', JSON.stringify(inlineCSSRules, null, 2));
 
   // get all CSS rules that are applied to the node
   // => matchedCSSRules contains CSS rules that are directly applied to the node
   // => inherited contains the CSS rules that are passed down from the node's ancestors
   // => cssKeyframesRules includes all the @keyframes rules applied to the node
   const { matchedCSSRules, inherited, cssKeyframesRules } = await CSS.getMatchedStylesForNode({ nodeId });
+
+  // console.log('matchedCSSRules:', matchedCSSRules);
+
+  // recursiveConsoleLog(CSS);
+  // Call the function
+
+// Write the output to a file
+fs.writeFileSync('./data/domains/CSS.log', recursiveFileWrite(CSS));
+fs.writeFileSync('./data/domains/DOM.log', recursiveFileWrite(DOM));
+fs.writeFileSync('./data/domains/Network.log', recursiveFileWrite(Network));
+fs.writeFileSync('./data/domains/Page.log', recursiveFileWrite(Page));
+
+
+  // console.log('collectClassNames:', CSS.collectClassNames({nodeId}));
+
+  // console.log('CS.CSSStyleSheetHeader', CSS.CSSStyleSheetHeader);
+
+// for (const rule of matchedCSSRules) {
+//   // console.log('rule:', rule);
+//   console.log('rule.rule.styleSheetId:', rule.rule?.styleSheetId);
+
+//   const sheetId = rule.rule?.styleSheetId;
+
+//   if (sheetId) {
+//     const sheetText = await CSS.getStyleSheetText({ styleSheetId: sheetId });
+//     if (sheetText) {
+//       const sheetDetails = Object.keys(sheetText).reduce((obj, prop) => {
+//         obj[prop] = true;
+//         return obj;
+//       }, {});
+
+//       // console.log('sheetDetails:', sheetDetails);
+//     }
+//   }
+
+// }
+
 
   // add inline styles obj to matchedRules array following the same properties format which MatchedRules components and Style components need
 
