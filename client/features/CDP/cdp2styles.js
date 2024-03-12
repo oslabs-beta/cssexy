@@ -79,26 +79,14 @@ const cdpStyles = async (DOM, CSS, selector) => {
   const { matchedCSSRules, inherited, cssKeyframesRules } = await CSS.getMatchedStylesForNode({ nodeId });
   console.log('Matched CSS Rules:');
 
-  const fileName = 'matchedStyles.json';
-  const currentDir = path.dirname(fileURLToPath(import.meta.url));
-  const dirPath = path.join(currentDir, '..', '..', 'data');
-  const filePath = path.join(dirPath, fileName);
-
-  fs.mkdir(dirPath, { recursive: true }, (err) => {
-    if (err) {
-      console.error(err);
-      return;
+  // add inline styles obj to matchedStyles array following the same properties format which MatchedStyles components and Style components need
+  matchedCSSRules.push({
+    "rule": {
+      "origin": "inline",
+      "style": inlineCSSRules
     }
-
-    fs.writeFile(filePath, JSON.stringify(matchedCSSRules, null, 2), (err) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      console.log(`Saved matched styles to ${fileName}`);
-      // open(filePath);
-    });
   });
+  fs.writeFileSync('./client/features/CDP/matchedStyles.js', JSON.stringify(matchedCSSRules, null, 2));
 
   // console logging the matched css-file styles of the passed in element, in a more readable way.
   // mimics pretty print

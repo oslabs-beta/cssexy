@@ -6,8 +6,7 @@ body {
 .app-container {
     display: flex;
     height: 100vh;
-    background-color: black;
-    color: white;
+    color: #2B283A;
   }
 
 .site-frame {
@@ -18,6 +17,7 @@ body {
     width: 33%;
     padding: 10px 15px;
     background: #FAF0CA;
+    overflow: scroll;
 }
 
 .style-container {
