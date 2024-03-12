@@ -10,7 +10,7 @@
 import fs from 'fs';
 
 
-const cdpEnable= async (client, proxy, selector) => {
+const cdpEnable = async (client, proxy, selector) => {
   // extract the different 'domains' from the client.
   const { DOM, CSS, Network, Page } = client;
 
@@ -32,32 +32,26 @@ const cdpEnable= async (client, proxy, selector) => {
   // depth: depth of the dom tree that we want
   // -> -1 means we want to get the entire DOM tree.
   // -> >= 0 would correspond to a specific depth of the DOM tree.
-  // pierce: true means we want to pierce through any 'shadow roots'.
-  // -> Shadow roots are used to create encapsulated DOM trees within a document
-  // -> that are not visible to regular DOM queries.
-  // By piercing through a shadow root, we can access nodes within that shadow
-  // root that would be inaccessible without piercing.
-  const { nodes } = await DOM.getFlattenedDocument({ depth: -1, pierce: true});
+  const { nodes } = await DOM.getFlattenedDocument({ depth: -1});
 
-  fs.writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
+  // fs.writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
 
-  // Find nodes where the nodeName property is 'IFRAME'
-  // In looking through the nodes, I saw only one IFRAME node, which corresponded to the root node of the iframe
+  // Find nodes where the nodeName property is 'IFRAME'.
+  // In looking through the nodes, I saw only one IFRAME node, which corresponded to the root node of the iframe.
   // TBD if there would be more than one if the site we are targeting has iframes within it.
   const iframeNodeId = await nodes.filter(node => node.nodeName === 'IFRAME')[0].nodeId;
 
   // console.log('iframeNodeId', iframeNodeId);
 
-  // describeNode: gets a description of a node with a given DOM nodeId, i.e. the type of node, its name, and its children
-  const { node } = await DOM.describeNode({ nodeId: iframeNodeId, depth: -1, pierce: true });
+  // describeNode: gets a description of a node with a given DOM nodeId, i.e. the type of node, its name, and its children.
+  const { node } = await DOM.describeNode({ nodeId: iframeNodeId });
 
   // from there we get the contentDocument of the iframeNode,
   // which is the html document of the iframe
   const iframeNode = node.contentDocument;
   console.log('Node inside iframe', iframeNode);
 
-
-  fs.writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
+  // fs.writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
 
   // Return the enabled domains and the nodeId of the iframe root node to the process
   return { DOM, CSS, Network, Page, iframeNode };

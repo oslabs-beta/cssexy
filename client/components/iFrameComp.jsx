@@ -14,11 +14,13 @@ import { updateAllRules } from '../slices/rulesSlice.js';
  * @returns {JSX.Element} The rendered iframe component.
  */
 
-const iFrameComp = ({ src, className, proxy }) => {
+const iFrameComp = ({ src, proxy, className }) => {
   const dispatch = useDispatch();
 
-
+  // waiting for the iframe DOM to load before we add event listeners
+  // without this, the event listeners would try to be added to an unexisting iframe
   useEffect(() => {
+    // getting our iframe
     const iframe = document.querySelector(`.${className}`);
 
     // console.log('iframe', iframe);
@@ -61,16 +63,22 @@ const iFrameComp = ({ src, className, proxy }) => {
 
           const result = await response.json();
 
-          // console.log('iFrameComp: Result from /cdp:', result);
+          // console.log('iFrameComp: Result from /cdp:');
+          // dispatching the result from the /cdp endpoint to the store
           dispatch(updateAllRules(result));
-
         };
 
 
+        // This event listener needs to be added to the iframe's contentDocument because
+        // we're listening for clicks inside the iframe, and those clicks won't be
+        // handled by React's event delegation system. By adding this event listener,
+        // we're essentially making the iframe's contentDocument a "portal" for
+        // clicks to be handled by React.
         iframeDoc.addEventListener('click', handleClick, false);
 
-        // Cleanup function to remove event listener
         return () => {
+          // Cleanup function to remove event listener
+          // Prevents memory leaks
           iframeDoc.removeEventListener('click', handleClick, false);
         };
       } catch (error) {

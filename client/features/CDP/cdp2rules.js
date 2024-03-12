@@ -1,18 +1,21 @@
 /**
  * cdp2styles.js
- * Finds a specific DOM node by using the provided CSS selector.
- * Gets and logs the inline styles and all CSS rules that are applied to the node.
+ * Retrieves the CSS rules for a specified DOM node, returns the applied rules
  *
- * @param {object} DOM - the DOM object
- * @param {object} CSS - the CSS object
- * @param {string} selector - the CSS selector for the specific node
- * @return {Promise} - a Promise that resolves when all styles are logged
+ * @param {object} cdpClient - The Chrome DevTools Protocol client
+ * @param {object} DOM - The DOM domain object
+ * @param {object} CSS - The CSS domain object
+ * @param {object} Network - The Network domain object
+ * @param {object} Page - The Page domain object
+ * @param {object} iframeNode - The iframe node object
+ * @param {string} selector - The CSS selector for the node
+ * @return {array} The applied CSS rules
  */
+
 import fs from 'fs';
-const cdpInlineRules = async(CSS, nodeId) => {
+const cdpInlineRules = async (CSS, nodeId) => {
   // retrieve the inline styles for the node with the provided nodeId
   const { inlineStyle } = await CSS.getInlineStylesForNode({ nodeId });
-
 
   // check if there are any inline styles for this node
   if (inlineStyle) {
@@ -20,8 +23,8 @@ const cdpInlineRules = async(CSS, nodeId) => {
     console.log('Inline styles:', inlineStyle.cssText);
     console.log('range:', inlineStyle.range);
   } else {
-      // if no inline styles are present
-      console.log(`No inline styles found for nodeId ${nodeId}.`);
+    // if no inline styles are present
+    console.log(`No inline styles found for nodeId ${nodeId}.`);
   }
   return inlineStyle;
 }
@@ -47,39 +50,18 @@ const recursiveConsoleLog = (object, indent = 0) => {
     // end the object with a closing curly brace on a new line
     console.log(indentation + '}');
   } else {
-      // if the object is a primitive, log it followed by a comma
-      console.log(object + ',');
+    // if the object is a primitive, log it followed by a comma
+    console.log(object + ',');
   }
 }
-const recursiveFileWrite = (object, indent = 0) => {
-  const indentation = ' '.repeat(indent);
-  let fileOutput = '';
 
-  if (object !== null && typeof object === 'object') {
-    fileOutput += indentation + '{\n';
+const cdpRules = async (cdpClient, DOM, CSS, Network, Page, iframeNode, selector) => {
 
-    for (const [key, value] of Object.entries(object)) {
-      fileOutput += indentation + `  ${key}: `;
-      fileOutput += recursiveFileWrite(value, indent + 2);
-    }
+  // Get the nodeId of the node based on its CSS selector
+  const iframeNodeId = iframeNode.nodeId;
+  console.log('root frame node id:', iframeNodeId);
 
-    fileOutput += indentation + '}\n';
-  } else {
-    fileOutput += object + ',\n';
-  }
-
-  return fileOutput;
-}
-
-
-const cdpRules = async (cdpClient, DOM, CSS, Network, Page, iframeDoc, selector) => {
-
-// Get the nodeId of the node based on its CSS selector
-
-const iframeNodeId  = iframeDoc.nodeId;
-console.log('root frame node id:', iframeNodeId);
-
-const { nodeId } = await DOM.querySelector({
+  const { nodeId } = await DOM.querySelector({
     nodeId: iframeNodeId,
     selector: selector
   });
@@ -101,42 +83,8 @@ const { nodeId } = await DOM.querySelector({
   // console.log('matchedCSSRules:', matchedCSSRules);
 
   // recursiveConsoleLog(CSS);
-  // Call the function
-
-// Write the output to a file
-fs.writeFileSync('./data/domains/CSS.log', recursiveFileWrite(CSS));
-fs.writeFileSync('./data/domains/DOM.log', recursiveFileWrite(DOM));
-fs.writeFileSync('./data/domains/Network.log', recursiveFileWrite(Network));
-fs.writeFileSync('./data/domains/Page.log', recursiveFileWrite(Page));
-
-
-  // console.log('collectClassNames:', CSS.collectClassNames({nodeId}));
-
-  // console.log('CS.CSSStyleSheetHeader', CSS.CSSStyleSheetHeader);
-
-// for (const rule of matchedCSSRules) {
-//   // console.log('rule:', rule);
-//   console.log('rule.rule.styleSheetId:', rule.rule?.styleSheetId);
-
-//   const sheetId = rule.rule?.styleSheetId;
-
-//   if (sheetId) {
-//     const sheetText = await CSS.getStyleSheetText({ styleSheetId: sheetId });
-//     if (sheetText) {
-//       const sheetDetails = Object.keys(sheetText).reduce((obj, prop) => {
-//         obj[prop] = true;
-//         return obj;
-//       }, {});
-
-//       // console.log('sheetDetails:', sheetDetails);
-//     }
-//   }
-
-// }
-
 
   // add inline styles obj to matchedRules array following the same properties format which MatchedRules components and Style components need
-
   const appliedRules = [...matchedCSSRules];
   appliedRules.push({
     "rule": {
