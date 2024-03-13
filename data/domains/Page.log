@@ -1,0 +1,1773 @@
+{
+  addScriptToEvaluateOnLoad: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  addScriptToEvaluateOnNewDocument: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  bringToFront: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  captureScreenshot: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  captureSnapshot: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  clearDeviceMetricsOverride: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  clearDeviceOrientationOverride: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  clearGeolocationOverride: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  createIsolatedWorld: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  deleteCookie: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  disable: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  enable: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getAppManifest: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getInstallabilityErrors: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getManifestIcons: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getAppId: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getAdScriptId: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getFrameTree: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getLayoutMetrics: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getNavigationHistory: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  resetNavigationHistory: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getResourceContent: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getResourceTree: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  handleJavaScriptDialog: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  navigate: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  navigateToHistoryEntry: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  printToPDF: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  reload: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  removeScriptToEvaluateOnLoad: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  removeScriptToEvaluateOnNewDocument: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  screencastFrameAck: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  searchInResource: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setAdBlockingEnabled: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setBypassCSP: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getPermissionsPolicyState: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  getOriginTrials: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setDeviceMetricsOverride: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setDeviceOrientationOverride: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setFontFamilies: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setFontSizes: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setDocumentContent: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setDownloadBehavior: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setGeolocationOverride: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setLifecycleEventsEnabled: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setTouchEmulationEnabled: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  startScreencast: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  stopLoading: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  crash: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  close: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setWebLifecycleState: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  stopScreencast: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  produceCompilationCache: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  addCompilationCache: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  clearCompilationCache: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setSPCTransactionMode: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setRPHRegistrationMode: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  generateTestReport: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  waitForDebugger: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setInterceptFileChooserDialog: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  setPrerenderingAllowed: (params, sessionId, callback) => {
+        return chrome.send(commandName, params, sessionId, callback);
+    },
+  domContentEventFired: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  fileChooserOpened: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  frameAttached: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  frameClearedScheduledNavigation: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  frameDetached: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  frameNavigated: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  documentOpened: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  frameResized: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  frameRequestedNavigation: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  frameScheduledNavigation: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  frameStartedLoading: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  frameStoppedLoading: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  downloadWillBegin: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  downloadProgress: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  interstitialHidden: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  interstitialShown: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  javascriptDialogClosed: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  javascriptDialogOpening: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  lifecycleEvent: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  backForwardCacheNotUsed: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  loadEventFired: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  navigatedWithinDocument: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  screencastFrame: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  screencastVisibilityChanged: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  windowOpen: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  compilationCacheProduced: (sessionId, handler) => {
+        if (typeof sessionId === 'function') {
+            handler = sessionId;
+            sessionId = undefined;
+        }
+        const rawEventName = sessionId ? `${eventName}.${sessionId}` : eventName;
+        if (typeof handler === 'function') {
+            chrome.on(rawEventName, handler);
+            return () => chrome.removeListener(rawEventName, handler);
+        } else {
+            return new Promise((fulfill, reject) => {
+                chrome.once(rawEventName, fulfill);
+            });
+        }
+    },
+  FrameId:   {
+    category: type,
+    id: FrameId,
+    description: Unique frame identifier.,
+    type: string,
+  }
+  AdFrameType:   {
+    category: type,
+    id: AdFrameType,
+    description: Indicates whether a frame has been identified as an ad.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: none,
+      1: child,
+      2: root,
+    }
+  }
+  AdFrameExplanation:   {
+    category: type,
+    id: AdFrameExplanation,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: ParentIsAd,
+      1: CreatedByAdScript,
+      2: MatchedBlockingRule,
+    }
+  }
+  AdFrameStatus:   {
+    category: type,
+    id: AdFrameStatus,
+    description: Indicates whether a frame has been identified as an ad and why.,
+    experimental: true,
+    type: object,
+    properties:     {
+      adFrameType:       {
+        $ref: AdFrameType,
+      }
+      explanations:       {
+        optional: true,
+        type: array,
+        items:         {
+          $ref: AdFrameExplanation,
+        }
+      }
+    }
+  }
+  AdScriptId:   {
+    category: type,
+    id: AdScriptId,
+    description: Identifies the bottom-most script which caused the frame to be labelled
+as an ad.,
+    experimental: true,
+    type: object,
+    properties:     {
+      scriptId:       {
+        description: Script Id of the bottom-most script which caused the frame to be labelled
+as an ad.,
+        $ref: Runtime.ScriptId,
+      }
+      debuggerId:       {
+        description: Id of adScriptId's debugger.,
+        $ref: Runtime.UniqueDebuggerId,
+      }
+    }
+  }
+  SecureContextType:   {
+    category: type,
+    id: SecureContextType,
+    description: Indicates whether the frame is a secure context and why it is the case.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: Secure,
+      1: SecureLocalhost,
+      2: InsecureScheme,
+      3: InsecureAncestor,
+    }
+  }
+  CrossOriginIsolatedContextType:   {
+    category: type,
+    id: CrossOriginIsolatedContextType,
+    description: Indicates whether the frame is cross-origin isolated and why it is the case.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: Isolated,
+      1: NotIsolated,
+      2: NotIsolatedFeatureDisabled,
+    }
+  }
+  GatedAPIFeatures:   {
+    category: type,
+    id: GatedAPIFeatures,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: SharedArrayBuffers,
+      1: SharedArrayBuffersTransferAllowed,
+      2: PerformanceMeasureMemory,
+      3: PerformanceProfile,
+    }
+  }
+  PermissionsPolicyFeature:   {
+    category: type,
+    id: PermissionsPolicyFeature,
+    description: All Permissions Policy features. This enum should match the one defined
+in third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: accelerometer,
+      1: ambient-light-sensor,
+      2: attribution-reporting,
+      3: autoplay,
+      4: bluetooth,
+      5: browsing-topics,
+      6: camera,
+      7: captured-surface-control,
+      8: ch-dpr,
+      9: ch-device-memory,
+      10: ch-downlink,
+      11: ch-ect,
+      12: ch-prefers-color-scheme,
+      13: ch-prefers-reduced-motion,
+      14: ch-prefers-reduced-transparency,
+      15: ch-rtt,
+      16: ch-save-data,
+      17: ch-ua,
+      18: ch-ua-arch,
+      19: ch-ua-bitness,
+      20: ch-ua-platform,
+      21: ch-ua-model,
+      22: ch-ua-mobile,
+      23: ch-ua-form-factor,
+      24: ch-ua-full-version,
+      25: ch-ua-full-version-list,
+      26: ch-ua-platform-version,
+      27: ch-ua-wow64,
+      28: ch-viewport-height,
+      29: ch-viewport-width,
+      30: ch-width,
+      31: clipboard-read,
+      32: clipboard-write,
+      33: compute-pressure,
+      34: cross-origin-isolated,
+      35: direct-sockets,
+      36: display-capture,
+      37: document-domain,
+      38: encrypted-media,
+      39: execution-while-out-of-viewport,
+      40: execution-while-not-rendered,
+      41: focus-without-user-activation,
+      42: fullscreen,
+      43: frobulate,
+      44: gamepad,
+      45: geolocation,
+      46: gyroscope,
+      47: hid,
+      48: identity-credentials-get,
+      49: idle-detection,
+      50: interest-cohort,
+      51: join-ad-interest-group,
+      52: keyboard-map,
+      53: local-fonts,
+      54: magnetometer,
+      55: microphone,
+      56: midi,
+      57: otp-credentials,
+      58: payment,
+      59: picture-in-picture,
+      60: private-aggregation,
+      61: private-state-token-issuance,
+      62: private-state-token-redemption,
+      63: publickey-credentials-create,
+      64: publickey-credentials-get,
+      65: run-ad-auction,
+      66: screen-wake-lock,
+      67: serial,
+      68: shared-autofill,
+      69: shared-storage,
+      70: shared-storage-select-url,
+      71: smart-card,
+      72: storage-access,
+      73: sub-apps,
+      74: sync-xhr,
+      75: unload,
+      76: usb,
+      77: usb-unrestricted,
+      78: vertical-scroll,
+      79: web-printing,
+      80: web-share,
+      81: window-management,
+      82: window-placement,
+      83: xr-spatial-tracking,
+    }
+  }
+  PermissionsPolicyBlockReason:   {
+    category: type,
+    id: PermissionsPolicyBlockReason,
+    description: Reason for a permissions policy feature to be disabled.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: Header,
+      1: IframeAttribute,
+      2: InFencedFrameTree,
+      3: InIsolatedApp,
+    }
+  }
+  PermissionsPolicyBlockLocator:   {
+    category: type,
+    id: PermissionsPolicyBlockLocator,
+    experimental: true,
+    type: object,
+    properties:     {
+      frameId:       {
+        $ref: FrameId,
+      }
+      blockReason:       {
+        $ref: PermissionsPolicyBlockReason,
+      }
+    }
+  }
+  PermissionsPolicyFeatureState:   {
+    category: type,
+    id: PermissionsPolicyFeatureState,
+    experimental: true,
+    type: object,
+    properties:     {
+      feature:       {
+        $ref: PermissionsPolicyFeature,
+      }
+      allowed:       {
+        type: boolean,
+      }
+      locator:       {
+        optional: true,
+        $ref: PermissionsPolicyBlockLocator,
+      }
+    }
+  }
+  OriginTrialTokenStatus:   {
+    category: type,
+    id: OriginTrialTokenStatus,
+    description: Origin Trial(https://www.chromium.org/blink/origin-trials) support.
+Status for an Origin Trial token.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: Success,
+      1: NotSupported,
+      2: Insecure,
+      3: Expired,
+      4: WrongOrigin,
+      5: InvalidSignature,
+      6: Malformed,
+      7: WrongVersion,
+      8: FeatureDisabled,
+      9: TokenDisabled,
+      10: FeatureDisabledForUser,
+      11: UnknownTrial,
+    }
+  }
+  OriginTrialStatus:   {
+    category: type,
+    id: OriginTrialStatus,
+    description: Status for an Origin Trial.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: Enabled,
+      1: ValidTokenNotProvided,
+      2: OSNotSupported,
+      3: TrialNotAllowed,
+    }
+  }
+  OriginTrialUsageRestriction:   {
+    category: type,
+    id: OriginTrialUsageRestriction,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: None,
+      1: Subset,
+    }
+  }
+  OriginTrialToken:   {
+    category: type,
+    id: OriginTrialToken,
+    experimental: true,
+    type: object,
+    properties:     {
+      origin:       {
+        type: string,
+      }
+      matchSubDomains:       {
+        type: boolean,
+      }
+      trialName:       {
+        type: string,
+      }
+      expiryTime:       {
+        $ref: Network.TimeSinceEpoch,
+      }
+      isThirdParty:       {
+        type: boolean,
+      }
+      usageRestriction:       {
+        $ref: OriginTrialUsageRestriction,
+      }
+    }
+  }
+  OriginTrialTokenWithStatus:   {
+    category: type,
+    id: OriginTrialTokenWithStatus,
+    experimental: true,
+    type: object,
+    properties:     {
+      rawTokenText:       {
+        type: string,
+      }
+      parsedToken:       {
+        description: `parsedToken` is present only when the token is extractable and
+parsable.,
+        optional: true,
+        $ref: OriginTrialToken,
+      }
+      status:       {
+        $ref: OriginTrialTokenStatus,
+      }
+    }
+  }
+  OriginTrial:   {
+    category: type,
+    id: OriginTrial,
+    experimental: true,
+    type: object,
+    properties:     {
+      trialName:       {
+        type: string,
+      }
+      status:       {
+        $ref: OriginTrialStatus,
+      }
+      tokensWithStatus:       {
+        type: array,
+        items:         {
+          $ref: OriginTrialTokenWithStatus,
+        }
+      }
+    }
+  }
+  Frame:   {
+    category: type,
+    id: Frame,
+    description: Information about the Frame on the page.,
+    type: object,
+    properties:     {
+      id:       {
+        description: Frame unique identifier.,
+        $ref: FrameId,
+      }
+      parentId:       {
+        description: Parent frame identifier.,
+        optional: true,
+        $ref: FrameId,
+      }
+      loaderId:       {
+        description: Identifier of the loader associated with this frame.,
+        $ref: Network.LoaderId,
+      }
+      name:       {
+        description: Frame's name as specified in the tag.,
+        optional: true,
+        type: string,
+      }
+      url:       {
+        description: Frame document's URL without fragment.,
+        type: string,
+      }
+      urlFragment:       {
+        description: Frame document's URL fragment including the '#'.,
+        experimental: true,
+        optional: true,
+        type: string,
+      }
+      domainAndRegistry:       {
+        description: Frame document's registered domain, taking the public suffixes list into account.
+Extracted from the Frame's url.
+Example URLs: http://www.google.com/file.html -> "google.com"
+              http://a.b.co.uk/file.html      -> "b.co.uk",
+        experimental: true,
+        type: string,
+      }
+      securityOrigin:       {
+        description: Frame document's security origin.,
+        type: string,
+      }
+      mimeType:       {
+        description: Frame document's mimeType as determined by the browser.,
+        type: string,
+      }
+      unreachableUrl:       {
+        description: If the frame failed to load, this contains the URL that could not be loaded. Note that unlike url above, this URL may contain a fragment.,
+        experimental: true,
+        optional: true,
+        type: string,
+      }
+      adFrameStatus:       {
+        description: Indicates whether this frame was tagged as an ad and why.,
+        experimental: true,
+        optional: true,
+        $ref: AdFrameStatus,
+      }
+      secureContextType:       {
+        description: Indicates whether the main document is a secure context and explains why that is the case.,
+        experimental: true,
+        $ref: SecureContextType,
+      }
+      crossOriginIsolatedContextType:       {
+        description: Indicates whether this is a cross origin isolated context.,
+        experimental: true,
+        $ref: CrossOriginIsolatedContextType,
+      }
+      gatedAPIFeatures:       {
+        description: Indicated which gated APIs / features are available.,
+        experimental: true,
+        type: array,
+        items:         {
+          $ref: GatedAPIFeatures,
+        }
+      }
+    }
+  }
+  FrameResource:   {
+    category: type,
+    id: FrameResource,
+    description: Information about the Resource on the page.,
+    experimental: true,
+    type: object,
+    properties:     {
+      url:       {
+        description: Resource URL.,
+        type: string,
+      }
+      type:       {
+        description: Type of this resource.,
+        $ref: Network.ResourceType,
+      }
+      mimeType:       {
+        description: Resource mimeType as determined by the browser.,
+        type: string,
+      }
+      lastModified:       {
+        description: last-modified timestamp as reported by server.,
+        optional: true,
+        $ref: Network.TimeSinceEpoch,
+      }
+      contentSize:       {
+        description: Resource content size.,
+        optional: true,
+        type: number,
+      }
+      failed:       {
+        description: True if the resource failed to load.,
+        optional: true,
+        type: boolean,
+      }
+      canceled:       {
+        description: True if the resource was canceled during loading.,
+        optional: true,
+        type: boolean,
+      }
+    }
+  }
+  FrameResourceTree:   {
+    category: type,
+    id: FrameResourceTree,
+    description: Information about the Frame hierarchy along with their cached resources.,
+    experimental: true,
+    type: object,
+    properties:     {
+      frame:       {
+        description: Frame information for this tree item.,
+        $ref: Frame,
+      }
+      childFrames:       {
+        description: Child frames.,
+        optional: true,
+        type: array,
+        items:         {
+          $ref: FrameResourceTree,
+        }
+      }
+      resources:       {
+        description: Information about frame resources.,
+        type: array,
+        items:         {
+          $ref: FrameResource,
+        }
+      }
+    }
+  }
+  FrameTree:   {
+    category: type,
+    id: FrameTree,
+    description: Information about the Frame hierarchy.,
+    type: object,
+    properties:     {
+      frame:       {
+        description: Frame information for this tree item.,
+        $ref: Frame,
+      }
+      childFrames:       {
+        description: Child frames.,
+        optional: true,
+        type: array,
+        items:         {
+          $ref: FrameTree,
+        }
+      }
+    }
+  }
+  ScriptIdentifier:   {
+    category: type,
+    id: ScriptIdentifier,
+    description: Unique script identifier.,
+    type: string,
+  }
+  TransitionType:   {
+    category: type,
+    id: TransitionType,
+    description: Transition type.,
+    type: string,
+    enum:     {
+      0: link,
+      1: typed,
+      2: address_bar,
+      3: auto_bookmark,
+      4: auto_subframe,
+      5: manual_subframe,
+      6: generated,
+      7: auto_toplevel,
+      8: form_submit,
+      9: reload,
+      10: keyword,
+      11: keyword_generated,
+      12: other,
+    }
+  }
+  NavigationEntry:   {
+    category: type,
+    id: NavigationEntry,
+    description: Navigation history entry.,
+    type: object,
+    properties:     {
+      id:       {
+        description: Unique id of the navigation history entry.,
+        type: integer,
+      }
+      url:       {
+        description: URL of the navigation history entry.,
+        type: string,
+      }
+      userTypedURL:       {
+        description: URL that the user typed in the url bar.,
+        type: string,
+      }
+      title:       {
+        description: Title of the navigation history entry.,
+        type: string,
+      }
+      transitionType:       {
+        description: Transition type.,
+        $ref: TransitionType,
+      }
+    }
+  }
+  ScreencastFrameMetadata:   {
+    category: type,
+    id: ScreencastFrameMetadata,
+    description: Screencast frame metadata.,
+    experimental: true,
+    type: object,
+    properties:     {
+      offsetTop:       {
+        description: Top offset in DIP.,
+        type: number,
+      }
+      pageScaleFactor:       {
+        description: Page scale factor.,
+        type: number,
+      }
+      deviceWidth:       {
+        description: Device screen width in DIP.,
+        type: number,
+      }
+      deviceHeight:       {
+        description: Device screen height in DIP.,
+        type: number,
+      }
+      scrollOffsetX:       {
+        description: Position of horizontal scroll in CSS pixels.,
+        type: number,
+      }
+      scrollOffsetY:       {
+        description: Position of vertical scroll in CSS pixels.,
+        type: number,
+      }
+      timestamp:       {
+        description: Frame swap timestamp.,
+        optional: true,
+        $ref: Network.TimeSinceEpoch,
+      }
+    }
+  }
+  DialogType:   {
+    category: type,
+    id: DialogType,
+    description: Javascript dialog type.,
+    type: string,
+    enum:     {
+      0: alert,
+      1: confirm,
+      2: prompt,
+      3: beforeunload,
+    }
+  }
+  AppManifestError:   {
+    category: type,
+    id: AppManifestError,
+    description: Error while paring app manifest.,
+    type: object,
+    properties:     {
+      message:       {
+        description: Error message.,
+        type: string,
+      }
+      critical:       {
+        description: If criticial, this is a non-recoverable parse error.,
+        type: integer,
+      }
+      line:       {
+        description: Error line.,
+        type: integer,
+      }
+      column:       {
+        description: Error column.,
+        type: integer,
+      }
+    }
+  }
+  AppManifestParsedProperties:   {
+    category: type,
+    id: AppManifestParsedProperties,
+    description: Parsed app manifest properties.,
+    experimental: true,
+    type: object,
+    properties:     {
+      scope:       {
+        description: Computed scope value,
+        type: string,
+      }
+    }
+  }
+  LayoutViewport:   {
+    category: type,
+    id: LayoutViewport,
+    description: Layout viewport position and dimensions.,
+    type: object,
+    properties:     {
+      pageX:       {
+        description: Horizontal offset relative to the document (CSS pixels).,
+        type: integer,
+      }
+      pageY:       {
+        description: Vertical offset relative to the document (CSS pixels).,
+        type: integer,
+      }
+      clientWidth:       {
+        description: Width (CSS pixels), excludes scrollbar if present.,
+        type: integer,
+      }
+      clientHeight:       {
+        description: Height (CSS pixels), excludes scrollbar if present.,
+        type: integer,
+      }
+    }
+  }
+  VisualViewport:   {
+    category: type,
+    id: VisualViewport,
+    description: Visual viewport position, dimensions, and scale.,
+    type: object,
+    properties:     {
+      offsetX:       {
+        description: Horizontal offset relative to the layout viewport (CSS pixels).,
+        type: number,
+      }
+      offsetY:       {
+        description: Vertical offset relative to the layout viewport (CSS pixels).,
+        type: number,
+      }
+      pageX:       {
+        description: Horizontal offset relative to the document (CSS pixels).,
+        type: number,
+      }
+      pageY:       {
+        description: Vertical offset relative to the document (CSS pixels).,
+        type: number,
+      }
+      clientWidth:       {
+        description: Width (CSS pixels), excludes scrollbar if present.,
+        type: number,
+      }
+      clientHeight:       {
+        description: Height (CSS pixels), excludes scrollbar if present.,
+        type: number,
+      }
+      scale:       {
+        description: Scale relative to the ideal viewport (size at width=device-width).,
+        type: number,
+      }
+      zoom:       {
+        description: Page zoom factor (CSS to device independent pixels ratio).,
+        optional: true,
+        type: number,
+      }
+    }
+  }
+  Viewport:   {
+    category: type,
+    id: Viewport,
+    description: Viewport for capturing screenshot.,
+    type: object,
+    properties:     {
+      x:       {
+        description: X offset in device independent pixels (dip).,
+        type: number,
+      }
+      y:       {
+        description: Y offset in device independent pixels (dip).,
+        type: number,
+      }
+      width:       {
+        description: Rectangle width in device independent pixels (dip).,
+        type: number,
+      }
+      height:       {
+        description: Rectangle height in device independent pixels (dip).,
+        type: number,
+      }
+      scale:       {
+        description: Page scale factor.,
+        type: number,
+      }
+    }
+  }
+  FontFamilies:   {
+    category: type,
+    id: FontFamilies,
+    description: Generic font families collection.,
+    experimental: true,
+    type: object,
+    properties:     {
+      standard:       {
+        description: The standard font-family.,
+        optional: true,
+        type: string,
+      }
+      fixed:       {
+        description: The fixed font-family.,
+        optional: true,
+        type: string,
+      }
+      serif:       {
+        description: The serif font-family.,
+        optional: true,
+        type: string,
+      }
+      sansSerif:       {
+        description: The sansSerif font-family.,
+        optional: true,
+        type: string,
+      }
+      cursive:       {
+        description: The cursive font-family.,
+        optional: true,
+        type: string,
+      }
+      fantasy:       {
+        description: The fantasy font-family.,
+        optional: true,
+        type: string,
+      }
+      math:       {
+        description: The math font-family.,
+        optional: true,
+        type: string,
+      }
+    }
+  }
+  ScriptFontFamilies:   {
+    category: type,
+    id: ScriptFontFamilies,
+    description: Font families collection for a script.,
+    experimental: true,
+    type: object,
+    properties:     {
+      script:       {
+        description: Name of the script which these font families are defined for.,
+        type: string,
+      }
+      fontFamilies:       {
+        description: Generic font families collection for the script.,
+        $ref: FontFamilies,
+      }
+    }
+  }
+  FontSizes:   {
+    category: type,
+    id: FontSizes,
+    description: Default font sizes.,
+    experimental: true,
+    type: object,
+    properties:     {
+      standard:       {
+        description: Default standard font size.,
+        optional: true,
+        type: integer,
+      }
+      fixed:       {
+        description: Default fixed font size.,
+        optional: true,
+        type: integer,
+      }
+    }
+  }
+  ClientNavigationReason:   {
+    category: type,
+    id: ClientNavigationReason,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: formSubmissionGet,
+      1: formSubmissionPost,
+      2: httpHeaderRefresh,
+      3: scriptInitiated,
+      4: metaTagRefresh,
+      5: pageBlockInterstitial,
+      6: reload,
+      7: anchorClick,
+    }
+  }
+  ClientNavigationDisposition:   {
+    category: type,
+    id: ClientNavigationDisposition,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: currentTab,
+      1: newTab,
+      2: newWindow,
+      3: download,
+    }
+  }
+  InstallabilityErrorArgument:   {
+    category: type,
+    id: InstallabilityErrorArgument,
+    experimental: true,
+    type: object,
+    properties:     {
+      name:       {
+        description: Argument name (e.g. name:'minimum-icon-size-in-pixels').,
+        type: string,
+      }
+      value:       {
+        description: Argument value (e.g. value:'64').,
+        type: string,
+      }
+    }
+  }
+  InstallabilityError:   {
+    category: type,
+    id: InstallabilityError,
+    description: The installability error,
+    experimental: true,
+    type: object,
+    properties:     {
+      errorId:       {
+        description: The error id (e.g. 'manifest-missing-suitable-icon').,
+        type: string,
+      }
+      errorArguments:       {
+        description: The list of error arguments (e.g. {name:'minimum-icon-size-in-pixels', value:'64'}).,
+        type: array,
+        items:         {
+          $ref: InstallabilityErrorArgument,
+        }
+      }
+    }
+  }
+  ReferrerPolicy:   {
+    category: type,
+    id: ReferrerPolicy,
+    description: The referring-policy used for the navigation.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: noReferrer,
+      1: noReferrerWhenDowngrade,
+      2: origin,
+      3: originWhenCrossOrigin,
+      4: sameOrigin,
+      5: strictOrigin,
+      6: strictOriginWhenCrossOrigin,
+      7: unsafeUrl,
+    }
+  }
+  CompilationCacheParams:   {
+    category: type,
+    id: CompilationCacheParams,
+    description: Per-script compilation cache parameters for `Page.produceCompilationCache`,
+    experimental: true,
+    type: object,
+    properties:     {
+      url:       {
+        description: The URL of the script to produce a compilation cache entry for.,
+        type: string,
+      }
+      eager:       {
+        description: A hint to the backend whether eager compilation is recommended.
+(the actual compilation mode used is upon backend discretion).,
+        optional: true,
+        type: boolean,
+      }
+    }
+  }
+  AutoResponseMode:   {
+    category: type,
+    id: AutoResponseMode,
+    description: Enum of possible auto-reponse for permisison / prompt dialogs.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: none,
+      1: autoAccept,
+      2: autoReject,
+      3: autoOptOut,
+    }
+  }
+  NavigationType:   {
+    category: type,
+    id: NavigationType,
+    description: The type of a frameNavigated event.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: Navigation,
+      1: BackForwardCacheRestore,
+    }
+  }
+  BackForwardCacheNotRestoredReason:   {
+    category: type,
+    id: BackForwardCacheNotRestoredReason,
+    description: List of not restored reasons for back-forward cache.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: NotPrimaryMainFrame,
+      1: BackForwardCacheDisabled,
+      2: RelatedActiveContentsExist,
+      3: HTTPStatusNotOK,
+      4: SchemeNotHTTPOrHTTPS,
+      5: Loading,
+      6: WasGrantedMediaAccess,
+      7: DisableForRenderFrameHostCalled,
+      8: DomainNotAllowed,
+      9: HTTPMethodNotGET,
+      10: SubframeIsNavigating,
+      11: Timeout,
+      12: CacheLimit,
+      13: JavaScriptExecution,
+      14: RendererProcessKilled,
+      15: RendererProcessCrashed,
+      16: SchedulerTrackedFeatureUsed,
+      17: ConflictingBrowsingInstance,
+      18: CacheFlushed,
+      19: ServiceWorkerVersionActivation,
+      20: SessionRestored,
+      21: ServiceWorkerPostMessage,
+      22: EnteredBackForwardCacheBeforeServiceWorkerHostAdded,
+      23: RenderFrameHostReused_SameSite,
+      24: RenderFrameHostReused_CrossSite,
+      25: ServiceWorkerClaim,
+      26: IgnoreEventAndEvict,
+      27: HaveInnerContents,
+      28: TimeoutPuttingInCache,
+      29: BackForwardCacheDisabledByLowMemory,
+      30: BackForwardCacheDisabledByCommandLine,
+      31: NetworkRequestDatapipeDrainedAsBytesConsumer,
+      32: NetworkRequestRedirected,
+      33: NetworkRequestTimeout,
+      34: NetworkExceedsBufferLimit,
+      35: NavigationCancelledWhileRestoring,
+      36: NotMostRecentNavigationEntry,
+      37: BackForwardCacheDisabledForPrerender,
+      38: UserAgentOverrideDiffers,
+      39: ForegroundCacheLimit,
+      40: BrowsingInstanceNotSwapped,
+      41: BackForwardCacheDisabledForDelegate,
+      42: UnloadHandlerExistsInMainFrame,
+      43: UnloadHandlerExistsInSubFrame,
+      44: ServiceWorkerUnregistration,
+      45: CacheControlNoStore,
+      46: CacheControlNoStoreCookieModified,
+      47: CacheControlNoStoreHTTPOnlyCookieModified,
+      48: NoResponseHead,
+      49: Unknown,
+      50: ActivationNavigationsDisallowedForBug1234857,
+      51: ErrorDocument,
+      52: FencedFramesEmbedder,
+      53: CookieDisabled,
+      54: HTTPAuthRequired,
+      55: CookieFlushed,
+      56: WebSocket,
+      57: WebTransport,
+      58: WebRTC,
+      59: MainResourceHasCacheControlNoStore,
+      60: MainResourceHasCacheControlNoCache,
+      61: SubresourceHasCacheControlNoStore,
+      62: SubresourceHasCacheControlNoCache,
+      63: ContainsPlugins,
+      64: DocumentLoaded,
+      65: DedicatedWorkerOrWorklet,
+      66: OutstandingNetworkRequestOthers,
+      67: RequestedMIDIPermission,
+      68: RequestedAudioCapturePermission,
+      69: RequestedVideoCapturePermission,
+      70: RequestedBackForwardCacheBlockedSensors,
+      71: RequestedBackgroundWorkPermission,
+      72: BroadcastChannel,
+      73: WebXR,
+      74: SharedWorker,
+      75: WebLocks,
+      76: WebHID,
+      77: WebShare,
+      78: RequestedStorageAccessGrant,
+      79: WebNfc,
+      80: OutstandingNetworkRequestFetch,
+      81: OutstandingNetworkRequestXHR,
+      82: AppBanner,
+      83: Printing,
+      84: WebDatabase,
+      85: PictureInPicture,
+      86: Portal,
+      87: SpeechRecognizer,
+      88: IdleManager,
+      89: PaymentManager,
+      90: SpeechSynthesis,
+      91: KeyboardLock,
+      92: WebOTPService,
+      93: OutstandingNetworkRequestDirectSocket,
+      94: InjectedJavascript,
+      95: InjectedStyleSheet,
+      96: KeepaliveRequest,
+      97: IndexedDBEvent,
+      98: Dummy,
+      99: JsNetworkRequestReceivedCacheControlNoStoreResource,
+      100: WebRTCSticky,
+      101: WebTransportSticky,
+      102: WebSocketSticky,
+      103: SmartCard,
+      104: LiveMediaStreamTrack,
+      105: UnloadHandler,
+      106: ContentSecurityHandler,
+      107: ContentWebAuthenticationAPI,
+      108: ContentFileChooser,
+      109: ContentSerial,
+      110: ContentFileSystemAccess,
+      111: ContentMediaDevicesDispatcherHost,
+      112: ContentWebBluetooth,
+      113: ContentWebUSB,
+      114: ContentMediaSessionService,
+      115: ContentScreenReader,
+      116: EmbedderPopupBlockerTabHelper,
+      117: EmbedderSafeBrowsingTriggeredPopupBlocker,
+      118: EmbedderSafeBrowsingThreatDetails,
+      119: EmbedderAppBannerManager,
+      120: EmbedderDomDistillerViewerSource,
+      121: EmbedderDomDistillerSelfDeletingRequestDelegate,
+      122: EmbedderOomInterventionTabHelper,
+      123: EmbedderOfflinePage,
+      124: EmbedderChromePasswordManagerClientBindCredentialManager,
+      125: EmbedderPermissionRequestManager,
+      126: EmbedderModalDialog,
+      127: EmbedderExtensions,
+      128: EmbedderExtensionMessaging,
+      129: EmbedderExtensionMessagingForOpenPort,
+      130: EmbedderExtensionSentMessageToCachedFrame,
+    }
+  }
+  BackForwardCacheNotRestoredReasonType:   {
+    category: type,
+    id: BackForwardCacheNotRestoredReasonType,
+    description: Types of not restored reasons for back-forward cache.,
+    experimental: true,
+    type: string,
+    enum:     {
+      0: SupportPending,
+      1: PageSupportNeeded,
+      2: Circumstantial,
+    }
+  }
+  BackForwardCacheBlockingDetails:   {
+    category: type,
+    id: BackForwardCacheBlockingDetails,
+    experimental: true,
+    type: object,
+    properties:     {
+      url:       {
+        description: Url of the file where blockage happened. Optional because of tests.,
+        optional: true,
+        type: string,
+      }
+      function:       {
+        description: Function name where blockage happened. Optional because of anonymous functions and tests.,
+        optional: true,
+        type: string,
+      }
+      lineNumber:       {
+        description: Line number in the script (0-based).,
+        type: integer,
+      }
+      columnNumber:       {
+        description: Column number in the script (0-based).,
+        type: integer,
+      }
+    }
+  }
+  BackForwardCacheNotRestoredExplanation:   {
+    category: type,
+    id: BackForwardCacheNotRestoredExplanation,
+    experimental: true,
+    type: object,
+    properties:     {
+      type:       {
+        description: Type of the reason,
+        $ref: BackForwardCacheNotRestoredReasonType,
+      }
+      reason:       {
+        description: Not restored reason,
+        $ref: BackForwardCacheNotRestoredReason,
+      }
+      context:       {
+        description: Context associated with the reason. The meaning of this context is
+dependent on the reason:
+- EmbedderExtensionSentMessageToCachedFrame: the extension ID.,
+        optional: true,
+        type: string,
+      }
+      details:       {
+        optional: true,
+        type: array,
+        items:         {
+          $ref: BackForwardCacheBlockingDetails,
+        }
+      }
+    }
+  }
+  BackForwardCacheNotRestoredExplanationTree:   {
+    category: type,
+    id: BackForwardCacheNotRestoredExplanationTree,
+    experimental: true,
+    type: object,
+    properties:     {
+      url:       {
+        description: URL of each frame,
+        type: string,
+      }
+      explanations:       {
+        description: Not restored reasons of each frame,
+        type: array,
+        items:         {
+          $ref: BackForwardCacheNotRestoredExplanation,
+        }
+      }
+      children:       {
+        description: Array of children frame,
+        type: array,
+        items:         {
+          $ref: BackForwardCacheNotRestoredExplanationTree,
+        }
+      }
+    }
+  }
+  on: (eventName, handler) => {
+            return object[domainName][eventName](handler);
+        },
+}
