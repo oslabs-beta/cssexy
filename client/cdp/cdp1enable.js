@@ -51,6 +51,7 @@ const cdpEnable = async (client, proxy, selector) => {
   const iframeNode = node.contentDocument;
   // console.log('Node inside iframe', iframeNode);
 
+  // this console logs the contentDocument node of the iframe
   // fs.writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
 
   // Return the enabled domains and the nodeId of the iframe root node to the process

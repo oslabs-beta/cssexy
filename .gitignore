@@ -1,7 +1,5 @@
 node_modules
 dist/
-data/chrome/
-data/output/
-data/domains/
+data/*/*
 .env
 .vscode

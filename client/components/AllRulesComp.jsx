@@ -8,7 +8,7 @@ function AllRulesComp(){
     const regularRules = useSelector(state => state.rules.regularRules);
 
     const inlineRuleComp = inlineRules.map((style, idx) => {
-        console.log('inlineRules', inlineRules);
+        // console.log('inlineRules', inlineRules);
         return (
             <SidebarStyling
             key={`inline-style-${idx}`}
@@ -20,7 +20,7 @@ function AllRulesComp(){
         });
 
     const regularRuleComp = regularRules.map((style, idx) => {
-        console.log('regularRules', regularRules);
+        // console.log('regularRules', regularRules);
         return (
             <SidebarStyling
                 key={`regular-style-${idx}`}

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { updateInlineRules, updateRegularRules, updateUserAgentRules } from '../slices/rulesSlice.js';
+import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component with event handling for click events.
@@ -27,29 +27,21 @@ const iFrameComp = ({ src, proxy, className }) => {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
-        console.log('iframeDoc', iframeDoc);
+        // console.log('iframeDoc', iframeDoc);
 
         const handleClick = async (event) => {
           const element = event.target;
-          console.log('iFrameComp: element', element);
+          // console.log('iFrameComp: element', element);
           const data = {
-            nodeName: element.nodeName,
-            nodeType: element.nodeType,
-            textContent: element.textContent,
-            innerHTML: element.innerHTML,
             id: element.id,
+            nodeName: element.nodeName,
             className: element.className,
-            attributes: {},
-            proxy: proxy
+            proxy: proxy,
+            // nodeType: element.nodeType,
+            // textContent: element.textContent,
+            // innerHTML: element.innerHTML,
+            // attributes: {},
           };
-
-
-          const attributes = element.attributes;
-          // console.log('iFrameComp: attributes', attributes);
-          for (let i = 0; i < attributes.length; i++) {
-            data.attributes[attributes[i].name] = attributes[i].value;
-          }
-          // console.log('iFrameComp: data', data);
 
           // a POST request to the /cdp endpoint
           const response = await fetch('/cdp', {
@@ -62,11 +54,14 @@ const iFrameComp = ({ src, proxy, className }) => {
 
           const result = await response.json();
 
-          // console.log('iFrameComp: Result from /cdp:');
+          // console.log('iFrameComp: Result returned from /cdp');
+
           // dispatching the results from the /cdp endpoint to the store
           dispatch(updateInlineRules(result.inlineRules));
           dispatch(updateRegularRules(result.regularRules));
           dispatch(updateUserAgentRules(result.userAgentRules));
+          // dispatch(updateInheritedRules(result.inheritedRules));
+          // dispatch(updateKeyframeRules(result.keyframeRules));
         };
 
 
