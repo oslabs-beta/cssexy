@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-
 import { useDispatch } from 'react-redux';
 
-import { updateAllRules, updateRegularRules, updateInlineRules, updateUserAgentRules } from '../slices/rulesSlice.js';
+import { updateInlineRules, updateRegularRules, updateUserAgentRules } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component with event handling for click events.
@@ -22,7 +21,6 @@ const iFrameComp = ({ src, proxy, className }) => {
   useEffect(() => {
     // getting our iframe
     const iframe = document.querySelector(`.${className}`);
-
     // console.log('iframe', iframe);
 
     const handleLoad = () => {
@@ -65,11 +63,10 @@ const iFrameComp = ({ src, proxy, className }) => {
           const result = await response.json();
 
           // console.log('iFrameComp: Result from /cdp:');
-          // dispatching the result from the /cdp endpoint to the store
-          dispatch(updateAllRules(result));
-          // dispatch(updateRegularRules(result.regularRules));
-          // dispatch(updateInlineRules(result.inlineRules));
-          // dispatch(updateUserAgentRules(result.userAgentRules));
+          // dispatching the results from the /cdp endpoint to the store
+          dispatch(updateInlineRules(result.inlineRules));
+          dispatch(updateRegularRules(result.regularRules));
+          dispatch(updateUserAgentRules(result.userAgentRules));
         };
 
 

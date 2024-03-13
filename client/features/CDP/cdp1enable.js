@@ -49,7 +49,7 @@ const cdpEnable = async (client, proxy, selector) => {
   // from there we get the contentDocument of the iframeNode,
   // which is the html document of the iframe
   const iframeNode = node.contentDocument;
-  console.log('Node inside iframe', iframeNode);
+  // console.log('Node inside iframe', iframeNode);
 
   // fs.writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
 

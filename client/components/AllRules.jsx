@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Style from './Style';
+import SidebarStyling from './SidebarStyling';
 
 /* All rules include:
 1) rules defined in .css files called 'regular' rules
@@ -19,7 +19,7 @@ function AllRules(){
     allRules.forEach((style, idx) => {
         if (style.rule.origin === 'inline' || style.rule.origin === 'regular') {
             const styleComp = (
-                <Style
+                <SidebarStyling
                     key={`style-${idx}`}
                     selector={style.rule.selectorList?.selectors[0].text}
                     cssProperties={style.rule.style.cssProperties}

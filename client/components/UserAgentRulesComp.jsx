@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Style from './Style.jsx';
+import SidebarStyling from './SidebarStyling.jsx';
 
 /* Styles included: default browser styles*/
 
@@ -60,7 +60,8 @@ function UserAgentRulesComp() {
 
     return (
         <div>
-            <Style
+        <h3>user agent</h3>
+            <SidebarStyling
                 selector={userAgentSelector}
                 cssProperties={ObjToArr(userAgentRules)}
                 origin={'user-agent'}

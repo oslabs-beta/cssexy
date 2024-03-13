@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Style(props) {
+function SidebarStyling(props) {
     const styleParagraphs = props.cssProperties.map((cssProp, idx) => {
         if ((props.origin === 'regular' && cssProp.text) ||
             props.origin === 'user-agent' ||
@@ -28,4 +28,4 @@ function Style(props) {
     )
 };
 
-export default Style;
+export default SidebarStyling;
