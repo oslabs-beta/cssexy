@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  // allStyles property includes both matchedCSSRules and inlineCSSRules
+  // allRules property includes both matchedCSSRules and inlineCSSRules
   // matchedCSSRules are styles specified in .css files (origin=regular) and default browser styles (origin=user-agent)
   // inlineCSSRules are styles specified directly on components (origin=inline)
-  regularStyles: [
+  allRules: [],
+  regularRules: [
     {
       "rule": {
         "styleSheetId": "style-sheet-36416-2",
@@ -499,7 +500,7 @@ const initialState = {
       ]
     }
   ],
-  inlineStyles: [
+  inlineRules: [
     {
       "rule": {
         "origin": "inline",
@@ -621,7 +622,7 @@ const initialState = {
       }
     }
   ],
-  userAgentStyles: [
+  userAgentRules: [
     {
       "rule": {
         "selectorList": {
@@ -1036,23 +1037,52 @@ const initialState = {
         4
       ]
     }
-  ]
+  ],
+  inlineRules: [],
+  keyframeRules: [],
+  loaded: false, // if we want to track if styles have been loaded
+  error: null, // if we want to track errors
 };
 
-const stylesSlice = createSlice({
-  name: 'styles',
+const rulesSlice = createSlice({
+  name: 'rules',
   initialState,
   reducers: {
-    // every time user selects a DOM element, this triggers update of inline styles
-    // now triggered by cdp scripts - need to change later
-    updateInlineStyles: (state, action) => {
-      state.inlineStyles = action.payload;
+    // every time user selects a DOM element, inline, regular, and user-agent rules are dispatched by the iFrameComp, updating the store via the reducers below.
+    updateAllRules: (state, action) => {
+      console.log('rulesSlice: state.allRules: updated', action.payload);
+      state.allRules = action.payload;
     },
-    updateMatchedStyles: (state, action) => {
-      state.matchedStyles = action.payload;
+    updateInlineRules: (state, action) => {
+      console.log('rulesSlice: state.inlineRules: updated', action.payload);
+      state.inlineRules = action.payload;
+    },
+    updateRegularRules: (state, action) => {
+      console.log('rulesSlice: state.regularRules: updated', action.payload);
+      state.regularRules = action.payload;
+    },
+    updateUserAgentRules: (state, action) => {
+      console.log('rulesSlice: state.userAgentRules: updated', action.payload);
+      state.userAgentRules = action.payload;
+    },
+    updateInheritedRules: (state, action) => {
+      console.log('rulesSlice: state.inheritedRules: updated', action.payload);
+      state.inheritedRules = action.payload;
+    },
+    updateKeyframeRules: (state, action) => {
+      console.log('rulesSlice: state.keyframeRules: updated', action.payload);
+      state.keyframeRules = action.payload;
     }
-  }
+  },
 });
 
-export const { updateInlineStyles } = stylesSlice.actions;
-export default stylesSlice.reducer;
+export const {
+  updateAllRules,
+  updateInlineRules,
+  updateRegularRules,
+  updateUserAgentRules,
+  updateInheritedRules,
+  updateKeyframeRules
+} = rulesSlice.actions;
+
+export default rulesSlice.reducer;

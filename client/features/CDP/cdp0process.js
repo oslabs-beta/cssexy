@@ -6,16 +6,14 @@
  *
  * @modules
  *   cdp1enable.js: Enable the domains
- *   cdp2styles.js: Process the styles
+ *   cdp2rules.js: Process the rules/styles for the given selector
  *
- * @param {string} selector - The CSS selector to be processed
- * @return {Promise<void>} A promise that resolves when the processing is complete
  */
-
+import fs from 'fs';
 import CDP from 'chrome-remote-interface';
 
 import cdpEnable from './cdp1enable.js';
-import cdpStyles from './cdp2styles.js';
+import cdpRules from './cdp2rules.js';
 
 /**
  * cdpProcess
@@ -25,69 +23,78 @@ import cdpStyles from './cdp2styles.js';
  */
 
 const cdpProcess = async (data) => {
-    const nodeName = data?.nodeName;
-    const nodeType = data?.nodeType;
-    const textContent = data?.textContent;
-    const innerHTML = data?.innerHTML;
     const id = data?.id;
+    const nodeName = data?.nodeName;
     const className = data?.className;
-    const attributes = data?.attributes;
-    const proxy = 8000;
-
-    console.log('cdpProcess: nodeName:', nodeName);
-    console.log('cdpProcess: nodeType:', nodeType);
-    console.log('cdpProcess: textContent:', textContent);
-    console.log('cdpProcess: innerHTML:', innerHTML);
-    console.log('cdpProcess: id:', id);
-    console.log('cdpProcess: className:', className);
-    console.log('cdpProcess: attributes:', attributes);
+    const proxy = data?.proxy;
+    // const nodeType = data?.nodeType;
+    // const textContent = data?.textContent;
+    // const innerHTML = data?.innerHTML;
+    // const attributes = data?.attributes;
 
     console.log('cdpProcess: proxy:', proxy);
     let cdpClient;
     try {
+
+        // setting our selector based on the attributes we received from the iframe
+        // starting with the most specific selector and working our way down
         let selector = '';
-        if (id){
+        if (id) {
             console.log('element id:', id);
             selector = `#${id}`;
         }
-        else if (className){
+        else if (className) {
             console.log('element class:', className);
             selector = `.${className}`;
         }
-        else if (nodeName){
+        else if (nodeName) {
             console.log('element nodeName:', nodeName);
             selector = `${nodeName}`;
         }
         console.log('cdpProcess: selector:', selector);
 
-    console.log('cdpProcess: trying to connect to CDP');
-      // this creates a 'client' object that serves as our interface to send commands
-      // and listen to events in Chrome via the Chrome DevTools Protocol (CDP).
-      cdpClient = await CDP();
-      console.log('Connected to Chrome DevTools Protocol');
-
-      // extracting the 'domains' from the CDP client.
-      const {DOM, CSS, Network, Page} = await cdpEnable(cdpClient, proxy);
-      // retrieve styles for the target selector
-      // this is the core functionality of cssxe that retrieves styles from a website
-      console.log(`Styles for ${selector} retrieved`);
-      await cdpStyles(DOM, CSS, selector);
-      return 'success';
+        console.log('cdpProcess: trying to connect to CDP');
 
 
-  } catch (err) {
-      console.error('Error connecting to Chrome', err);
-  } finally {
-      if (cdpClient) { // always close the connection
-          await cdpClient.close();
-          console.log('CDP client closed');
-      }
-  }
+        // cdpClient is a newly created object that serves as our interface to send commands
+        // and listen to events in Chrome via the Chrome DevTools Protocol (CDP) by way of
+        // chrome-remote-interface, a library that allows for easy access to the Chrome DevTools Protocol.
+        cdpClient = await CDP();
+
+        console.log('Connected to Chrome DevTools Protocol via chrome-remote-interface');
+
+        // extracting the 'domains' from the CDP client.
+        const { DOM, CSS, Network, Page, iframeNode } = await cdpEnable(cdpClient, proxy);
+
+        // these allow us to see / save all of the methods and properties that the CDP client exposes.
+        // fs.writeFileSync('./data/domains/DOM.json', JSON.stringify(Object.entries(DOM), null, 2));
+        // fs.writeFileSync('./data/domains/Network.json', JSON.stringify(Object.entries(Network), null, 2));
+        // fs.writeFileSync('./data/domains/Page.json', JSON.stringify(Object.entries(Page), null, 2));
+        // fs.writeFileSync('./data/domains/CSS.json', JSON.stringify(Object.entries(CSS), null, 2));
+
+        // this is the core functionality of cssxe that retrieves styles from a website
+        console.log('cdpProcess: calling cdpRules');
+
+        // right now, result is an object that has both the matched and inline styles for the element clicked.
+        const result = await cdpRules(cdpClient, DOM, CSS, Network, Page, iframeNode, selector);
+        //   console.log(`Rules for ${selector} retrieved`, result);
+        return result;
+
+
+    } catch (err) {
+        console.error('Error connecting to Chrome', err);
+    }
+    finally {
+        // It is considered a best practice to close resources such as connections in a finally block.
+        // This ensures they are properly cleaned up, even in the event of an error.
+        // Leaving connections open can lead to resource leaks and potential issues with system performance.
+        if (cdpClient) {
+            await cdpClient.close();
+            console.log('CDP client closed');
+        }
+    }
 }
 
-// cdpProcess('#loadingText', '8000');
-// cdpProcess('.topAlbumsDisplay', '8000');
-// cdpProcess('.sidebar', '8888');
-// cdpProcess('.app-container');
+
 
 export default cdpProcess;

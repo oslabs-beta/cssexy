@@ -1,12 +1,11 @@
-import InlineAndRegularStylesComp from "./InlineAndRegularStylesComp.jsx";
-import UserAgentStylesComp from "./UserAgentStylesComp.jsx";
+import AllRulesComp from "./AllRulesComp.jsx";
+
 
 function SidebarComp() {
   return (
     <div className="sidebar">
       <h3>Styles Editor</h3>
-      <InlineAndRegularStylesComp/>
-      <UserAgentStylesComp />
+      <AllRulesComp/>
     </div>
   );
 }

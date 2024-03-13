@@ -7,7 +7,10 @@
  * @return {object} An object containing the enabled DOM, CSS, Network, and Page domains.
  */
 
-const cdpEnable= async (client, host) => {
+import fs from 'fs';
+
+
+const cdpEnable = async (client, proxy, selector) => {
   // extract the different 'domains' from the client.
   const { DOM, CSS, Network, Page } = client;
 
@@ -15,28 +18,43 @@ const cdpEnable= async (client, host) => {
   // this is a prerequisite step before we can use the methods provided by each of the domains.
   // enabling a domain starts the flow of events and allows command execution within that domain.
 
-  // to interact with the structure of the DOM.
-  await DOM.enable();
-  // to query and manipulate CSS styles.
-  await CSS.enable();
-  // to inspect network activity and manage network conditions.
-  await Network.enable();
-  // to control page navigation, lifecycle, and size.
-  await Page.enable();
+  // DOM: to interact with the structure of the DOM.
+  // CSS: to query and manipulate CSS styles.
+  // Network: to inspect network activity and manage network conditions.
+  // Page: to control page navigation, lifecycle, and size.
+  await Promise.all([DOM.enable(), CSS.enable(), Network.enable(), Page.enable()]);
+  console.log('cdpEnable: DOM, CSS, Network, and Page domains are enabled');
 
-  console.log('CSS, DOM, Network, and Page domains are enabled');
 
-  // navigating to the desired page, i.e. the port the user's site is served to.
-  await Page.navigate({url: `http://localhost:${host}`});
+  console.log('getting nodes');
+  // getFlattenedDocument: returns a flattened array of the DOM tree at the specified depth
+  // if no depth is specified, the entire DOM tree is returned.
+  // depth: depth of the dom tree that we want
+  // -> -1 means we want to get the entire DOM tree.
+  // -> >= 0 would correspond to a specific depth of the DOM tree.
+  const { nodes } = await DOM.getFlattenedDocument({ depth: -1});
 
-  // wait for the 'loadEventFired' event which signals that the page has finished loading
-  // now that the page has loaded, we can start listening for events
-  // and be assured that calls to the enabled domains will work and return data
-  await new Promise(resolve => Page.loadEventFired(resolve));
-  console.log('Page loaded');
+  // fs.writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
 
-  // Return the enabled domains to the process
-  return { DOM, CSS, Network, Page };
+  // Find nodes where the nodeName property is 'IFRAME'.
+  // In looking through the nodes, I saw only one IFRAME node, which corresponded to the root node of the iframe.
+  // TBD if there would be more than one if the site we are targeting has iframes within it.
+  const iframeNodeId = await nodes.filter(node => node.nodeName === 'IFRAME')[0].nodeId;
+
+  // console.log('iframeNodeId', iframeNodeId);
+
+  // describeNode: gets a description of a node with a given DOM nodeId, i.e. the type of node, its name, and its children.
+  const { node } = await DOM.describeNode({ nodeId: iframeNodeId });
+
+  // from there we get the contentDocument of the iframeNode,
+  // which is the html document of the iframe
+  const iframeNode = node.contentDocument;
+  console.log('Node inside iframe', iframeNode);
+
+  // fs.writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
+
+  // Return the enabled domains and the nodeId of the iframe root node to the process
+  return { DOM, CSS, Network, Page, iframeNode };
 }
 
 export default cdpEnable;
