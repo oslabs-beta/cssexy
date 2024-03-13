@@ -76,7 +76,7 @@ const cdpProcess = async (data) => {
         console.log('cdpProcess: calling cdpRules');
 
         // right now, result is an object that has both the matched and inline styles for the element clicked.
-        const result = await cdpRules(cdpClient, DOM, CSS, Network, Page, iframeNode, selector);
+        const result = await cdpRules(DOM, CSS, Network, Page, iframeNode, selector);
         //   console.log(`Rules for ${selector} retrieved`, result);
         return result;
 

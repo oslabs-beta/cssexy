@@ -39,7 +39,7 @@ const cdpInlineRules = async (CSS, nodeId, selector) => {
   return inlineRule;
 }
 
-const cdpRules = async (cdpClient, DOM, CSS, Network, Page, iframeNode, selector) => {
+const cdpRules = async (DOM, CSS, Network, Page, iframeNode, selector) => {
 
   const iframeNodeId = iframeNode.nodeId;
   // console.log('cdpRules: root frame node id:', iframeNodeId);
