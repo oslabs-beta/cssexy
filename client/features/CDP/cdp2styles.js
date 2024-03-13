@@ -90,11 +90,20 @@ const cdpStyles = async (DOM, CSS, selector) => {
 
   // console logging the matched css-file styles of the passed in element, in a more readable way.
   // mimics pretty print
-  console.log('Matched CSS Rules:');
-  recursiveConsoleLog(matchedCSSRules);
+  // console.log('Matched CSS Rules:');
+  // recursiveConsoleLog(matchedCSSRules);
 
-  console.log('Inherited styles:');
-  recursiveConsoleLog(inherited);
+  const testSheet = matchedCSSRules[2].rule.style.styleSheetId;
+  const testSheetData = await CSS.getStyleSheetText({ styleSheetId: testSheet });
+  const testRange = await CSS.SourceRange({ startLine: 0, startColumn: 0, endLine: 0, endColumn: 2 })
+  console.log(`Stylesheet at index 2: ${testSheet}`);
+  console.log(`Stylesheet data: ${JSON.stringify(testSheetData)}`);
+  console.log(`Range at index 1: ${testRange}`);
+
+
+
+  // console.log('Inherited styles:');
+  // recursiveConsoleLog(inherited);
   // console.log('CSS Keyframes Rules:');
   // recursiveConsoleLog(cssKeyframesRules);
 }

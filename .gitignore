@@ -3,3 +3,5 @@ dist/
 data/Chrome
 client/data
 .env
+client/features/CDP/inlineStyles.js
+client/features/CDP/matchedStyles.js

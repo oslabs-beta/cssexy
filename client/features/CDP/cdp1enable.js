@@ -7,7 +7,7 @@
  * @return {object} An object containing the enabled DOM, CSS, Network, and Page domains.
  */
 
-const cdpEnable= async (client, host) => {
+const cdpEnable = async (client, host) => {
   // extract the different 'domains' from the client.
   const { DOM, CSS, Network, Page } = client;
 
@@ -24,10 +24,12 @@ const cdpEnable= async (client, host) => {
   // to control page navigation, lifecycle, and size.
   await Page.enable();
 
+  CSS.styleSheetAdded(function (param) { console.log('StyleSheet Data:', param) });
+
   console.log('CSS, DOM, Network, and Page domains are enabled');
 
   // navigating to the desired page, i.e. the port the user's site is served to.
-  await Page.navigate({url: `http://localhost:${host}`});
+  await Page.navigate({ url: `http://localhost:${host}` });
 
   // wait for the 'loadEventFired' event which signals that the page has finished loading
   // now that the page has loaded, we can start listening for events
