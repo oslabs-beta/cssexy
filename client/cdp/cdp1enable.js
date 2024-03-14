@@ -7,8 +7,9 @@
  * @return {object} An object containing the enabled DOM, CSS, Network, and Page domains.
  */
 
-import fs from 'fs';
 
+
+import { writeFileSync, mkdir } from 'node:fs';
 
 const cdpEnable = async (client, proxy, selector) => {
   // extract the different 'domains' from the client.
@@ -33,8 +34,13 @@ const cdpEnable = async (client, proxy, selector) => {
   // -> -1 means we want to get the entire DOM tree.
   // -> >= 0 would correspond to a specific depth of the DOM tree.
   const { nodes } = await DOM.getFlattenedDocument({ depth: -1});
-
-  fs.writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
+  
+  //Create the directory before trying to add the file.
+  await mkdir((new URL('../../data/output/', import.meta.url)), {recursive:true},(err) => {
+    if (err) throw err;
+  });
+  
+  writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
 
   // Find nodes where the nodeName property is 'IFRAME'.
   // In looking through the nodes, I saw only one IFRAME node, which corresponded to the root node of the iframe.
@@ -54,7 +60,7 @@ const cdpEnable = async (client, proxy, selector) => {
   // console.log('Node inside iframe', iframeNode);
 
   // this console logs the contentDocument node of the iframe
-  fs.writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
+  writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
 
   // Return the enabled domains and the nodeId of the iframe root node to the process
   return { DOM, CSS, Network, Page, iframeNode };
