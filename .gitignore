@@ -1,7 +1,5 @@
 node_modules
 dist/
-data/Chrome
-client/data
+data/*/*
 .env
-client/features/CDP/inlineStyles.js
-client/features/CDP/matchedStyles.js
+.vscode

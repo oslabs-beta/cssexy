@@ -11,8 +11,8 @@ const App = () => {
       <SidebarComp />
       <IframeComp
         src={targetUrl}
-        className="site-frame"
         proxy={proxy}
+        className="site-frame"
       />
     </div>
   )

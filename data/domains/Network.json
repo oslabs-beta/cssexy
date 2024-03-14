@@ -1,0 +1,2169 @@
+[
+  [
+    "setAcceptedEncodings",
+    null
+  ],
+  [
+    "clearAcceptedEncodingsOverride",
+    null
+  ],
+  [
+    "canClearBrowserCache",
+    null
+  ],
+  [
+    "canClearBrowserCookies",
+    null
+  ],
+  [
+    "canEmulateNetworkConditions",
+    null
+  ],
+  [
+    "clearBrowserCache",
+    null
+  ],
+  [
+    "clearBrowserCookies",
+    null
+  ],
+  [
+    "continueInterceptedRequest",
+    null
+  ],
+  [
+    "deleteCookies",
+    null
+  ],
+  [
+    "disable",
+    null
+  ],
+  [
+    "emulateNetworkConditions",
+    null
+  ],
+  [
+    "enable",
+    null
+  ],
+  [
+    "getAllCookies",
+    null
+  ],
+  [
+    "getCertificate",
+    null
+  ],
+  [
+    "getCookies",
+    null
+  ],
+  [
+    "getResponseBody",
+    null
+  ],
+  [
+    "getRequestPostData",
+    null
+  ],
+  [
+    "getResponseBodyForInterception",
+    null
+  ],
+  [
+    "takeResponseBodyForInterceptionAsStream",
+    null
+  ],
+  [
+    "replayXHR",
+    null
+  ],
+  [
+    "searchInResponseBody",
+    null
+  ],
+  [
+    "setBlockedURLs",
+    null
+  ],
+  [
+    "setBypassServiceWorker",
+    null
+  ],
+  [
+    "setCacheDisabled",
+    null
+  ],
+  [
+    "setCookie",
+    null
+  ],
+  [
+    "setCookies",
+    null
+  ],
+  [
+    "setExtraHTTPHeaders",
+    null
+  ],
+  [
+    "setAttachDebugStack",
+    null
+  ],
+  [
+    "setRequestInterception",
+    null
+  ],
+  [
+    "setUserAgentOverride",
+    null
+  ],
+  [
+    "streamResourceContent",
+    null
+  ],
+  [
+    "getSecurityIsolationStatus",
+    null
+  ],
+  [
+    "enableReportingApi",
+    null
+  ],
+  [
+    "loadNetworkResource",
+    null
+  ],
+  [
+    "dataReceived",
+    null
+  ],
+  [
+    "eventSourceMessageReceived",
+    null
+  ],
+  [
+    "loadingFailed",
+    null
+  ],
+  [
+    "loadingFinished",
+    null
+  ],
+  [
+    "requestIntercepted",
+    null
+  ],
+  [
+    "requestServedFromCache",
+    null
+  ],
+  [
+    "requestWillBeSent",
+    null
+  ],
+  [
+    "resourceChangedPriority",
+    null
+  ],
+  [
+    "signedExchangeReceived",
+    null
+  ],
+  [
+    "responseReceived",
+    null
+  ],
+  [
+    "webSocketClosed",
+    null
+  ],
+  [
+    "webSocketCreated",
+    null
+  ],
+  [
+    "webSocketFrameError",
+    null
+  ],
+  [
+    "webSocketFrameReceived",
+    null
+  ],
+  [
+    "webSocketFrameSent",
+    null
+  ],
+  [
+    "webSocketHandshakeResponseReceived",
+    null
+  ],
+  [
+    "webSocketWillSendHandshakeRequest",
+    null
+  ],
+  [
+    "webTransportCreated",
+    null
+  ],
+  [
+    "webTransportConnectionEstablished",
+    null
+  ],
+  [
+    "webTransportClosed",
+    null
+  ],
+  [
+    "requestWillBeSentExtraInfo",
+    null
+  ],
+  [
+    "responseReceivedExtraInfo",
+    null
+  ],
+  [
+    "trustTokenOperationDone",
+    null
+  ],
+  [
+    "subresourceWebBundleMetadataReceived",
+    null
+  ],
+  [
+    "subresourceWebBundleMetadataError",
+    null
+  ],
+  [
+    "subresourceWebBundleInnerResponseParsed",
+    null
+  ],
+  [
+    "subresourceWebBundleInnerResponseError",
+    null
+  ],
+  [
+    "reportingApiReportAdded",
+    null
+  ],
+  [
+    "reportingApiReportUpdated",
+    null
+  ],
+  [
+    "reportingApiEndpointsChangedForOrigin",
+    null
+  ],
+  [
+    "ResourceType",
+    {
+      "category": "type",
+      "id": "ResourceType",
+      "description": "Resource type as it was perceived by the rendering engine.",
+      "type": "string",
+      "enum": [
+        "Document",
+        "Stylesheet",
+        "Image",
+        "Media",
+        "Font",
+        "Script",
+        "TextTrack",
+        "XHR",
+        "Fetch",
+        "Prefetch",
+        "EventSource",
+        "WebSocket",
+        "Manifest",
+        "SignedExchange",
+        "Ping",
+        "CSPViolationReport",
+        "Preflight",
+        "Other"
+      ]
+    }
+  ],
+  [
+    "LoaderId",
+    {
+      "category": "type",
+      "id": "LoaderId",
+      "description": "Unique loader identifier.",
+      "type": "string"
+    }
+  ],
+  [
+    "RequestId",
+    {
+      "category": "type",
+      "id": "RequestId",
+      "description": "Unique request identifier.",
+      "type": "string"
+    }
+  ],
+  [
+    "InterceptionId",
+    {
+      "category": "type",
+      "id": "InterceptionId",
+      "description": "Unique intercepted request identifier.",
+      "type": "string"
+    }
+  ],
+  [
+    "ErrorReason",
+    {
+      "category": "type",
+      "id": "ErrorReason",
+      "description": "Network level fetch failure reason.",
+      "type": "string",
+      "enum": [
+        "Failed",
+        "Aborted",
+        "TimedOut",
+        "AccessDenied",
+        "ConnectionClosed",
+        "ConnectionReset",
+        "ConnectionRefused",
+        "ConnectionAborted",
+        "ConnectionFailed",
+        "NameNotResolved",
+        "InternetDisconnected",
+        "AddressUnreachable",
+        "BlockedByClient",
+        "BlockedByResponse"
+      ]
+    }
+  ],
+  [
+    "TimeSinceEpoch",
+    {
+      "category": "type",
+      "id": "TimeSinceEpoch",
+      "description": "UTC time in seconds, counted from January 1, 1970.",
+      "type": "number"
+    }
+  ],
+  [
+    "MonotonicTime",
+    {
+      "category": "type",
+      "id": "MonotonicTime",
+      "description": "Monotonically increasing time in seconds since an arbitrary point in the past.",
+      "type": "number"
+    }
+  ],
+  [
+    "Headers",
+    {
+      "category": "type",
+      "id": "Headers",
+      "description": "Request / response headers as keys / values of JSON object.",
+      "type": "object"
+    }
+  ],
+  [
+    "ConnectionType",
+    {
+      "category": "type",
+      "id": "ConnectionType",
+      "description": "The underlying connection technology that the browser is supposedly using.",
+      "type": "string",
+      "enum": [
+        "none",
+        "cellular2g",
+        "cellular3g",
+        "cellular4g",
+        "bluetooth",
+        "ethernet",
+        "wifi",
+        "wimax",
+        "other"
+      ]
+    }
+  ],
+  [
+    "CookieSameSite",
+    {
+      "category": "type",
+      "id": "CookieSameSite",
+      "description": "Represents the cookie's 'SameSite' status:\nhttps://tools.ietf.org/html/draft-west-first-party-cookies",
+      "type": "string",
+      "enum": [
+        "Strict",
+        "Lax",
+        "None"
+      ]
+    }
+  ],
+  [
+    "CookiePriority",
+    {
+      "category": "type",
+      "id": "CookiePriority",
+      "description": "Represents the cookie's 'Priority' status:\nhttps://tools.ietf.org/html/draft-west-cookie-priority-00",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "Low",
+        "Medium",
+        "High"
+      ]
+    }
+  ],
+  [
+    "CookieSourceScheme",
+    {
+      "category": "type",
+      "id": "CookieSourceScheme",
+      "description": "Represents the source scheme of the origin that originally set the cookie.\nA value of \"Unset\" allows protocol clients to emulate legacy cookie scope for the scheme.\nThis is a temporary ability and it will be removed in the future.",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "Unset",
+        "NonSecure",
+        "Secure"
+      ]
+    }
+  ],
+  [
+    "ResourceTiming",
+    {
+      "category": "type",
+      "id": "ResourceTiming",
+      "description": "Timing information for the request.",
+      "type": "object",
+      "properties": {
+        "requestTime": {
+          "description": "Timing's requestTime is a baseline in seconds, while the other numbers are ticks in\nmilliseconds relatively to this requestTime.",
+          "type": "number"
+        },
+        "proxyStart": {
+          "description": "Started resolving proxy.",
+          "type": "number"
+        },
+        "proxyEnd": {
+          "description": "Finished resolving proxy.",
+          "type": "number"
+        },
+        "dnsStart": {
+          "description": "Started DNS address resolve.",
+          "type": "number"
+        },
+        "dnsEnd": {
+          "description": "Finished DNS address resolve.",
+          "type": "number"
+        },
+        "connectStart": {
+          "description": "Started connecting to the remote host.",
+          "type": "number"
+        },
+        "connectEnd": {
+          "description": "Connected to the remote host.",
+          "type": "number"
+        },
+        "sslStart": {
+          "description": "Started SSL handshake.",
+          "type": "number"
+        },
+        "sslEnd": {
+          "description": "Finished SSL handshake.",
+          "type": "number"
+        },
+        "workerStart": {
+          "description": "Started running ServiceWorker.",
+          "experimental": true,
+          "type": "number"
+        },
+        "workerReady": {
+          "description": "Finished Starting ServiceWorker.",
+          "experimental": true,
+          "type": "number"
+        },
+        "workerFetchStart": {
+          "description": "Started fetch event.",
+          "experimental": true,
+          "type": "number"
+        },
+        "workerRespondWithSettled": {
+          "description": "Settled fetch event respondWith promise.",
+          "experimental": true,
+          "type": "number"
+        },
+        "sendStart": {
+          "description": "Started sending request.",
+          "type": "number"
+        },
+        "sendEnd": {
+          "description": "Finished sending request.",
+          "type": "number"
+        },
+        "pushStart": {
+          "description": "Time the server started pushing request.",
+          "experimental": true,
+          "type": "number"
+        },
+        "pushEnd": {
+          "description": "Time the server finished pushing request.",
+          "experimental": true,
+          "type": "number"
+        },
+        "receiveHeadersStart": {
+          "description": "Started receiving response headers.",
+          "experimental": true,
+          "type": "number"
+        },
+        "receiveHeadersEnd": {
+          "description": "Finished receiving response headers.",
+          "type": "number"
+        }
+      }
+    }
+  ],
+  [
+    "ResourcePriority",
+    {
+      "category": "type",
+      "id": "ResourcePriority",
+      "description": "Loading priority of a resource request.",
+      "type": "string",
+      "enum": [
+        "VeryLow",
+        "Low",
+        "Medium",
+        "High",
+        "VeryHigh"
+      ]
+    }
+  ],
+  [
+    "PostDataEntry",
+    {
+      "category": "type",
+      "id": "PostDataEntry",
+      "description": "Post data entry for HTTP request",
+      "type": "object",
+      "properties": {
+        "bytes": {
+          "optional": true,
+          "type": "binary"
+        }
+      }
+    }
+  ],
+  [
+    "Request",
+    {
+      "category": "type",
+      "id": "Request",
+      "description": "HTTP request data.",
+      "type": "object",
+      "properties": {
+        "url": {
+          "description": "Request URL (without fragment).",
+          "type": "string"
+        },
+        "urlFragment": {
+          "description": "Fragment of the requested URL starting with hash, if present.",
+          "optional": true,
+          "type": "string"
+        },
+        "method": {
+          "description": "HTTP request method.",
+          "type": "string"
+        },
+        "headers": {
+          "description": "HTTP request headers.",
+          "$ref": "Headers"
+        },
+        "postData": {
+          "description": "HTTP POST request data.",
+          "optional": true,
+          "type": "string"
+        },
+        "hasPostData": {
+          "description": "True when the request has POST data. Note that postData might still be omitted when this flag is true when the data is too long.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "postDataEntries": {
+          "description": "Request body elements. This will be converted from base64 to binary",
+          "experimental": true,
+          "optional": true,
+          "type": "array",
+          "items": {
+            "$ref": "PostDataEntry"
+          }
+        },
+        "mixedContentType": {
+          "description": "The mixed content type of the request.",
+          "optional": true,
+          "$ref": "Security.MixedContentType"
+        },
+        "initialPriority": {
+          "description": "Priority of the resource request at the time request is sent.",
+          "$ref": "ResourcePriority"
+        },
+        "referrerPolicy": {
+          "description": "The referrer policy of the request, as defined in https://www.w3.org/TR/referrer-policy/",
+          "type": "string",
+          "enum": [
+            "unsafe-url",
+            "no-referrer-when-downgrade",
+            "no-referrer",
+            "origin",
+            "origin-when-cross-origin",
+            "same-origin",
+            "strict-origin",
+            "strict-origin-when-cross-origin"
+          ]
+        },
+        "isLinkPreload": {
+          "description": "Whether is loaded via link preload.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "trustTokenParams": {
+          "description": "Set for requests when the TrustToken API is used. Contains the parameters\npassed by the developer (e.g. via \"fetch\") as understood by the backend.",
+          "experimental": true,
+          "optional": true,
+          "$ref": "TrustTokenParams"
+        },
+        "isSameSite": {
+          "description": "True if this resource request is considered to be the 'same site' as the\nrequest correspondinfg to the main frame.",
+          "experimental": true,
+          "optional": true,
+          "type": "boolean"
+        }
+      }
+    }
+  ],
+  [
+    "SignedCertificateTimestamp",
+    {
+      "category": "type",
+      "id": "SignedCertificateTimestamp",
+      "description": "Details of a signed certificate timestamp (SCT).",
+      "type": "object",
+      "properties": {
+        "status": {
+          "description": "Validation status.",
+          "type": "string"
+        },
+        "origin": {
+          "description": "Origin.",
+          "type": "string"
+        },
+        "logDescription": {
+          "description": "Log name / description.",
+          "type": "string"
+        },
+        "logId": {
+          "description": "Log ID.",
+          "type": "string"
+        },
+        "timestamp": {
+          "description": "Issuance date. Unlike TimeSinceEpoch, this contains the number of\nmilliseconds since January 1, 1970, UTC, not the number of seconds.",
+          "type": "number"
+        },
+        "hashAlgorithm": {
+          "description": "Hash algorithm.",
+          "type": "string"
+        },
+        "signatureAlgorithm": {
+          "description": "Signature algorithm.",
+          "type": "string"
+        },
+        "signatureData": {
+          "description": "Signature data.",
+          "type": "string"
+        }
+      }
+    }
+  ],
+  [
+    "SecurityDetails",
+    {
+      "category": "type",
+      "id": "SecurityDetails",
+      "description": "Security details about a request.",
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "description": "Protocol name (e.g. \"TLS 1.2\" or \"QUIC\").",
+          "type": "string"
+        },
+        "keyExchange": {
+          "description": "Key Exchange used by the connection, or the empty string if not applicable.",
+          "type": "string"
+        },
+        "keyExchangeGroup": {
+          "description": "(EC)DH group used by the connection, if applicable.",
+          "optional": true,
+          "type": "string"
+        },
+        "cipher": {
+          "description": "Cipher name.",
+          "type": "string"
+        },
+        "mac": {
+          "description": "TLS MAC. Note that AEAD ciphers do not have separate MACs.",
+          "optional": true,
+          "type": "string"
+        },
+        "certificateId": {
+          "description": "Certificate ID value.",
+          "$ref": "Security.CertificateId"
+        },
+        "subjectName": {
+          "description": "Certificate subject name.",
+          "type": "string"
+        },
+        "sanList": {
+          "description": "Subject Alternative Name (SAN) DNS names and IP addresses.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "issuer": {
+          "description": "Name of the issuing CA.",
+          "type": "string"
+        },
+        "validFrom": {
+          "description": "Certificate valid from date.",
+          "$ref": "TimeSinceEpoch"
+        },
+        "validTo": {
+          "description": "Certificate valid to (expiration) date",
+          "$ref": "TimeSinceEpoch"
+        },
+        "signedCertificateTimestampList": {
+          "description": "List of signed certificate timestamps (SCTs).",
+          "type": "array",
+          "items": {
+            "$ref": "SignedCertificateTimestamp"
+          }
+        },
+        "certificateTransparencyCompliance": {
+          "description": "Whether the request complied with Certificate Transparency policy",
+          "$ref": "CertificateTransparencyCompliance"
+        },
+        "serverSignatureAlgorithm": {
+          "description": "The signature algorithm used by the server in the TLS server signature,\nrepresented as a TLS SignatureScheme code point. Omitted if not\napplicable or not known.",
+          "optional": true,
+          "type": "integer"
+        },
+        "encryptedClientHello": {
+          "description": "Whether the connection used Encrypted ClientHello",
+          "type": "boolean"
+        }
+      }
+    }
+  ],
+  [
+    "CertificateTransparencyCompliance",
+    {
+      "category": "type",
+      "id": "CertificateTransparencyCompliance",
+      "description": "Whether the request complied with Certificate Transparency policy.",
+      "type": "string",
+      "enum": [
+        "unknown",
+        "not-compliant",
+        "compliant"
+      ]
+    }
+  ],
+  [
+    "BlockedReason",
+    {
+      "category": "type",
+      "id": "BlockedReason",
+      "description": "The reason why request was blocked.",
+      "type": "string",
+      "enum": [
+        "other",
+        "csp",
+        "mixed-content",
+        "origin",
+        "inspector",
+        "subresource-filter",
+        "content-type",
+        "coep-frame-resource-needs-coep-header",
+        "coop-sandboxed-iframe-cannot-navigate-to-coop-page",
+        "corp-not-same-origin",
+        "corp-not-same-origin-after-defaulted-to-same-origin-by-coep",
+        "corp-not-same-site"
+      ]
+    }
+  ],
+  [
+    "CorsError",
+    {
+      "category": "type",
+      "id": "CorsError",
+      "description": "The reason why request was blocked.",
+      "type": "string",
+      "enum": [
+        "DisallowedByMode",
+        "InvalidResponse",
+        "WildcardOriginNotAllowed",
+        "MissingAllowOriginHeader",
+        "MultipleAllowOriginValues",
+        "InvalidAllowOriginValue",
+        "AllowOriginMismatch",
+        "InvalidAllowCredentials",
+        "CorsDisabledScheme",
+        "PreflightInvalidStatus",
+        "PreflightDisallowedRedirect",
+        "PreflightWildcardOriginNotAllowed",
+        "PreflightMissingAllowOriginHeader",
+        "PreflightMultipleAllowOriginValues",
+        "PreflightInvalidAllowOriginValue",
+        "PreflightAllowOriginMismatch",
+        "PreflightInvalidAllowCredentials",
+        "PreflightMissingAllowExternal",
+        "PreflightInvalidAllowExternal",
+        "PreflightMissingAllowPrivateNetwork",
+        "PreflightInvalidAllowPrivateNetwork",
+        "InvalidAllowMethodsPreflightResponse",
+        "InvalidAllowHeadersPreflightResponse",
+        "MethodDisallowedByPreflightResponse",
+        "HeaderDisallowedByPreflightResponse",
+        "RedirectContainsCredentials",
+        "InsecurePrivateNetwork",
+        "InvalidPrivateNetworkAccess",
+        "UnexpectedPrivateNetworkAccess",
+        "NoCorsRedirectModeNotFollow",
+        "PreflightMissingPrivateNetworkAccessId",
+        "PreflightMissingPrivateNetworkAccessName",
+        "PrivateNetworkAccessPermissionUnavailable",
+        "PrivateNetworkAccessPermissionDenied"
+      ]
+    }
+  ],
+  [
+    "CorsErrorStatus",
+    {
+      "category": "type",
+      "id": "CorsErrorStatus",
+      "type": "object",
+      "properties": {
+        "corsError": {
+          "$ref": "CorsError"
+        },
+        "failedParameter": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  [
+    "ServiceWorkerResponseSource",
+    {
+      "category": "type",
+      "id": "ServiceWorkerResponseSource",
+      "description": "Source of serviceworker response.",
+      "type": "string",
+      "enum": [
+        "cache-storage",
+        "http-cache",
+        "fallback-code",
+        "network"
+      ]
+    }
+  ],
+  [
+    "TrustTokenParams",
+    {
+      "category": "type",
+      "id": "TrustTokenParams",
+      "description": "Determines what type of Trust Token operation is executed and\ndepending on the type, some additional parameters. The values\nare specified in third_party/blink/renderer/core/fetch/trust_token.idl.",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "operation": {
+          "$ref": "TrustTokenOperationType"
+        },
+        "refreshPolicy": {
+          "description": "Only set for \"token-redemption\" operation and determine whether\nto request a fresh SRR or use a still valid cached SRR.",
+          "type": "string",
+          "enum": [
+            "UseCached",
+            "Refresh"
+          ]
+        },
+        "issuers": {
+          "description": "Origins of issuers from whom to request tokens or redemption\nrecords.",
+          "optional": true,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  [
+    "TrustTokenOperationType",
+    {
+      "category": "type",
+      "id": "TrustTokenOperationType",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "Issuance",
+        "Redemption",
+        "Signing"
+      ]
+    }
+  ],
+  [
+    "AlternateProtocolUsage",
+    {
+      "category": "type",
+      "id": "AlternateProtocolUsage",
+      "description": "The reason why Chrome uses a specific transport protocol for HTTP semantics.",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "alternativeJobWonWithoutRace",
+        "alternativeJobWonRace",
+        "mainJobWonRace",
+        "mappingMissing",
+        "broken",
+        "dnsAlpnH3JobWonWithoutRace",
+        "dnsAlpnH3JobWonRace",
+        "unspecifiedReason"
+      ]
+    }
+  ],
+  [
+    "ServiceWorkerRouterInfo",
+    {
+      "category": "type",
+      "id": "ServiceWorkerRouterInfo",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "ruleIdMatched": {
+          "type": "integer"
+        }
+      }
+    }
+  ],
+  [
+    "Response",
+    {
+      "category": "type",
+      "id": "Response",
+      "description": "HTTP response data.",
+      "type": "object",
+      "properties": {
+        "url": {
+          "description": "Response URL. This URL can be different from CachedResource.url in case of redirect.",
+          "type": "string"
+        },
+        "status": {
+          "description": "HTTP response status code.",
+          "type": "integer"
+        },
+        "statusText": {
+          "description": "HTTP response status text.",
+          "type": "string"
+        },
+        "headers": {
+          "description": "HTTP response headers.",
+          "$ref": "Headers"
+        },
+        "headersText": {
+          "description": "HTTP response headers text. This has been replaced by the headers in Network.responseReceivedExtraInfo.",
+          "deprecated": true,
+          "optional": true,
+          "type": "string"
+        },
+        "mimeType": {
+          "description": "Resource mimeType as determined by the browser.",
+          "type": "string"
+        },
+        "charset": {
+          "description": "Resource charset as determined by the browser (if applicable).",
+          "type": "string"
+        },
+        "requestHeaders": {
+          "description": "Refined HTTP request headers that were actually transmitted over the network.",
+          "optional": true,
+          "$ref": "Headers"
+        },
+        "requestHeadersText": {
+          "description": "HTTP request headers text. This has been replaced by the headers in Network.requestWillBeSentExtraInfo.",
+          "deprecated": true,
+          "optional": true,
+          "type": "string"
+        },
+        "connectionReused": {
+          "description": "Specifies whether physical connection was actually reused for this request.",
+          "type": "boolean"
+        },
+        "connectionId": {
+          "description": "Physical connection id that was actually used for this request.",
+          "type": "number"
+        },
+        "remoteIPAddress": {
+          "description": "Remote IP address.",
+          "optional": true,
+          "type": "string"
+        },
+        "remotePort": {
+          "description": "Remote port.",
+          "optional": true,
+          "type": "integer"
+        },
+        "fromDiskCache": {
+          "description": "Specifies that the request was served from the disk cache.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "fromServiceWorker": {
+          "description": "Specifies that the request was served from the ServiceWorker.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "fromPrefetchCache": {
+          "description": "Specifies that the request was served from the prefetch cache.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "serviceWorkerRouterInfo": {
+          "description": "Infomation about how Service Worker Static Router was used.",
+          "experimental": true,
+          "optional": true,
+          "$ref": "ServiceWorkerRouterInfo"
+        },
+        "encodedDataLength": {
+          "description": "Total number of bytes received for this request so far.",
+          "type": "number"
+        },
+        "timing": {
+          "description": "Timing information for the given request.",
+          "optional": true,
+          "$ref": "ResourceTiming"
+        },
+        "serviceWorkerResponseSource": {
+          "description": "Response source of response from ServiceWorker.",
+          "optional": true,
+          "$ref": "ServiceWorkerResponseSource"
+        },
+        "responseTime": {
+          "description": "The time at which the returned response was generated.",
+          "optional": true,
+          "$ref": "TimeSinceEpoch"
+        },
+        "cacheStorageCacheName": {
+          "description": "Cache Storage Cache Name.",
+          "optional": true,
+          "type": "string"
+        },
+        "protocol": {
+          "description": "Protocol used to fetch this request.",
+          "optional": true,
+          "type": "string"
+        },
+        "alternateProtocolUsage": {
+          "description": "The reason why Chrome uses a specific transport protocol for HTTP semantics.",
+          "experimental": true,
+          "optional": true,
+          "$ref": "AlternateProtocolUsage"
+        },
+        "securityState": {
+          "description": "Security state of the request resource.",
+          "$ref": "Security.SecurityState"
+        },
+        "securityDetails": {
+          "description": "Security details for the request.",
+          "optional": true,
+          "$ref": "SecurityDetails"
+        }
+      }
+    }
+  ],
+  [
+    "WebSocketRequest",
+    {
+      "category": "type",
+      "id": "WebSocketRequest",
+      "description": "WebSocket request data.",
+      "type": "object",
+      "properties": {
+        "headers": {
+          "description": "HTTP request headers.",
+          "$ref": "Headers"
+        }
+      }
+    }
+  ],
+  [
+    "WebSocketResponse",
+    {
+      "category": "type",
+      "id": "WebSocketResponse",
+      "description": "WebSocket response data.",
+      "type": "object",
+      "properties": {
+        "status": {
+          "description": "HTTP response status code.",
+          "type": "integer"
+        },
+        "statusText": {
+          "description": "HTTP response status text.",
+          "type": "string"
+        },
+        "headers": {
+          "description": "HTTP response headers.",
+          "$ref": "Headers"
+        },
+        "headersText": {
+          "description": "HTTP response headers text.",
+          "optional": true,
+          "type": "string"
+        },
+        "requestHeaders": {
+          "description": "HTTP request headers.",
+          "optional": true,
+          "$ref": "Headers"
+        },
+        "requestHeadersText": {
+          "description": "HTTP request headers text.",
+          "optional": true,
+          "type": "string"
+        }
+      }
+    }
+  ],
+  [
+    "WebSocketFrame",
+    {
+      "category": "type",
+      "id": "WebSocketFrame",
+      "description": "WebSocket message data. This represents an entire WebSocket message, not just a fragmented frame as the name suggests.",
+      "type": "object",
+      "properties": {
+        "opcode": {
+          "description": "WebSocket message opcode.",
+          "type": "number"
+        },
+        "mask": {
+          "description": "WebSocket message mask.",
+          "type": "boolean"
+        },
+        "payloadData": {
+          "description": "WebSocket message payload data.\nIf the opcode is 1, this is a text message and payloadData is a UTF-8 string.\nIf the opcode isn't 1, then payloadData is a base64 encoded string representing binary data.",
+          "type": "string"
+        }
+      }
+    }
+  ],
+  [
+    "CachedResource",
+    {
+      "category": "type",
+      "id": "CachedResource",
+      "description": "Information about the cached resource.",
+      "type": "object",
+      "properties": {
+        "url": {
+          "description": "Resource URL. This is the url of the original network request.",
+          "type": "string"
+        },
+        "type": {
+          "description": "Type of this resource.",
+          "$ref": "ResourceType"
+        },
+        "response": {
+          "description": "Cached response data.",
+          "optional": true,
+          "$ref": "Response"
+        },
+        "bodySize": {
+          "description": "Cached response body size.",
+          "type": "number"
+        }
+      }
+    }
+  ],
+  [
+    "Initiator",
+    {
+      "category": "type",
+      "id": "Initiator",
+      "description": "Information about the request initiator.",
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Type of this initiator.",
+          "type": "string",
+          "enum": [
+            "parser",
+            "script",
+            "preload",
+            "SignedExchange",
+            "preflight",
+            "other"
+          ]
+        },
+        "stack": {
+          "description": "Initiator JavaScript stack trace, set for Script only.",
+          "optional": true,
+          "$ref": "Runtime.StackTrace"
+        },
+        "url": {
+          "description": "Initiator URL, set for Parser type or for Script type (when script is importing module) or for SignedExchange type.",
+          "optional": true,
+          "type": "string"
+        },
+        "lineNumber": {
+          "description": "Initiator line number, set for Parser type or for Script type (when script is importing\nmodule) (0-based).",
+          "optional": true,
+          "type": "number"
+        },
+        "columnNumber": {
+          "description": "Initiator column number, set for Parser type or for Script type (when script is importing\nmodule) (0-based).",
+          "optional": true,
+          "type": "number"
+        },
+        "requestId": {
+          "description": "Set if another request triggered this request (e.g. preflight).",
+          "optional": true,
+          "$ref": "RequestId"
+        }
+      }
+    }
+  ],
+  [
+    "Cookie",
+    {
+      "category": "type",
+      "id": "Cookie",
+      "description": "Cookie object",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Cookie name.",
+          "type": "string"
+        },
+        "value": {
+          "description": "Cookie value.",
+          "type": "string"
+        },
+        "domain": {
+          "description": "Cookie domain.",
+          "type": "string"
+        },
+        "path": {
+          "description": "Cookie path.",
+          "type": "string"
+        },
+        "expires": {
+          "description": "Cookie expiration date as the number of seconds since the UNIX epoch.",
+          "type": "number"
+        },
+        "size": {
+          "description": "Cookie size.",
+          "type": "integer"
+        },
+        "httpOnly": {
+          "description": "True if cookie is http-only.",
+          "type": "boolean"
+        },
+        "secure": {
+          "description": "True if cookie is secure.",
+          "type": "boolean"
+        },
+        "session": {
+          "description": "True in case of session cookie.",
+          "type": "boolean"
+        },
+        "sameSite": {
+          "description": "Cookie SameSite type.",
+          "optional": true,
+          "$ref": "CookieSameSite"
+        },
+        "priority": {
+          "description": "Cookie Priority",
+          "experimental": true,
+          "$ref": "CookiePriority"
+        },
+        "sameParty": {
+          "description": "True if cookie is SameParty.",
+          "experimental": true,
+          "deprecated": true,
+          "type": "boolean"
+        },
+        "sourceScheme": {
+          "description": "Cookie source scheme type.",
+          "experimental": true,
+          "$ref": "CookieSourceScheme"
+        },
+        "sourcePort": {
+          "description": "Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.\nAn unspecified port value allows protocol clients to emulate legacy cookie scope for the port.\nThis is a temporary ability and it will be removed in the future.",
+          "experimental": true,
+          "type": "integer"
+        },
+        "partitionKey": {
+          "description": "Cookie partition key. The site of the top-level URL the browser was visiting at the start\nof the request to the endpoint that set the cookie.",
+          "experimental": true,
+          "optional": true,
+          "type": "string"
+        },
+        "partitionKeyOpaque": {
+          "description": "True if cookie partition key is opaque.",
+          "experimental": true,
+          "optional": true,
+          "type": "boolean"
+        }
+      }
+    }
+  ],
+  [
+    "SetCookieBlockedReason",
+    {
+      "category": "type",
+      "id": "SetCookieBlockedReason",
+      "description": "Types of reasons why a cookie may not be stored from a response.",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "SecureOnly",
+        "SameSiteStrict",
+        "SameSiteLax",
+        "SameSiteUnspecifiedTreatedAsLax",
+        "SameSiteNoneInsecure",
+        "UserPreferences",
+        "ThirdPartyPhaseout",
+        "ThirdPartyBlockedInFirstPartySet",
+        "SyntaxError",
+        "SchemeNotSupported",
+        "OverwriteSecure",
+        "InvalidDomain",
+        "InvalidPrefix",
+        "UnknownError",
+        "SchemefulSameSiteStrict",
+        "SchemefulSameSiteLax",
+        "SchemefulSameSiteUnspecifiedTreatedAsLax",
+        "SamePartyFromCrossPartyContext",
+        "SamePartyConflictsWithOtherAttributes",
+        "NameValuePairExceedsMaxSize",
+        "DisallowedCharacter",
+        "NoCookieContent"
+      ]
+    }
+  ],
+  [
+    "CookieBlockedReason",
+    {
+      "category": "type",
+      "id": "CookieBlockedReason",
+      "description": "Types of reasons why a cookie may not be sent with a request.",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "SecureOnly",
+        "NotOnPath",
+        "DomainMismatch",
+        "SameSiteStrict",
+        "SameSiteLax",
+        "SameSiteUnspecifiedTreatedAsLax",
+        "SameSiteNoneInsecure",
+        "UserPreferences",
+        "ThirdPartyPhaseout",
+        "ThirdPartyBlockedInFirstPartySet",
+        "UnknownError",
+        "SchemefulSameSiteStrict",
+        "SchemefulSameSiteLax",
+        "SchemefulSameSiteUnspecifiedTreatedAsLax",
+        "SamePartyFromCrossPartyContext",
+        "NameValuePairExceedsMaxSize"
+      ]
+    }
+  ],
+  [
+    "BlockedSetCookieWithReason",
+    {
+      "category": "type",
+      "id": "BlockedSetCookieWithReason",
+      "description": "A cookie which was not stored from a response with the corresponding reason.",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "blockedReasons": {
+          "description": "The reason(s) this cookie was blocked.",
+          "type": "array",
+          "items": {
+            "$ref": "SetCookieBlockedReason"
+          }
+        },
+        "cookieLine": {
+          "description": "The string representing this individual cookie as it would appear in the header.\nThis is not the entire \"cookie\" or \"set-cookie\" header which could have multiple cookies.",
+          "type": "string"
+        },
+        "cookie": {
+          "description": "The cookie object which represents the cookie which was not stored. It is optional because\nsometimes complete cookie information is not available, such as in the case of parsing\nerrors.",
+          "optional": true,
+          "$ref": "Cookie"
+        }
+      }
+    }
+  ],
+  [
+    "BlockedCookieWithReason",
+    {
+      "category": "type",
+      "id": "BlockedCookieWithReason",
+      "description": "A cookie with was not sent with a request with the corresponding reason.",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "blockedReasons": {
+          "description": "The reason(s) the cookie was blocked.",
+          "type": "array",
+          "items": {
+            "$ref": "CookieBlockedReason"
+          }
+        },
+        "cookie": {
+          "description": "The cookie object representing the cookie which was not sent.",
+          "$ref": "Cookie"
+        }
+      }
+    }
+  ],
+  [
+    "CookieParam",
+    {
+      "category": "type",
+      "id": "CookieParam",
+      "description": "Cookie parameter object",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Cookie name.",
+          "type": "string"
+        },
+        "value": {
+          "description": "Cookie value.",
+          "type": "string"
+        },
+        "url": {
+          "description": "The request-URI to associate with the setting of the cookie. This value can affect the\ndefault domain, path, source port, and source scheme values of the created cookie.",
+          "optional": true,
+          "type": "string"
+        },
+        "domain": {
+          "description": "Cookie domain.",
+          "optional": true,
+          "type": "string"
+        },
+        "path": {
+          "description": "Cookie path.",
+          "optional": true,
+          "type": "string"
+        },
+        "secure": {
+          "description": "True if cookie is secure.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "httpOnly": {
+          "description": "True if cookie is http-only.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "sameSite": {
+          "description": "Cookie SameSite type.",
+          "optional": true,
+          "$ref": "CookieSameSite"
+        },
+        "expires": {
+          "description": "Cookie expiration date, session cookie if not set",
+          "optional": true,
+          "$ref": "TimeSinceEpoch"
+        },
+        "priority": {
+          "description": "Cookie Priority.",
+          "experimental": true,
+          "optional": true,
+          "$ref": "CookiePriority"
+        },
+        "sameParty": {
+          "description": "True if cookie is SameParty.",
+          "experimental": true,
+          "optional": true,
+          "type": "boolean"
+        },
+        "sourceScheme": {
+          "description": "Cookie source scheme type.",
+          "experimental": true,
+          "optional": true,
+          "$ref": "CookieSourceScheme"
+        },
+        "sourcePort": {
+          "description": "Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.\nAn unspecified port value allows protocol clients to emulate legacy cookie scope for the port.\nThis is a temporary ability and it will be removed in the future.",
+          "experimental": true,
+          "optional": true,
+          "type": "integer"
+        },
+        "partitionKey": {
+          "description": "Cookie partition key. The site of the top-level URL the browser was visiting at the start\nof the request to the endpoint that set the cookie.\nIf not set, the cookie will be set as not partitioned.",
+          "experimental": true,
+          "optional": true,
+          "type": "string"
+        }
+      }
+    }
+  ],
+  [
+    "AuthChallenge",
+    {
+      "category": "type",
+      "id": "AuthChallenge",
+      "description": "Authorization challenge for HTTP status code 401 or 407.",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "source": {
+          "description": "Source of the authentication challenge.",
+          "optional": true,
+          "type": "string",
+          "enum": [
+            "Server",
+            "Proxy"
+          ]
+        },
+        "origin": {
+          "description": "Origin of the challenger.",
+          "type": "string"
+        },
+        "scheme": {
+          "description": "The authentication scheme used, such as basic or digest",
+          "type": "string"
+        },
+        "realm": {
+          "description": "The realm of the challenge. May be empty.",
+          "type": "string"
+        }
+      }
+    }
+  ],
+  [
+    "AuthChallengeResponse",
+    {
+      "category": "type",
+      "id": "AuthChallengeResponse",
+      "description": "Response to an AuthChallenge.",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "response": {
+          "description": "The decision on what to do in response to the authorization challenge.  Default means\ndeferring to the default behavior of the net stack, which will likely either the Cancel\nauthentication or display a popup dialog box.",
+          "type": "string",
+          "enum": [
+            "Default",
+            "CancelAuth",
+            "ProvideCredentials"
+          ]
+        },
+        "username": {
+          "description": "The username to provide, possibly empty. Should only be set if response is\nProvideCredentials.",
+          "optional": true,
+          "type": "string"
+        },
+        "password": {
+          "description": "The password to provide, possibly empty. Should only be set if response is\nProvideCredentials.",
+          "optional": true,
+          "type": "string"
+        }
+      }
+    }
+  ],
+  [
+    "InterceptionStage",
+    {
+      "category": "type",
+      "id": "InterceptionStage",
+      "description": "Stages of the interception to begin intercepting. Request will intercept before the request is\nsent. Response will intercept after the response is received.",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "Request",
+        "HeadersReceived"
+      ]
+    }
+  ],
+  [
+    "RequestPattern",
+    {
+      "category": "type",
+      "id": "RequestPattern",
+      "description": "Request pattern for interception.",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "urlPattern": {
+          "description": "Wildcards (`'*'` -> zero or more, `'?'` -> exactly one) are allowed. Escape character is\nbackslash. Omitting is equivalent to `\"*\"`.",
+          "optional": true,
+          "type": "string"
+        },
+        "resourceType": {
+          "description": "If set, only requests for matching resource types will be intercepted.",
+          "optional": true,
+          "$ref": "ResourceType"
+        },
+        "interceptionStage": {
+          "description": "Stage at which to begin intercepting requests. Default is Request.",
+          "optional": true,
+          "$ref": "InterceptionStage"
+        }
+      }
+    }
+  ],
+  [
+    "SignedExchangeSignature",
+    {
+      "category": "type",
+      "id": "SignedExchangeSignature",
+      "description": "Information about a signed exchange signature.\nhttps://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#rfc.section.3.1",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "label": {
+          "description": "Signed exchange signature label.",
+          "type": "string"
+        },
+        "signature": {
+          "description": "The hex string of signed exchange signature.",
+          "type": "string"
+        },
+        "integrity": {
+          "description": "Signed exchange signature integrity.",
+          "type": "string"
+        },
+        "certUrl": {
+          "description": "Signed exchange signature cert Url.",
+          "optional": true,
+          "type": "string"
+        },
+        "certSha256": {
+          "description": "The hex string of signed exchange signature cert sha256.",
+          "optional": true,
+          "type": "string"
+        },
+        "validityUrl": {
+          "description": "Signed exchange signature validity Url.",
+          "type": "string"
+        },
+        "date": {
+          "description": "Signed exchange signature date.",
+          "type": "integer"
+        },
+        "expires": {
+          "description": "Signed exchange signature expires.",
+          "type": "integer"
+        },
+        "certificates": {
+          "description": "The encoded certificates.",
+          "optional": true,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  [
+    "SignedExchangeHeader",
+    {
+      "category": "type",
+      "id": "SignedExchangeHeader",
+      "description": "Information about a signed exchange header.\nhttps://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#cbor-representation",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "requestUrl": {
+          "description": "Signed exchange request URL.",
+          "type": "string"
+        },
+        "responseCode": {
+          "description": "Signed exchange response code.",
+          "type": "integer"
+        },
+        "responseHeaders": {
+          "description": "Signed exchange response headers.",
+          "$ref": "Headers"
+        },
+        "signatures": {
+          "description": "Signed exchange response signature.",
+          "type": "array",
+          "items": {
+            "$ref": "SignedExchangeSignature"
+          }
+        },
+        "headerIntegrity": {
+          "description": "Signed exchange header integrity hash in the form of `sha256-<base64-hash-value>`.",
+          "type": "string"
+        }
+      }
+    }
+  ],
+  [
+    "SignedExchangeErrorField",
+    {
+      "category": "type",
+      "id": "SignedExchangeErrorField",
+      "description": "Field type for a signed exchange related error.",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "signatureSig",
+        "signatureIntegrity",
+        "signatureCertUrl",
+        "signatureCertSha256",
+        "signatureValidityUrl",
+        "signatureTimestamps"
+      ]
+    }
+  ],
+  [
+    "SignedExchangeError",
+    {
+      "category": "type",
+      "id": "SignedExchangeError",
+      "description": "Information about a signed exchange response.",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "message": {
+          "description": "Error message.",
+          "type": "string"
+        },
+        "signatureIndex": {
+          "description": "The index of the signature which caused the error.",
+          "optional": true,
+          "type": "integer"
+        },
+        "errorField": {
+          "description": "The field which caused the error.",
+          "optional": true,
+          "$ref": "SignedExchangeErrorField"
+        }
+      }
+    }
+  ],
+  [
+    "SignedExchangeInfo",
+    {
+      "category": "type",
+      "id": "SignedExchangeInfo",
+      "description": "Information about a signed exchange response.",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "outerResponse": {
+          "description": "The outer response of signed HTTP exchange which was received from network.",
+          "$ref": "Response"
+        },
+        "header": {
+          "description": "Information about the signed exchange header.",
+          "optional": true,
+          "$ref": "SignedExchangeHeader"
+        },
+        "securityDetails": {
+          "description": "Security details for the signed exchange header.",
+          "optional": true,
+          "$ref": "SecurityDetails"
+        },
+        "errors": {
+          "description": "Errors occurred while handling the signed exchagne.",
+          "optional": true,
+          "type": "array",
+          "items": {
+            "$ref": "SignedExchangeError"
+          }
+        }
+      }
+    }
+  ],
+  [
+    "ContentEncoding",
+    {
+      "category": "type",
+      "id": "ContentEncoding",
+      "description": "List of content encodings supported by the backend.",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "deflate",
+        "gzip",
+        "br",
+        "zstd"
+      ]
+    }
+  ],
+  [
+    "PrivateNetworkRequestPolicy",
+    {
+      "category": "type",
+      "id": "PrivateNetworkRequestPolicy",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "Allow",
+        "BlockFromInsecureToMorePrivate",
+        "WarnFromInsecureToMorePrivate",
+        "PreflightBlock",
+        "PreflightWarn"
+      ]
+    }
+  ],
+  [
+    "IPAddressSpace",
+    {
+      "category": "type",
+      "id": "IPAddressSpace",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "Local",
+        "Private",
+        "Public",
+        "Unknown"
+      ]
+    }
+  ],
+  [
+    "ConnectTiming",
+    {
+      "category": "type",
+      "id": "ConnectTiming",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "requestTime": {
+          "description": "Timing's requestTime is a baseline in seconds, while the other numbers are ticks in\nmilliseconds relatively to this requestTime. Matches ResourceTiming's requestTime for\nthe same request (but not for redirected requests).",
+          "type": "number"
+        }
+      }
+    }
+  ],
+  [
+    "ClientSecurityState",
+    {
+      "category": "type",
+      "id": "ClientSecurityState",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "initiatorIsSecureContext": {
+          "type": "boolean"
+        },
+        "initiatorIPAddressSpace": {
+          "$ref": "IPAddressSpace"
+        },
+        "privateNetworkRequestPolicy": {
+          "$ref": "PrivateNetworkRequestPolicy"
+        }
+      }
+    }
+  ],
+  [
+    "CrossOriginOpenerPolicyValue",
+    {
+      "category": "type",
+      "id": "CrossOriginOpenerPolicyValue",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "SameOrigin",
+        "SameOriginAllowPopups",
+        "RestrictProperties",
+        "UnsafeNone",
+        "SameOriginPlusCoep",
+        "RestrictPropertiesPlusCoep"
+      ]
+    }
+  ],
+  [
+    "CrossOriginOpenerPolicyStatus",
+    {
+      "category": "type",
+      "id": "CrossOriginOpenerPolicyStatus",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "CrossOriginOpenerPolicyValue"
+        },
+        "reportOnlyValue": {
+          "$ref": "CrossOriginOpenerPolicyValue"
+        },
+        "reportingEndpoint": {
+          "optional": true,
+          "type": "string"
+        },
+        "reportOnlyReportingEndpoint": {
+          "optional": true,
+          "type": "string"
+        }
+      }
+    }
+  ],
+  [
+    "CrossOriginEmbedderPolicyValue",
+    {
+      "category": "type",
+      "id": "CrossOriginEmbedderPolicyValue",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "None",
+        "Credentialless",
+        "RequireCorp"
+      ]
+    }
+  ],
+  [
+    "CrossOriginEmbedderPolicyStatus",
+    {
+      "category": "type",
+      "id": "CrossOriginEmbedderPolicyStatus",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "CrossOriginEmbedderPolicyValue"
+        },
+        "reportOnlyValue": {
+          "$ref": "CrossOriginEmbedderPolicyValue"
+        },
+        "reportingEndpoint": {
+          "optional": true,
+          "type": "string"
+        },
+        "reportOnlyReportingEndpoint": {
+          "optional": true,
+          "type": "string"
+        }
+      }
+    }
+  ],
+  [
+    "ContentSecurityPolicySource",
+    {
+      "category": "type",
+      "id": "ContentSecurityPolicySource",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "HTTP",
+        "Meta"
+      ]
+    }
+  ],
+  [
+    "ContentSecurityPolicyStatus",
+    {
+      "category": "type",
+      "id": "ContentSecurityPolicyStatus",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "effectiveDirectives": {
+          "type": "string"
+        },
+        "isEnforced": {
+          "type": "boolean"
+        },
+        "source": {
+          "$ref": "ContentSecurityPolicySource"
+        }
+      }
+    }
+  ],
+  [
+    "SecurityIsolationStatus",
+    {
+      "category": "type",
+      "id": "SecurityIsolationStatus",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "coop": {
+          "optional": true,
+          "$ref": "CrossOriginOpenerPolicyStatus"
+        },
+        "coep": {
+          "optional": true,
+          "$ref": "CrossOriginEmbedderPolicyStatus"
+        },
+        "csp": {
+          "optional": true,
+          "type": "array",
+          "items": {
+            "$ref": "ContentSecurityPolicyStatus"
+          }
+        }
+      }
+    }
+  ],
+  [
+    "ReportStatus",
+    {
+      "category": "type",
+      "id": "ReportStatus",
+      "description": "The status of a Reporting API report.",
+      "experimental": true,
+      "type": "string",
+      "enum": [
+        "Queued",
+        "Pending",
+        "MarkedForRemoval",
+        "Success"
+      ]
+    }
+  ],
+  [
+    "ReportId",
+    {
+      "category": "type",
+      "id": "ReportId",
+      "experimental": true,
+      "type": "string"
+    }
+  ],
+  [
+    "ReportingApiReport",
+    {
+      "category": "type",
+      "id": "ReportingApiReport",
+      "description": "An object representing a report generated by the Reporting API.",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "ReportId"
+        },
+        "initiatorUrl": {
+          "description": "The URL of the document that triggered the report.",
+          "type": "string"
+        },
+        "destination": {
+          "description": "The name of the endpoint group that should be used to deliver the report.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The type of the report (specifies the set of data that is contained in the report body).",
+          "type": "string"
+        },
+        "timestamp": {
+          "description": "When the report was generated.",
+          "$ref": "Network.TimeSinceEpoch"
+        },
+        "depth": {
+          "description": "How many uploads deep the related request was.",
+          "type": "integer"
+        },
+        "completedAttempts": {
+          "description": "The number of delivery attempts made so far, not including an active attempt.",
+          "type": "integer"
+        },
+        "body": {
+          "type": "object"
+        },
+        "status": {
+          "$ref": "ReportStatus"
+        }
+      }
+    }
+  ],
+  [
+    "ReportingApiEndpoint",
+    {
+      "category": "type",
+      "id": "ReportingApiEndpoint",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "url": {
+          "description": "The URL of the endpoint to which reports may be delivered.",
+          "type": "string"
+        },
+        "groupName": {
+          "description": "Name of the endpoint group.",
+          "type": "string"
+        }
+      }
+    }
+  ],
+  [
+    "LoadNetworkResourcePageResult",
+    {
+      "category": "type",
+      "id": "LoadNetworkResourcePageResult",
+      "description": "An object providing the result of a network resource load.",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "netError": {
+          "description": "Optional values used for error reporting.",
+          "optional": true,
+          "type": "number"
+        },
+        "netErrorName": {
+          "optional": true,
+          "type": "string"
+        },
+        "httpStatusCode": {
+          "optional": true,
+          "type": "number"
+        },
+        "stream": {
+          "description": "If successful, one of the following two fields holds the result.",
+          "optional": true,
+          "$ref": "IO.StreamHandle"
+        },
+        "headers": {
+          "description": "Response headers.",
+          "optional": true,
+          "$ref": "Network.Headers"
+        }
+      }
+    }
+  ],
+  [
+    "LoadNetworkResourceOptions",
+    {
+      "category": "type",
+      "id": "LoadNetworkResourceOptions",
+      "description": "An options object that may be extended later to better support CORS,\nCORB and streaming.",
+      "experimental": true,
+      "type": "object",
+      "properties": {
+        "disableCache": {
+          "type": "boolean"
+        },
+        "includeCredentials": {
+          "type": "boolean"
+        }
+      }
+    }
+  ],
+  [
+    "on",
+    null
+  ]
+]

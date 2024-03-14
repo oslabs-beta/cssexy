@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Style from './Style.jsx';
+import SidebarStyling from './SidebarStyling.jsx';
 
 /* Styles included: default browser styles*/
 
-function UserAgentStylesComp() {
-    const userAgentStylesData = useSelector(state => state.styles.userAgentStyles);
+function RulesUserAgentComp() {
+    const userAgentRulesData = useSelector(state => state.rules.userAgentRules);
     const [longhandGetter, setLonghandGetter] = useState(null);
     let userAgentSelector;
-    const userAgentStyles = {};
+    const userAgentRules = {};
 
     const ObjToArr = stylesObj => {
         const arr = [];
@@ -26,7 +26,7 @@ function UserAgentStylesComp() {
         dummy.style.setProperty(styleName, styleVal);
         // get names of all longhand properties corresponding to the shorthand property
         const longhandStyles = [...dummy.style];
-        // delete duplicate longhand properties from userAgentStyles obj
+        // delete duplicate longhand properties from userAgentRules obj
         longhandStyles.forEach(ls => {
             if (stylesObj[ls]) delete stylesObj[ls];
         });
@@ -38,21 +38,21 @@ function UserAgentStylesComp() {
     useEffect(() => setLonghandGetter(document.querySelector('#longhand-getter')), []);
 
     if (longhandGetter) {
-        userAgentStylesData.forEach(style => {
-            // get only the first selector, because this is how it is in the chrome dev tools 
+        userAgentRulesData.forEach(style => {
+            // get only the first selector, because this is how it is in the chrome dev tools
             if (!userAgentSelector) userAgentSelector = style.rule.selectorList?.selectors[0].text;
 
             // add all longhand properties
             for (let cssProperty of style.rule.style.cssProperties) {
-                if (cssProperty.value) userAgentStyles[cssProperty.name] = cssProperty.value;
+                if (cssProperty.value) userAgentRules[cssProperty.name] = cssProperty.value;
             }
             const shorthandStyles = style.rule.style.shorthandEntries;
             if (shorthandStyles.length) {
                 for (let shortStyle of shorthandStyles) {
                     // add all shorthand properties
-                    if (shortStyle.value) userAgentStyles[shortStyle.name] = shortStyle.value;
+                    if (shortStyle.value) userAgentRules[shortStyle.name] = shortStyle.value;
                     // get and remove longhand properties corresponding to each shorthand
-                    removeDuplicates(longhandGetter, shortStyle.name, shortStyle.value, userAgentStyles);
+                    removeDuplicates(longhandGetter, shortStyle.name, shortStyle.value, userAgentRules);
                 }
             }
         })
@@ -60,14 +60,14 @@ function UserAgentStylesComp() {
 
     return (
         <div>
-            <h3>Browser default styles</h3>
-            <Style 
+        <h3>user agent</h3>
+            <SidebarStyling
                 selector={userAgentSelector}
-                cssProperties={ObjToArr(userAgentStyles)}
+                cssProperties={ObjToArr(userAgentRules)}
                 origin={'user-agent'}
             />
-        </div>   
+        </div>
     )
 };
 
-export default UserAgentStylesComp;
+export default RulesUserAgentComp;
