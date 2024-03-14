@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+// regularRules are styles specified in .css files (origin=regular)
+// inlineRules are styles specified directly on components (origin=inline)
+// userAgentRules are default browser styles (origin=user-agent)
 const initialState = {
-  // regularRules are styles specified in .css files (origin=regular)
-  // inlineRules are styles specified directly on components (origin=inline)
-  // userAgentRules are default browser styles (origin=user-agent)
   regularRules: [],
   inlineRules: [],
   userAgentRules: [],

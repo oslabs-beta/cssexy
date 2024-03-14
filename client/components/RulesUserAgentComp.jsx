@@ -4,7 +4,7 @@ import SidebarStyling from './SidebarStyling.jsx';
 
 /* Styles included: default browser styles*/
 
-function UserAgentRulesComp() {
+function RulesUserAgentComp() {
     const userAgentRulesData = useSelector(state => state.rules.userAgentRules);
     const [longhandGetter, setLonghandGetter] = useState(null);
     let userAgentSelector;
@@ -70,4 +70,4 @@ function UserAgentRulesComp() {
     )
 };
 
-export default UserAgentRulesComp;
+export default RulesUserAgentComp;

@@ -21,17 +21,17 @@ const iFrameComp = ({ src, proxy, className }) => {
   useEffect(() => {
     // getting our iframe
     const iframe = document.querySelector(`.${className}`);
-    // console.log('iframe', iframe);
+    console.log('iFrameComp: iframe', iframe);
 
     const handleLoad = () => {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
-        // console.log('iframeDoc', iframeDoc);
+        console.log('iFrameComp: iframeDoc', iframeDoc);
 
         const handleClick = async (event) => {
           const element = event.target;
-          // console.log('iFrameComp: element', element);
+          console.log('iFrameComp: element', element);
           const data = {
             id: element.id,
             nodeName: element.nodeName,
@@ -51,6 +51,8 @@ const iFrameComp = ({ src, proxy, className }) => {
             },
             body: JSON.stringify(data),
           });
+
+          console.log('iFrameComp: response', response);
 
           const result = await response.json();
 

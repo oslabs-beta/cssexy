@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import SidebarStyling from './SidebarStyling.jsx';
-import UserAgentRulesComp from "./UserAgentRulesComp.jsx";
+import RulesUserAgentComp from "./RulesUserAgentComp.jsx";
 
-function AllRulesComp(){
+function RulesAllComp(){
     const inlineRules = useSelector(state => state.rules.inlineRules);
     const regularRules = useSelector(state => state.rules.regularRules);
 
-    const inlineRuleComp = inlineRules.map((style, idx) => {
+    const RulesInlineComp = inlineRules.map((style, idx) => {
         // console.log('inlineRules', inlineRules);
         return (
             <SidebarStyling
@@ -19,7 +19,7 @@ function AllRulesComp(){
             )
         });
 
-    const regularRuleComp = regularRules.map((style, idx) => {
+    const RulesRegularComp = regularRules.map((style, idx) => {
         // console.log('regularRules', regularRules);
         return (
             <SidebarStyling
@@ -36,12 +36,12 @@ function AllRulesComp(){
             {/* the below is iff we only want to display a given header when there are styles  of that type for the element */}
             {/* {inlineRules[0]?.rule?.style.cssProperties.length > 0 && <h3>inline:</h3>} */}
             <h3>inline</h3>
-            {inlineRuleComp}
+            {RulesInlineComp}
             <h3>.css</h3>
-            {regularRuleComp}
-            <UserAgentRulesComp />
+            {RulesRegularComp}
+            <RulesUserAgentComp />
         </div>
     )
 };
 
-export default AllRulesComp;
+export default RulesAllComp;
