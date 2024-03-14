@@ -24,7 +24,7 @@ const cdpEnable = async (client, host) => {
   // to control page navigation, lifecycle, and size.
   await Page.enable();
 
-  CSS.styleSheetAdded(function (param) { console.log('StyleSheet Data:', param) });
+  CSS.styleSheetAdded(function (param) { console.log('StyleSheet Data: something', param.header) });
 
   console.log('CSS, DOM, Network, and Page domains are enabled');
 

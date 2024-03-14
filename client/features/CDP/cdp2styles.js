@@ -95,10 +95,10 @@ const cdpStyles = async (DOM, CSS, selector) => {
 
   const testSheet = matchedCSSRules[2].rule.style.styleSheetId;
   const testSheetData = await CSS.getStyleSheetText({ styleSheetId: testSheet });
-  const testRange = await CSS.SourceRange({ startLine: 0, startColumn: 0, endLine: 0, endColumn: 2 })
+  //const testRange = await CSS.SourceRange({ startLine: 0, startColumn: 0, endLine: 0, endColumn: 2 })
   console.log(`Stylesheet at index 2: ${testSheet}`);
-  console.log(`Stylesheet data: ${JSON.stringify(testSheetData)}`);
-  console.log(`Range at index 1: ${testRange}`);
+  //console.log(`Stylesheet data: ${JSON.stringify(testSheetData)}`);
+  //console.log(`Range at index 1: ${testRange}`);
 
 
 
