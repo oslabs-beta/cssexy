@@ -40,3 +40,7 @@ body {
 .style-property-span {
     color: #F95738;
 }
+
+.overwritten {
+    text-decoration: line-through #2B283A;
+}
