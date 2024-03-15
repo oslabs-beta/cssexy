@@ -23,8 +23,9 @@ const cdpEnable = async (client, proxy, selector) => {
   // CSS: to query and manipulate CSS styles.
   // Network: to inspect network activity and manage network conditions.
   // Page: to control page navigation, lifecycle, and size.
-  await Promise.all([DOM.enable(), CSS.enable(), Network.enable(), Page.enable()]);
+  await Promise.all([DOM.enable(), CSS.enable(() => { }), Network.enable(), Page.enable()]);
   // console.log('cdpEnable: DOM, CSS, Network, and Page domains are enabled');
+  CSS.styleSheetAdded(function (param) { console.log('StyleSheet Data:', param.header) });
 
 
   // console.log('getting nodes');
@@ -33,13 +34,13 @@ const cdpEnable = async (client, proxy, selector) => {
   // depth: depth of the dom tree that we want
   // -> -1 means we want to get the entire DOM tree.
   // -> >= 0 would correspond to a specific depth of the DOM tree.
-  const { nodes } = await DOM.getFlattenedDocument({ depth: -1});
-  
+  const { nodes } = await DOM.getFlattenedDocument({ depth: -1 });
+
   //Create the directory before trying to add the file.
-  await mkdir((new URL('../../data/output/', import.meta.url)), {recursive:true},(err) => {
+  await mkdir((new URL('../../data/output/', import.meta.url)), { recursive: true }, (err) => {
     if (err) throw err;
   });
-  
+
   writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
 
   // Find nodes where the nodeName property is 'IFRAME'.
