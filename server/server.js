@@ -1,8 +1,8 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import cdpProcess from '../client/cdp/cdp0process.js';
 
+import cdpProcess from '../client/cdp/cdp0process.js';
 
 const app = express();
 const PORT = 8888;

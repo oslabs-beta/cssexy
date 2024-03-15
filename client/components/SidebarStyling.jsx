@@ -10,6 +10,7 @@ function SidebarStyling(props) {
             // longhand example: border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: blueviolet
             return (
                 <p key={`styleParagraphs-${idx}`} className='style-paragraph'>
+                    <span className='style-source-span'>{props.source}</span>:
                     <span className='style-property-span'>{cssProp.name}</span>:
                     <span className='style-value-span'>{cssProp.value}</span>
                 </p>

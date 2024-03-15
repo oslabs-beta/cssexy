@@ -38,6 +38,10 @@ const rulesSlice = createSlice({
       // console.log('rulesSlice: state.keyframeRules: updated', action.payload);
       state.keyframeRules = action.payload;
     },
+    updateStyleSheets: (state, action) => {
+      console.log('rulesSlice: state.styleSheets: updated', action.payload);
+      state.styleSheets = action.payload;
+    },
   },
 });
 
@@ -46,7 +50,8 @@ export const {
   updateRegularRules,
   updateUserAgentRules,
   updateInheritedRules,
-  updateKeyframeRules
+  updateKeyframeRules,
+  updateStyleSheets
 } = rulesSlice.actions;
 
 export default rulesSlice.reducer;
