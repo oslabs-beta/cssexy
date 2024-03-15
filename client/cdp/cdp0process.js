@@ -14,7 +14,7 @@ import CDP from 'chrome-remote-interface';
 
 import cdpEnable from './cdp1enable.js';
 import cdpRules from './cdp2rules.js';
-
+import { decodeBase } from './getSource.js';
 /**
  * cdpProcess
  * @param {string} attrs - The aatributes received from the iframe
@@ -65,6 +65,8 @@ const cdpProcess = async (data) => {
 
         // extracting the 'domains' from the CDP client.
         const { DOM, CSS, Network, Page, iframeNode } = await cdpEnable(cdpClient, proxy);
+        
+       
 
         // these allow us to see / save all of the methods and properties that the CDP client exposes.
         // fs.writeFileSync('./data/domains/DOM.json', JSON.stringify(Object.entries(DOM), null, 2));

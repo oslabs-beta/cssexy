@@ -10,7 +10,7 @@
 
 
 import { writeFileSync, mkdir } from 'node:fs';
-
+import { decodeBase } from './getSource.js';
 const cdpEnable = async (client, proxy, selector) => {
   // extract the different 'domains' from the client.
   const { DOM, CSS, Network, Page } = client;
@@ -23,9 +23,15 @@ const cdpEnable = async (client, proxy, selector) => {
   // CSS: to query and manipulate CSS styles.
   // Network: to inspect network activity and manage network conditions.
   // Page: to control page navigation, lifecycle, and size.
-  await Promise.all([DOM.enable(), CSS.enable(), Network.enable(), Page.enable()]);
+  await Promise.all([DOM.enable(() => {}), CSS.enable(() => {}), Network.enable(() => {}), Page.enable(() => {})]);
+ 
   // console.log('cdpEnable: DOM, CSS, Network, and Page domains are enabled');
-
+    CSS.styleSheetAdded( (param)=> { 
+            if(param.header.sourceMapURL){
+             decodeBase(param.header.sourceMapURL)
+            }
+           
+         });
 
   // console.log('getting nodes');
   // getFlattenedDocument: returns a flattened array of the DOM tree at the specified depth
