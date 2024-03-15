@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules } from '../slices/rulesSlice.js';
+import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component with event handling for click events.
@@ -62,6 +62,7 @@ const iFrameComp = ({ src, proxy, className }) => {
           dispatch(updateInlineRules(result.inlineRules));
           dispatch(updateRegularRules(result.regularRules));
           dispatch(updateUserAgentRules(result.userAgentRules));
+          dispatch(updateStyleSheets(result.styleSheets));
           // dispatch(updateInheritedRules(result.inheritedRules));
           // dispatch(updateKeyframeRules(result.keyframeRules));
         };

@@ -10,7 +10,6 @@
 
 
 import { writeFileSync, mkdir } from 'node:fs';
-import { decodeBase } from './getSource.js';
 const cdpEnable = async (client, proxy, selector) => {
   // extract the different 'domains' from the client.
   const { DOM, CSS, Network, Page } = client;
@@ -24,14 +23,30 @@ const cdpEnable = async (client, proxy, selector) => {
   // Network: to inspect network activity and manage network conditions.
   // Page: to control page navigation, lifecycle, and size.
   await Promise.all([DOM.enable(() => {}), CSS.enable(() => {}), Network.enable(() => {}), Page.enable(() => {})]);
- 
+
+  const styleSheets = {}
+
   // console.log('cdpEnable: DOM, CSS, Network, and Page domains are enabled');
-    CSS.styleSheetAdded( (param)=> { 
-            if(param.header.sourceMapURL){
-             decodeBase(param.header.sourceMapURL)
+  CSS.styleSheetAdded( (param)=> {
+          if(param.header.sourceMapURL){
+            console.log('styleSheetAdded with sourceMapURL');
+            const id = param.header.styleSheetId;
+            // console.log('styleSheetParamHeader:', param.header);
+            const sourceMapData = Buffer.from(param.header.sourceMapURL.split(',')[1], 'base64').toString('utf-8');
+            const decodedMap = JSON.parse(sourceMapData);
+            console.log('\n\n\n');
+            // console.log('decodedMap', decodedMap);
+            const sources = decodedMap.sources;
+
+            styleSheets[id] = {
+              sources
             }
-           
-         });
+          }
+          else {
+            console.log('styleSheetAdded: no sourceMapURL');
+            // console.log('styleSheetParamHeader:', param.header);
+          }
+  });
 
   // console.log('getting nodes');
   // getFlattenedDocument: returns a flattened array of the DOM tree at the specified depth
@@ -40,12 +55,12 @@ const cdpEnable = async (client, proxy, selector) => {
   // -> -1 means we want to get the entire DOM tree.
   // -> >= 0 would correspond to a specific depth of the DOM tree.
   const { nodes } = await DOM.getFlattenedDocument({ depth: -1});
-  
+
   //Create the directory before trying to add the file.
   await mkdir((new URL('../../data/output/', import.meta.url)), {recursive:true},(err) => {
     if (err) throw err;
   });
-  
+
   writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
 
   // Find nodes where the nodeName property is 'IFRAME'.
@@ -69,7 +84,7 @@ const cdpEnable = async (client, proxy, selector) => {
   writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
 
   // Return the enabled domains and the nodeId of the iframe root node to the process
-  return { DOM, CSS, Network, Page, iframeNode };
+  return { DOM, CSS, Network, Page, iframeNode, styleSheets };
 }
 
 export default cdpEnable;
