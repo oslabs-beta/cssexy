@@ -29,6 +29,10 @@ body {
     justify-content: space-between;
 }
 
+.style-source-span {
+    font-size: 12px;
+}
+
 .style-container p {
     margin: 0;
 }

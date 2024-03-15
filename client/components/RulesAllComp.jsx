@@ -6,15 +6,20 @@ import RulesUserAgentComp from "./RulesUserAgentComp.jsx";
 function RulesAllComp(){
     const inlineRules = useSelector(state => state.rules.inlineRules);
     const regularRules = useSelector(state => state.rules.regularRules);
+    const styleSheets = useSelector(state => state.rules.styleSheets);
 
     const RulesInlineComp = inlineRules.map((style, idx) => {
         // console.log('inlineRules', inlineRules);
+        console.log('styleSheets', styleSheets);
+        console.log(styleSheets[style.rule.styleSheetId]);
+        console.log('styleSheets', styleSheets);
         return (
             <SidebarStyling
             key={`inline-style-${idx}`}
             selector={style.rule.selectorList?.selectors[0].text}
             cssProperties={style.rule.style.cssProperties}
             origin={style.rule.origin}
+            source={styleSheets[style.rule.styleSheetId]}
             />
             )
         });

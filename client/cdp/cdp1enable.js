@@ -31,20 +31,30 @@ const cdpEnable = async (client, proxy, selector) => {
           if(param.header.sourceMapURL){
             console.log('styleSheetAdded with sourceMapURL');
             const id = param.header.styleSheetId;
-            // console.log('styleSheetParamHeader:', param.header);
+
             const sourceMapData = Buffer.from(param.header.sourceMapURL.split(',')[1], 'base64').toString('utf-8');
             const decodedMap = JSON.parse(sourceMapData);
             console.log('\n\n\n');
             // console.log('decodedMap', decodedMap);
+            writeFileSync('./data/output/decodedMap.json', JSON.stringify(decodedMap, null, 2));
             const sources = decodedMap.sources;
+            const paths = []
+            sources.forEach(source => {
+              // splitting the source string on the '://'
+              // pushing the second part, the path, into the paths array
+              paths.push(source.split('://')[1]);
+              })
+
+              // console.log('paths', paths);
 
             styleSheets[id] = {
-              sources
+              sources,
+              paths
             }
           }
           else {
             console.log('styleSheetAdded: no sourceMapURL');
-            // console.log('styleSheetParamHeader:', param.header);
+            console.log('styleSheetParamHeader:', param.header);
           }
   });
 
@@ -61,7 +71,7 @@ const cdpEnable = async (client, proxy, selector) => {
     if (err) throw err;
   });
 
-  writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
+  // writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
 
   // Find nodes where the nodeName property is 'IFRAME'.
   // In looking through the nodes, I saw only one IFRAME node, which corresponded to the root node of the iframe.
@@ -81,7 +91,7 @@ const cdpEnable = async (client, proxy, selector) => {
   // console.log('Node inside iframe', iframeNode);
 
   // this console logs the contentDocument node of the iframe
-  writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
+  // writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
 
   // Return the enabled domains and the nodeId of the iframe root node to the process
   return { DOM, CSS, Network, Page, iframeNode, styleSheets };
