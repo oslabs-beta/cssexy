@@ -30,6 +30,8 @@ const cdpEnable = async (client, proxy, selector) => {
   CSS.styleSheetAdded((param) => {
     if (param.header.sourceMapURL) {
       console.log('styleSheetAdded with sourceMapURL');
+      console.log('styleSheetParamHeader:', param.header);
+
       const id = param.header.styleSheetId;
 
       const sourceMapData = Buffer.from(param.header.sourceMapURL.split(',')[1], 'base64').toString('utf-8');

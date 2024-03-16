@@ -24,14 +24,25 @@ function RulesAllComp() {
     });
 
     const RulesRegularComp = regularRules.map((each, idx) => {
-        // console.log('regularRules', regularRules);
-        // console.log('styleSheets', styleSheets);
-        // console.log('styleSheetId', each.rule.style.styleSheetId);
-        // console.log('styleSheets[each.rule.style.styleSheetId]?', styleSheets[each.rule.style.styleSheetId]);
+        console.log('regularRules', regularRules);
+        console.log('styleSheets', styleSheets);
+        console.log('styleSheetId', each.rule.style.styleSheetI);
+        console.log('styleSheets[each.rule.style.styleSheetId]?', styleSheets[each.rule.style.styleSheetId]);
 
-        if (source != styleSheets[each.rule.style.styleSheetId].paths[0]) {
-            setSource(styleSheets[each.rule.style.styleSheetId].paths[0]);
+        const sheetSource = each.rule.style.styleSheetId
+
+        if (sheetSource && source != styleSheets[sheetSource].paths[0]) {
+            console.log('');
+            console.log('entered if');
+
+            // console.log('setSource', styleSheets[sheetSource].paths[0]);
+            console.log('\n\n\n');
+            setSource(styleSheets[sheetSource].paths[0]);
         }
+
+        // if (source != styleSheets[each.rule.style.styleSheetId].paths[0]) {
+        //     setSource(styleSheets[each.rule.style.styleSheetId].paths[0]);
+        // }
 
         return (
             <SidebarStyling
