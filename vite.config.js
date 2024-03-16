@@ -8,11 +8,11 @@ export default defineConfig({
   root: path.join(__dirname, '/'),
   build: {
     outDir: path.join(__dirname, 'dist'),
-    sourcemap: true,
+    // sourcemap: true,
   },
-  css: {
-    devSourcemap: true
-  },
+  // css: {
+  //   devSourcemap: true
+  // },
   server: {
     port: 5555,
     proxy: {

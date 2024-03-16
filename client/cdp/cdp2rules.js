@@ -39,7 +39,7 @@ const cdpInlineRules = async (CSS, nodeId, selector) => {
   return inlineRule;
 }
 
-const cdpRules = async (DOM, CSS, Network, Page, iframeNode, selector) => {
+const cdpRules = async (DOM, CSS, Network, Page, iframeNode, selector, styleSheets) => {
 
   const iframeNodeId = iframeNode.nodeId;
   // console.log('cdpRules: root frame node id:', iframeNodeId);
@@ -88,11 +88,12 @@ const cdpRules = async (DOM, CSS, Network, Page, iframeNode, selector) => {
     inlineRules,
     regularRules,
     userAgentRules,
+    styleSheets,
     // inheritedRules,
     // keyframeRules
   }
 
-  fs.writeFileSync('./data/output/allRules.json', JSON.stringify(result, null, 2));
+  // fs.writeFileSync('./data/output/allRules.json', JSON.stringify(result, null, 2));
   // fs.writeFileSync('./data/output/inlineRules.json', JSON.stringify(inlineRules, null, 2));
   // fs.writeFileSync('./data/output/regularRules.json', JSON.stringify(regularRules, null, 2));
   // fs.writeFileSync('./data/output/userAgentRules.json', JSON.stringify(userAgentRules, null, 2));

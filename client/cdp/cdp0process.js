@@ -14,7 +14,7 @@ import CDP from 'chrome-remote-interface';
 
 import cdpEnable from './cdp1enable.js';
 import cdpRules from './cdp2rules.js';
-import { decodeBase } from './getSource.js';
+
 /**
  * cdpProcess
  * @param {string} attrs - The aatributes received from the iframe
@@ -64,9 +64,9 @@ const cdpProcess = async (data) => {
         console.log('Connected to Chrome DevTools Protocol via chrome-remote-interface');
 
         // extracting the 'domains' from the CDP client.
-        const { DOM, CSS, Network, Page, iframeNode } = await cdpEnable(cdpClient, proxy);
-        
-       
+        const { DOM, CSS, Network, Page, iframeNode, styleSheets } = await cdpEnable(cdpClient, proxy);
+
+
 
         // these allow us to see / save all of the methods and properties that the CDP client exposes.
         // fs.writeFileSync('./data/domains/DOM.json', JSON.stringify(Object.entries(DOM), null, 2));
@@ -78,7 +78,7 @@ const cdpProcess = async (data) => {
         console.log('cdpProcess: calling cdpRules');
 
         // right now, result is an object that has both the matched and inline styles for the element clicked.
-        const result = await cdpRules(DOM, CSS, Network, Page, iframeNode, selector);
+        const result = await cdpRules(DOM, CSS, Network, Page, iframeNode, selector, styleSheets);
         //   console.log(`Rules for ${selector} retrieved`, result);
         return result;
 

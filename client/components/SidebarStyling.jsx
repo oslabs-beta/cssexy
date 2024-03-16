@@ -21,6 +21,7 @@ function SidebarStyling(props) {
         <div className='style-container'>
             <div className='selector-div'>
                 {props.selector && <p>{props.selector} </p>}
+            {/* {props?.source?.paths[0] && <p>{props?.source?.paths[0]} </p>} */}
             </div>
             {styleParagraphs}
             <br />
