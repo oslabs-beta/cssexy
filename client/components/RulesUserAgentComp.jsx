@@ -61,11 +61,13 @@ function RulesUserAgentComp() {
     return (
         <div>
         <h3>user agent</h3>
-            <SidebarStyling
-                selector={userAgentSelector}
-                cssProperties={ObjToArr(userAgentRules)}
-                origin={'user-agent'}
-            />
+            {Object.keys(userAgentRules).length > 0 &&
+                <SidebarStyling
+                    selector={userAgentSelector}
+                    cssProperties={ObjToArr(userAgentRules)}
+                    origin={'user-agent'}
+                />
+            }
         </div>
     )
 };
