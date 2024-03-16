@@ -5,12 +5,6 @@ function SidebarStyling(props) {
         if ((props.origin === 'regular' && cssProp.text) ||
             props.origin === 'user-agent' ||
             (props.origin === 'inline' && cssProp.text)) {
-
-            // console.log('sidebarStyling: props', props);
-            if (props.source) {
-                console.log('sidebarStyling: props.source', props.source);
-            }
-
             // cssProperties arr includes both user defined 'shorthand' styles and css 'longhand' styles. We want to render only user defined styles => style is user defined if it has .text property
             // shorthand example: 'border-bottom: 3px solid blueviolet'
             // longhand example: border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: blueviolet
@@ -27,8 +21,8 @@ function SidebarStyling(props) {
         <div className='style-container'>
             <div className='selector-div'>
                 {props.selector && <p>{props.selector} </p>}
+            {/* {props?.source?.paths[0] && <p>{props?.source?.paths[0]} </p>} */}
             </div>
-            {props?.source?.paths[0] && <p>{props?.source?.paths[0]} </p>}
             {styleParagraphs}
             <br />
         </div>
