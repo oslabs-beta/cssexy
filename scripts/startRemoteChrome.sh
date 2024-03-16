@@ -13,6 +13,8 @@
 # when not doing '--app':
   # --new-window \
   # http://localhost:$PORT &
+  # --app=http://localhost:$PORT &
+
 
 # --auto-open-devtools-for-tabs \
 
@@ -38,4 +40,5 @@ fi
   --no-first-run \
   --no-default-browser-check \
   --disable-web-security \
-  --app=http://localhost:$PORT &
+  --new-window \
+  http://localhost:$PORT &

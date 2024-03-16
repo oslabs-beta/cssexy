@@ -9,6 +9,7 @@ const initialState = {
   userAgentRules: [],
   inheritedRules: [],
   keyframeRules: [],
+  styleSheets: {},
   loaded: false, // if we want to track if styles have been loaded
   error: null, // if we want to track errors
 };

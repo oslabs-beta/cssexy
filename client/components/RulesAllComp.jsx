@@ -24,7 +24,6 @@ function RulesAllComp() {
         )
     });
 
-
     const RulesRegularComp = regularRules.map((each, idx) => {
         // console.log('regularRules', regularRules);
         // console.log('styleSheets', styleSheets);
