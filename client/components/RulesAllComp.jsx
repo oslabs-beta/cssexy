@@ -29,7 +29,7 @@ function RulesAllComp() {
         // console.log('styleSheetId', each.rule.style.styleSheetId);
         // console.log('styleSheets[each.rule.style.styleSheetId]?', styleSheets[each.rule.style.styleSheetId]);
 
-        if (source != styleSheets[each.rule.style.styleSheetId].paths[0]){
+        if (source != styleSheets[each.rule.style.styleSheetId].paths[0]) {
             setSource(styleSheets[each.rule.style.styleSheetId].paths[0]);
         }
 
@@ -39,11 +39,10 @@ function RulesAllComp() {
                 selector={each.rule.selectorList?.selectors[0].text}
                 cssProperties={each.rule.style.cssProperties}
                 origin={each.rule.origin}
-                // source={styleSheets[each.rule.style.styleSheetId]}
+            // source={styleSheets[each.rule.style.styleSheetId]}
             />
         )
     });
-
 
     return (
         <div>
