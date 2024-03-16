@@ -9,7 +9,7 @@ function RulesAllComp() {
     const styleSheets = useSelector(state => state.rules.styleSheets);
 
     const [sourcePath, setSourcePath] = useState(null);
-    const [sourceFileName, setSourceFileName] = useState(null);
+    const [sourceName, setSourceName] = useState(null);
 
     const RulesInlineComp = inlineRules.map((each, idx) => {
         // console.log('inlineRules', inlineRules);
@@ -36,8 +36,8 @@ function RulesAllComp() {
         if (styleSheets[styleSheetId] && sourcePath != firstSourcePath)  {
             setSourcePath(firstSourcePath);
             const splitPaths = firstSourcePath.split('/')
-            const sourceFileNameString = `/${splitPaths[splitPaths.length - 1]}`
-            setSourceFileName(sourceFileNameString);
+            const sourceNameString = `/${splitPaths[splitPaths.length - 1]}`
+            setSourceName(sourceNameString);
         }
 
         return (
@@ -55,7 +55,7 @@ function RulesAllComp() {
             <h3>inline</h3>
             <>{RulesInlineComp.length ? RulesInlineComp : <br/>}</>
             {/* <h3>.css</h3> */}
-            <h3>{sourceFileName ? sourceFileName : 'css file'}</h3>
+            <h3>{sourceName ? sourceName : 'css file'}</h3>
             <>{RulesRegularComp.length ? RulesRegularComp : <br/>}</>
             <RulesUserAgentComp />
         </div>
