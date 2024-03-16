@@ -53,9 +53,11 @@ function RulesAllComp() {
     return (
         <div>
             <h3>inline</h3>
+            {/* ternary to render a line break if there are no rules. Improves readability imo */}
             <>{RulesInlineComp.length ? RulesInlineComp : <br/>}</>
             {/* <h3>.css</h3> */}
             <h3>{sourceName ? sourceName : 'css file'}</h3>
+            {/* same ternary, same reason */}
             <>{RulesRegularComp.length ? RulesRegularComp : <br/>}</>
             <RulesUserAgentComp />
         </div>
