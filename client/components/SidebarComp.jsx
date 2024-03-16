@@ -3,8 +3,8 @@ import RulesAllComp from "./RulesAllComp.jsx";
 
 function SidebarComp() {
   return (
-    <div className="sidebar">
-      <h3>Styles Editor</h3>
+    <div className="sidebar" >
+      <h2 style={{textAlign: 'center', marginTop: 0, marginBottom: 0}}>Styles</h2>
       <RulesAllComp/>
     </div>
   );
