@@ -27,7 +27,6 @@ function RulesAllComp() {
         // console.log('regularRules', regularRules);
         // console.log('styleSheets', styleSheets);
         // console.log('styleSheetId', each.rule.style.styleSheetId);
-
         // console.log('styleSheets[each.rule.style.styleSheetId]?', styleSheets[each.rule.style.styleSheetId]);
 
         if (source != styleSheets[each.rule.style.styleSheetId].paths[0]){
