@@ -25,7 +25,7 @@ body {
 
 .sidebar-container {
   position: relative;
-  width: 25%;
+  width: 30%;
   border-right: 3px solid #1B1929; /* darker purple for the border */
   /* max-width: 25%; */
 }
@@ -76,23 +76,43 @@ body {
 }
 
 .selector-div {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 500;
   margin-top: 10px;
   margin-bottom: 5px;
+  text-decoration: underline;
+}
+
+.style-value-form {
+  /* display: flex; */
+  display: inline;
+  padding-left: 5px;
+
 }
 
 .style-value-span {
-  padding-left: 5px;
-      color: #906bc7;
-      /* color: #8D86C9; */
-      font-weight: 300;
+  padding-right: 0px;
+  color: #906bc7;
+  /* color: #8D86C9; */
+  font-weight: 300;
+  background: rgba(0,0,0,0.2);
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  cursor: text;
+  /* width: var(--style-value-span-width); */
+
+}
+
+.style-value-span:focus {
+  outline: 0.5px solid #906bc7;
 }
 
 .style-property-span {
-  padding-left: 15px;
+  padding-left: 5px;
+
 }
 
 .style-property-span, .style-value-span {
-  font-size: 14px;
+  font-size: 12px;
 }

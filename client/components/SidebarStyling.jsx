@@ -1,7 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-function SidebarStyling(props) {
+function SidebarStyling(props) {const [values, setValues] = useState({});
+
+useEffect(() => {
+    setValues(
+        props.cssProperties.reduce((acc, cssProp) => {
+            acc[cssProp.name] = cssProp.value;
+            return acc;
+        }, {})
+    );
+}, [props.cssProperties]);
+    const handleSubmit = (cssProp, event) => {
+        event.preventDefault();
+        cssProp.value = values[cssProp.name];
+        // and we'll update our tracking of undo/redo, our redux store perhaps, and source files here possibly.
+        // or source file edit from our server, store, etc.
+    };
+
+
+    // React.useEffect(() => {
+    //     if (valueSpanRef.current) {
+    //         // console.log('\n\n\n');
+    //         const valueSpanWidth = valueSpanRef.current.value.length * 8;
+    //         console.log('valueSpanWidth', valueSpanRef.current.value, valueSpanWidth);
+    //         console.log('valueSpanRef.current', valueSpanRef.current);
+    //         valueSpanRef.current.style.setProperty('--style-value-span-width', `${valueSpanWidth}px`);
+    //         console.log('\n\n\n');
+    //     }
+    //     else {
+    //         console.log('valueSpanRef.current is null', valueSpanRef)
+    //     }
+    // });
+
     const styleParagraphs = props.cssProperties.map((cssProp, idx) => {
+
+        // const valueSpanRef = React.useRef();
+
+
+
         if ((props.origin === 'regular' && cssProp.text) ||
             props.origin === 'user-agent' ||
             (props.origin === 'inline' && cssProp.text)) {
@@ -11,7 +47,15 @@ function SidebarStyling(props) {
             return (
                 <p key={`styleParagraphs-${idx}`} className='style-paragraph'>
                     <span className='style-property-span'>{cssProp.name}</span>:
-                    <span className='style-value-span'>{cssProp.value}</span>
+                        {/* <span className='style-value-span'>{cssProp.value}</span> */}
+                    <form className='style-value-form' onSubmit={(e) => handleSubmit(cssProp, e)}>
+                        <input
+                            // ref={valueSpanRef}
+                            className='style-value-span'
+                            value={values[cssProp.name]}
+                            onChange={(e) => setValues({...values, [cssProp.name]: e.target.value})}
+                        />
+                    </form>
                 </p>
             )
         }
