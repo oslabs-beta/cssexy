@@ -1,107 +1,98 @@
 body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background: #252134;
-    color: #e5e0e9;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  /* background: #252134; */
+  color: #e5e0e9;
 
-  }
+}
 
-  .app-container {
-    display: flex;
-    height: 100vh;
-  }
+.app-container {
+  display: flex;
+  height: 100vh;
+}
 
-  .site-frame {
-    flex-grow: 1; /* Allow the site frame to fill the available space */
-    border: none;
-    overflow: hidden;
-  }
-
-
-
-  .sidebar {
-    width: 20%;
-    min-width: 15%;
-    max-width: 25%;
-    background-color: #252134; /* purple background for the sidebar */
-    padding: 20px;
-    overflow: auto; /* allows the sidebar to scroll */
-    resize: horizontal;
-    border-right: 2px solid #1B1929; /* darker purple for the border */
-    scrollbar-width: thin;
-    scrollbar-color: rgba(74, 67, 139, 0.1) transparent;
-  }
-
-  .sidebar-container {
-    position: relative;
-  }
-
-  .sidebar {
-    position: sticky;
-    top: 0;
-    overflow: auto; /* allows the sidebar to scroll */
-    resize: horizontal;
-    border-right: 2px solid #1B1929; /* darker purple for the border */
-    scrollbar-width: thin;
-    scrollbar-color: rgba(74, 67, 139, 0.1) transparent;
-  }
+.site-frame {
+  flex-grow: 1; /* Allow the site frame to fill the available space */
+  border: none;
+  overflow: hidden;
+}
 
 
-  .sidebar.collapsed {
-    width: 0;
-    min-width: 0;
-    max-width: 0;
-    padding: 0;
-  }
-
-  .collapse-button {
-    position: absolute;
-    right: -20px; /* Adjust as needed */
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: transparent;
-    border: none;
-    color: #e5e0e9;
-    /* Add your desired button styles */
-  }
-
-  /* .sidebar.collapsed {
-    width: 0;
-    min-width: 0;
-    max-width: 0;
-    padding: 0;
-  } */
+.sidebar-container, .sidebar {
+  background: #252134;
+}
 
 
-  .style-container {
-    border-bottom: 1px solid #504C63; /* Separator beetween rules */
-  }
+.sidebar-container {
+  position: relative;
+  width: 25%;
+  border-right: 3px solid #1B1929; /* darker purple for the border */
+  /* max-width: 25%; */
+}
 
-  .selector-div, .style-source-span, .style-container p, .style-paragraph,  .style-property-span {
-    /* color: #D0C9D6; */
-    color: #e5e0e9;
+.sidebar {
+  padding: 0px 20px 20px 20px; /* top, right, bottom, left */
+  overflow: auto; /* allows the sidebar to be scrollable.
+  in this case, this being true allows it to be hidden when the user clicks the collapse button */
 
-    margin: 1px 0; /* Margin for spacing around style entries */
-  }
+  /* enable these below to make the sidebar scrollable */
+  /* however, it only scrolls about 10% of the container */
+  /* width: calc(93% - 20px); 80% of the container width, minus padding */
+  /* max-width: calc(93% - 20px); 80% of the container width, minus padding */
+  /* min-width: calc(93% - 20px); 80% of the container width, minus padding */
+  /* resize: horizontal; */
+  /* scrollbar-width: thin; */
+  /* scrollbar-color: rgba(74, 67, 139, 0.1) transparent; */
 
-  .selector-div {
-    font-size: 16px;
-    font-weight: 500;
-    margin-top: 10px;
-    margin-bottom: 5px;
-  }
+}
 
-  .style-value-span {
-    padding-left: 5px;
-        color: #906bc7;
-        /* color: #8D86C9; */
-        font-weight: 300;
-  }
+.sidebar.collapsed, .sidebar-container.collapsed {
+  width: 0;
+  min-width: 0;
+  max-width: 0;
+  padding: 0;
+}
 
-  .style-property-span {
-    padding-left: 15px;
-  }
+.collapse-button {
+  position: absolute;
+  right: -28px;
+  top: 50%;
+  font-size: 20px;
+  cursor: pointer; /* Change cursor to pointer */
+  background-color: transparent;
+  border: none; /* Remove border */
+  color: rgba(229, 224, 233, 0.7); /* semi-transparent white */
+}
 
-  .style-property-span, .style-value-span {
-    font-size: 14px;
-  }
+.style-container {
+  border-bottom: 1px solid #504C63; /* Separator beetween rules */
+}
+
+.selector-div, .style-source-span, .style-container p, .style-paragraph,  .style-property-span {
+  /* color: #D0C9D6; */
+  color: #e5e0e9;
+
+  margin: 1px 0; /* Margin for spacing around style entries */
+}
+
+.selector-div {
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.style-value-span {
+  padding-left: 5px;
+      color: #906bc7;
+      /* color: #8D86C9; */
+      font-weight: 300;
+}
+
+.style-property-span {
+  padding-left: 15px;
+}
+
+.style-property-span, .style-value-span {
+  font-size: 14px;
+}

@@ -73,7 +73,17 @@ const iFrameComp = ({ src, proxy, className }) => {
         // handled by React's event delegation system. By adding this event listener,
         // we're essentially making the iframe's contentDocument a "portal" for
         // clicks to be handled by React.
-        iframeDoc.addEventListener('click', handleClick, false);
+
+        iframeDoc.addEventListener('click', (event) => {
+          // Calling the handleClick function
+          handleClick(event);
+
+          // Set focus back to the parent document
+          // This allows CSSxe to receive keyboard events again after clicking inside the iframe
+          // before doing this, CSSxe would not receive keyboard events again until we clicked inside of the sidebar
+          window.parent.focus();
+
+        }, false);
 
         return () => {
           // Cleanup function to remove event listener
