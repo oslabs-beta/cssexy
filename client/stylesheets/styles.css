@@ -17,6 +17,8 @@ body {
     overflow: hidden;
   }
 
+
+
   .sidebar {
     width: 20%;
     min-width: 15%;
@@ -29,6 +31,46 @@ body {
     scrollbar-width: thin;
     scrollbar-color: rgba(74, 67, 139, 0.1) transparent;
   }
+
+  .sidebar-container {
+    position: relative;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    overflow: auto; /* allows the sidebar to scroll */
+    resize: horizontal;
+    border-right: 2px solid #1B1929; /* darker purple for the border */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(74, 67, 139, 0.1) transparent;
+  }
+
+
+  .sidebar.collapsed {
+    width: 0;
+    min-width: 0;
+    max-width: 0;
+    padding: 0;
+  }
+
+  .collapse-button {
+    position: absolute;
+    right: -20px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    color: #e5e0e9;
+    /* Add your desired button styles */
+  }
+
+  /* .sidebar.collapsed {
+    width: 0;
+    min-width: 0;
+    max-width: 0;
+    padding: 0;
+  } */
 
 
   .style-container {
