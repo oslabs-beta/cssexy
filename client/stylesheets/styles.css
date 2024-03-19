@@ -17,7 +17,6 @@ body {
   overflow: hidden;
 }
 
-
 .sidebar-container, .sidebar {
   background: #252134;
 }
@@ -35,7 +34,7 @@ body {
   overflow: auto; /* allows the sidebar to be scrollable.
   in this case, this being true allows it to be hidden when the user clicks the collapse button */
 
-  /* enable these below to make the sidebar scrollable */
+  /* enable these below to make the sidebar horizontally scrollable */
   /* however, it only scrolls about 10% of the container */
   /* width: calc(93% - 20px); 80% of the container width, minus padding */
   /* max-width: calc(93% - 20px); 80% of the container width, minus padding */
@@ -71,7 +70,6 @@ body {
 .selector-div, .style-source-span, .style-container p, .style-paragraph,  .style-property-span {
   /* color: #D0C9D6; */
   color: #e5e0e9;
-
   margin: 1px 0; /* Margin for spacing around style entries */
 }
 
@@ -80,39 +78,35 @@ body {
   font-weight: 500;
   margin-top: 10px;
   margin-bottom: 5px;
-  text-decoration: underline;
 }
 
-.style-value-form {
+/* .style-value-form {
+  /* not beign used atm */
   /* display: flex; */
-  display: inline;
-  padding-left: 5px;
+  /* display: inline;
+} */
 
+.style-property-span, .style-value-span, .style-value-input-span {
+  font-size: 12px;
+  padding-left: 5px;
 }
 
-.style-value-span {
+.style-value-span, .style-value-input-span {
   padding-right: 0px;
   color: #906bc7;
-  /* color: #8D86C9; */
   font-weight: 300;
-  background: rgba(0,0,0,0.2);
   border: none;
-  border-radius: 4px;
   outline: none;
-  cursor: text;
+  /* color: #8D86C9; */
   /* width: var(--style-value-span-width); */
-
 }
 
-.style-value-span:focus {
+.style-value-input-span {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  cursor: text;
+}
+
+.style-value-input-span:focus {
   outline: 0.5px solid #906bc7;
-}
-
-.style-property-span {
-  padding-left: 5px;
-
-}
-
-.style-property-span, .style-value-span {
-  font-size: 12px;
 }

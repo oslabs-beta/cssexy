@@ -24,7 +24,7 @@ const rulesSlice = createSlice({
       state.inlineRules = action.payload;
     },
     updateRegularRules: (state, action) => {
-      // console.log('rulesSlice: state.regularRules: updated', action.payload);
+      console.log('rulesSlice: state.regularRules: updated', action.payload);
       state.regularRules = action.payload;
     },
     updateUserAgentRules: (state, action) => {
@@ -43,8 +43,33 @@ const rulesSlice = createSlice({
       console.log('rulesSlice: state.styleSheets: updated', action.payload);
       state.styleSheets = action.payload;
     },
+    updateStyleSheets: (state, action) => {
+      console.log('rulesSlice: state.styleSheets: updated', action.payload);
+      state.styleSheets = action.payload;
+    },
   },
 });
+
+const initialNodeDataState = {
+  data:{},
+  error: null, // if we want to track errors
+};
+
+const nodeDataSlice = createSlice({
+  name: 'nodeData',
+  // createSlice expects the initial state to be passed as 'initialState'.
+  // so we pass initialNodeDataState as the value of 'initialState'.
+  initialState: initialNodeDataState,
+  reducers: {
+    // every time user selects a DOM element, inline, regular, and user-agent rules are dispatched by the iFrameComp, updating the store via the reducers below.
+    updateNodeData: (state, action) => {
+      console.log('nodeDataSlice: state.nodeData: updated', action.payload);
+      console.log('\n\n\n');
+      state.data = action.payload;
+    },
+  },
+});
+
 
 export const {
   updateInlineRules,
@@ -55,4 +80,9 @@ export const {
   updateStyleSheets
 } = rulesSlice.actions;
 
-export default rulesSlice.reducer;
+export const {
+  updateNodeData
+} = nodeDataSlice.actions;
+
+export const rulesReducer = rulesSlice.reducer;
+export const nodeDataReducer = nodeDataSlice.reducer;

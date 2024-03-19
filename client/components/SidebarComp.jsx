@@ -39,7 +39,7 @@ function SidebarComp() {
     // if isCollapsed is true, the sidebar-container and the sidebar will be collapsed
     <div className={`sidebar-container ${isCollapsed ? 'collapsed' : ''}`}>
       <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-        <h2 style={{ textAlign: 'center'}}>Styles</h2>
+        <h3 style={{ textAlign: 'center'}}>styles</h3>
         <RulesAllComp />
       </div>
       <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>

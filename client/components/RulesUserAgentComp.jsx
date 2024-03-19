@@ -60,7 +60,7 @@ function RulesUserAgentComp() {
 
     return (
         <div>
-        <h3>user agent</h3>
+        <h4>user agent</h4>
         {/* making this conditionally rendered as otherwise there is a bottom border where there's not one for inline and regular */}
             {Object.keys(userAgentRules).length > 0 &&
                 <SidebarStyling

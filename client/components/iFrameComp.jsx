@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets } from '../slices/rulesSlice.js';
+import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, updateNodeData } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component with event handling for click events.
@@ -43,6 +43,8 @@ const iFrameComp = ({ src, proxy, className }) => {
             // attributes: {},
           };
 
+
+
           // a POST request to the /cdp endpoint
           const response = await fetch('/cdp', {
             method: 'POST',
@@ -63,6 +65,7 @@ const iFrameComp = ({ src, proxy, className }) => {
           dispatch(updateRegularRules(result.regularRules));
           dispatch(updateUserAgentRules(result.userAgentRules));
           dispatch(updateStyleSheets(result.styleSheets));
+          dispatch(updateNodeData(data));
           // dispatch(updateInheritedRules(result.inheritedRules));
           // dispatch(updateKeyframeRules(result.keyframeRules));
         };

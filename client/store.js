@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import rulesReducer from './slices/rulesSlice.js';
+import { rulesReducer, nodeDataReducer } from './slices/rulesSlice.js'; // rulesReducer from './slices/rulesSlice.js';
 
 const store = configureStore({
   reducer: {
     rules: rulesReducer,
+    nodeData: nodeDataReducer
   }
 });
 

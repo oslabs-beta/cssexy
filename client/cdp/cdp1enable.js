@@ -29,12 +29,12 @@ const cdpEnable = async (client, proxy, selector) => {
   // console.log('cdpEnable: DOM, CSS, Network, and Page domains are enabled');
   CSS.styleSheetAdded((param) => {
     if (param.header.sourceMapURL) {
-      console.log('styleSheetAdded with sourceMapURL');
+      // console.log('styleSheetAdded with sourceMapURL');
       const id = param.header.styleSheetId;
 
       const sourceMapData = Buffer.from(param.header.sourceMapURL.split(',')[1], 'base64').toString('utf-8');
       const decodedMap = JSON.parse(sourceMapData);
-      console.log('\n\n\n');
+      // console.log('\n\n\n');
       // console.log('decodedMap', decodedMap);
       writeFileSync('./data/output/decodedMap.json', JSON.stringify(decodedMap, null, 2));
       const sources = decodedMap.sources;
@@ -53,8 +53,8 @@ const cdpEnable = async (client, proxy, selector) => {
       }
     }
     else {
-      console.log('styleSheetAdded: no sourceMapURL');
-      console.log('styleSheetParamHeader:', param.header);
+      // console.log('styleSheetAdded: no sourceMapURL');
+      // console.log('styleSheetParamHeader:', param.header);
     }
   });
 

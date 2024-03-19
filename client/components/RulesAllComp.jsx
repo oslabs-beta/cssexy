@@ -46,17 +46,18 @@ function RulesAllComp() {
                 selector={each.rule.selectorList?.selectors[0].text}
                 cssProperties={each.rule.style.cssProperties}
                 origin={each.rule.origin}
+                sourcePath={firstSourcePath}
             />
         )
     });
 
     return (
         <div>
-            <h3>inline</h3>
+            <h4>inline</h4>
             {/* ternary to render a line break if there are no rules. Improves readability imo */}
             <>{RulesInlineComp.length ? RulesInlineComp : <br/>}</>
             {/* <h3>.css</h3> */}
-            <h3>{sourceName ? sourceName : 'css file'}</h3>
+            <h4>{sourceName ? sourceName : 'css file'}</h4>
             {/* same ternary, same reason */}
             <>{RulesRegularComp.length ? RulesRegularComp : <br/>}</>
             <RulesUserAgentComp />
