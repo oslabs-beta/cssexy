@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, updateNodeData } from '../slices/rulesSlice.js';
 
-import { RunCdpComp } from "./RunCdpComp.jsx";
-
 function SidebarStyling(props) {
 
     const dispatch = useDispatch();
