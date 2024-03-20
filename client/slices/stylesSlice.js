@@ -1130,9 +1130,70 @@ const stylesSlice = createSlice({
     },
     updateMatchedStyles: (state, action) => {
       state.matchedStyles = action.payload;
+    },
+    findActiveStyles: (state) => {
+      const cache = {};
+
+      const compareSpecificity = (specificity1, specificity2) => {
+        if (specificity1.a !== specificity2.a) {
+          return specificity1.a > specificity2.a ? 1 : -1;
+        }
+        // If 'a' values are equal, compare the 'b' values
+        if (specificity1.b !== specificity2.b) {
+          return specificity1.b > specificity2.b ? 1 : -1;
+        }
+        // If 'b' values are equal, compare the 'c' values
+        if (specificity1.c !== specificity2.c) {
+          return specificity1.c > specificity2.c ? 1 : -1;
+        }
+        // If all values are equal, the specificities are equal
+        return 0;
+      };
+
+      const toggleIsActive = (array, specificity) => {
+        for (let cssProperty of array) {
+          if (!cache[cssProperty.name]) cache[cssProperty.name] = [];
+
+          cache[cssProperty.name].push({
+            specificity,
+            source: cssProperty
+          });
+
+          let maxSpecificity = cache[cssProperty.name][0].specificity;
+          let maxSource = cache[cssProperty.name][0].source;
+          maxSource.isActive = true;
+
+          cache[cssProperty.name].forEach(item => {
+            const result = compareSpecificity(maxSpecificity, item.specificity);
+
+            if (result === -1) {
+              // console.log('Found higher specificity!');
+              // console.log('Specificity1:   ', JSON.stringify(maxSpecificity));
+              // console.log('Specificity2:   ', JSON.stringify(item.specificity));
+              maxSource.isActive = false;
+              maxSpecificity = item.specificity;
+              maxSource = item.source;
+              maxSource.isActive = true;
+            }
+            if (result === 1) {
+              item.source.isActive = false;
+            }
+          })
+        };
+      };
+
+      state.userAgentStyles.forEach(each => {
+        const specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
+
+        const shortAndLongProps = [each.rule.style.cssProperties, each.rule.style.shorthandEntries];
+
+        for (let arr of shortAndLongProps) toggleIsActive(arr, specificity);
+      });
+      // console.log('CACHE:   ', JSON.stringify(cache));
+      // console.log('CACHE:   ', JSON.stringify(cache['text-align']));
     }
   }
 });
 
-export const { updateInlineStyles } = stylesSlice.actions;
+export const { updateInlineStyles, findActiveStyles } = stylesSlice.actions;
 export default stylesSlice.reducer;
