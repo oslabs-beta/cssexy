@@ -20,9 +20,9 @@ function SidebarStyling(props) {
 
     // using Object.assign to make a shallow copy of props. Object.assign is a built-in function in js that is used to copy the values of all enumerable properties from one or more source objects to a target object.
     // const liveProps = Object.assign({}, props);
-    console.log('\n\n\n');
-    console.log('liveProps', liveProps);
-    console.log('\n\n\n');
+    // console.log('\n\n\n');
+    // console.log('liveProps', liveProps);
+    // console.log('\n\n\n');
 
     const [values, setValues] = useState({});
 

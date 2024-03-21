@@ -4,11 +4,9 @@ import path from 'path';
 // exec: executes a shell command
 import { exec } from 'child_process';
 
-// join the current module's URL and '../../data/Chrome/Profiles' to get the absolute path to the directory where the remote Chrome user data is stored
+// join the current module's URL and '../data/Chrome/Profiles' to get the absolute path to the directory where the remote Chrome user data is stored
+// remove 'file:' prefix, if present
 const DIR = path.join(path.dirname(import.meta.url), '../data/Chrome/Profiles').replace(/^file:/, '');
-console.log('DIR:', DIR);
-// remove 'file://' prefix, if present
-// DIR = DIR.replace(/^file:\/\//, '');
 // console.log('DIR:', DIR);
 
 try {
