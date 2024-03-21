@@ -70,9 +70,9 @@ const cdpStyles = async (DOM, CSS, selector) => {
   // Get and log the inline styles
   const inlineCSSRules = await cdpInlineStyles(CSS, nodeId);
   // add 'isActive' flag which conrols if DOM el is shown as crossed
-  inlineCSSRules.cssProperties.forEach(prop => {
-    if (prop.text) prop.isActive = true;
-  });
+  // inlineCSSRules.cssProperties.forEach(prop => {
+  //   if (prop.text) prop.isActive = true;
+  // });
 
   fs.writeFileSync('./client/features/CDP/inlineStyles.js', JSON.stringify(inlineCSSRules, null, 2));
 
@@ -82,16 +82,21 @@ const cdpStyles = async (DOM, CSS, selector) => {
   // => cssKeyframesRules includes all the @keyframes rules applied to the node
   const { matchedCSSRules, inherited, cssKeyframesRules } = await CSS.getMatchedStylesForNode({ nodeId });
   // add 'isActive' flag which conrols if DOM el is shown as crossed
-  matchedCSSRules.forEach(rule => {
-    if (rule.rule.origin === 'regular') {
-      rule.rule.style.cssProperties.forEach(prop => {
-        if (prop.text) prop.isActive = true;
-      });
-    } else if (rule.rule.origin === 'user-agent') {
-      rule.rule.style.cssProperties.forEach(prop => prop.isActive = true);
-      rule.rule.style.shorthandEntries.forEach(sh => sh.isActive = true);
-    }
-  });
+  // matchedCSSRules.forEach(rule => {
+  //   if (rule.rule.origin === 'regular') {
+  //     rule.rule.style.cssProperties.forEach(prop => {
+  //       if (prop.text) {
+  //         prop.isActive = true;
+  //         // if (prop.longhandProperties) {
+  //         //   for (let longProp of prop.longhandProperties) longProp.isActive = true;
+  //         // }
+  //       }
+  //     });
+  //   } else if (rule.rule.origin === 'user-agent') {
+  //     rule.rule.style.cssProperties.forEach(prop => prop.isActive = true);
+  //     rule.rule.style.shorthandEntries.forEach(sh => sh.isActive = true);
+  //   }
+  // });
   console.log('Matched CSS Rules:');
 
   // add inline styles obj to matchedStyles array following the same properties format which MatchedStyles components and Style components need

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import * as css from '@webref/css';
 
 const initialState = {
   // allStyles property includes both matchedCSSRules and inlineCSSRules
@@ -7,7 +8,7 @@ const initialState = {
   regularStyles: [
     {
       "rule": {
-        "styleSheetId": "style-sheet-33072-24",
+        "styleSheetId": "style-sheet-33556-41",
         "selectorList": {
           "selectors": [
             {
@@ -29,7 +30,7 @@ const initialState = {
         },
         "origin": "regular",
         "style": {
-          "styleSheetId": "style-sheet-33072-24",
+          "styleSheetId": "style-sheet-33556-41",
           "cssProperties": [
             {
               "name": "width",
@@ -42,8 +43,7 @@ const initialState = {
                 "startColumn": 2,
                 "endLine": 479,
                 "endColumn": 14
-              },
-              "isActive": true
+              }
             },
             {
               "name": "border-radius",
@@ -74,8 +74,7 @@ const initialState = {
                   "name": "border-bottom-left-radius",
                   "value": "100px"
                 }
-              ],
-              "isActive": true
+              ]
             },
             {
               "name": "padding",
@@ -106,8 +105,7 @@ const initialState = {
                   "name": "padding-left",
                   "value": "10px"
                 }
-              ],
-              "isActive": true
+              ]
             },
             {
               "name": "background",
@@ -158,8 +156,7 @@ const initialState = {
                   "name": "background-color",
                   "value": "rgb(173, 173, 255)"
                 }
-              ],
-              "isActive": true
+              ]
             },
             {
               "name": "font-weight",
@@ -172,8 +169,7 @@ const initialState = {
                 "startColumn": 2,
                 "endLine": 483,
                 "endColumn": 20
-              },
-              "isActive": true
+              }
             },
             {
               "name": "color",
@@ -186,8 +182,7 @@ const initialState = {
                 "startColumn": 2,
                 "endLine": 484,
                 "endColumn": 15
-              },
-              "isActive": true
+              }
             },
             {
               "name": "text-shadow",
@@ -200,8 +195,7 @@ const initialState = {
                 "startColumn": 2,
                 "endLine": 485,
                 "endColumn": 29
-              },
-              "isActive": true
+              }
             },
             {
               "name": "border",
@@ -284,8 +278,7 @@ const initialState = {
                   "name": "border-image-repeat",
                   "value": "initial"
                 }
-              ],
-              "isActive": true
+              ]
             },
             {
               "name": "font-size",
@@ -298,8 +291,7 @@ const initialState = {
                 "startColumn": 2,
                 "endLine": 487,
                 "endColumn": 18
-              },
-              "isActive": true
+              }
             },
             {
               "name": "width",
@@ -526,8 +518,7 @@ const initialState = {
                 "startColumn": 0,
                 "endLine": 0,
                 "endColumn": 16
-              },
-              isActive: true
+              }
             },
             {
               "name": "rotate",
@@ -540,8 +531,7 @@ const initialState = {
                 "startColumn": 17,
                 "endLine": 0,
                 "endColumn": 30
-              },
-              isActive: true
+              }
             },
             {
               "name": "scale",
@@ -554,8 +544,7 @@ const initialState = {
                 "startColumn": 31,
                 "endLine": 0,
                 "endColumn": 43
-              },
-              isActive: true
+              }
             },
             {
               "name": "opacity",
@@ -568,8 +557,7 @@ const initialState = {
                 "startColumn": 44,
                 "endLine": 0,
                 "endColumn": 55
-              },
-              isActive: true
+              }
             },
             {
               "name": "transform",
@@ -582,8 +570,7 @@ const initialState = {
                 "startColumn": 56,
                 "endLine": 0,
                 "endColumn": 87
-              },
-              isActive: true
+              }
             },
             {
               "name": "color",
@@ -596,8 +583,7 @@ const initialState = {
                 "startColumn": 88,
                 "endLine": 0,
                 "endColumn": 114
-              },
-              isActive: true
+              }
             },
             {
               "name": "translate",
@@ -657,8 +643,7 @@ const initialState = {
           "cssProperties": [
             {
               "name": "appearance",
-              "value": "auto",
-              "isActive": true
+              "value": "auto"
             }
           ],
           "shorthandEntries": []
@@ -718,160 +703,129 @@ const initialState = {
           "cssProperties": [
             {
               "name": "margin-top",
-              "value": "0em",
-              "isActive": false
+              "value": "0em"
             },
             {
               "name": "margin-right",
-              "value": "0em",
-              "isActive": true
+              "value": "0em"
             },
             {
               "name": "margin-bottom",
-              "value": "0em",
-              "isActive": true
+              "value": "0em"
             },
             {
               "name": "margin-left",
-              "value": "0em",
-              "isActive": true
+              "value": "0em"
             },
             {
               "name": "font-style",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-variant-ligatures",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-variant-caps",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-variant-numeric",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-variant-east-asian",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-variant-alternates",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-variant-position",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-weight",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-stretch",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-size",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-family",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-optical-sizing",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-kerning",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-feature-settings",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "font-variation-settings",
-              "value": "",
-              "isActive": true
+              "value": ""
             },
             {
               "name": "text-rendering",
-              "value": "auto",
-              "isActive": true
+              "value": "auto"
             },
             {
               "name": "color",
-              "value": "fieldtext",
-              "isActive": true
+              "value": "fieldtext"
             },
             {
               "name": "letter-spacing",
-              "value": "normal",
-              "isActive": true
+              "value": "normal"
             },
             {
               "name": "word-spacing",
-              "value": "normal",
-              "isActive": true
+              "value": "normal"
             },
             {
               "name": "line-height",
-              "value": "normal",
-              "isActive": true
+              "value": "normal"
             },
             {
               "name": "text-transform",
-              "value": "none",
-              "isActive": true
+              "value": "none"
             },
             {
               "name": "text-indent",
-              "value": "0px",
-              "isActive": true
+              "value": "0px"
             },
             {
               "name": "text-shadow",
-              "value": "none",
-              "isActive": true
+              "value": "none"
             },
             {
               "name": "display",
-              "value": "inline-block",
-              "isActive": true
+              "value": "inline-block"
             },
             {
               "name": "text-align",
-              "value": "start",
-              "isActive": true
+              "value": "start"
             }
           ],
           "shorthandEntries": [
             {
               "name": "margin",
-              "value": "0em",
-              "isActive": true
+              "value": "0em"
             },
             {
               "name": "font",
-              "value": "",
-              "isActive": true
+              "value": ""
             }
           ]
         },
@@ -938,170 +892,137 @@ const initialState = {
           "cssProperties": [
             {
               "name": "align-items",
-              "value": "flex-start",
-              "isActive": true
+              "value": "flex-start"
             },
             {
               "name": "text-align",
-              "value": "center",
-              "isActive": true
+              "value": "center"
             },
             {
               "name": "cursor",
-              "value": "default",
-              "isActive": true
+              "value": "default"
             },
             {
               "name": "padding-block-start",
-              "value": "1px",
-              "isActive": true
+              "value": "1px"
             },
             {
               "name": "padding-block-end",
-              "value": "1px",
-              "isActive": true
+              "value": "1px"
             },
             {
               "name": "padding-inline-start",
-              "value": "6px",
-              "isActive": true
+              "value": "6px"
             },
             {
               "name": "padding-inline-end",
-              "value": "6px",
-              "isActive": true
+              "value": "6px"
             },
             {
               "name": "border-top-width",
-              "value": "2px",
-              "isActive": true
+              "value": "2px"
             },
             {
               "name": "border-right-width",
-              "value": "2px",
-              "isActive": true
+              "value": "2px"
             },
             {
               "name": "border-bottom-width",
-              "value": "2px",
-              "isActive": true
+              "value": "2px"
             },
             {
               "name": "border-left-width",
-              "value": "2px",
-              "isActive": true
+              "value": "2px"
             },
             {
               "name": "border-top-style",
-              "value": "outset",
-              "isActive": true
+              "value": "outset"
             },
             {
               "name": "border-right-style",
-              "value": "outset",
-              "isActive": true
+              "value": "outset"
             },
             {
               "name": "border-bottom-style",
-              "value": "outset",
-              "isActive": true
+              "value": "outset"
             },
             {
               "name": "border-left-style",
-              "value": "outset",
-              "isActive": true
+              "value": "outset"
             },
             {
               "name": "border-top-color",
-              "value": "buttonborder",
-              "isActive": true
+              "value": "buttonborder"
             },
             {
               "name": "border-right-color",
-              "value": "buttonborder",
-              "isActive": true
+              "value": "buttonborder"
             },
             {
               "name": "border-bottom-color",
-              "value": "buttonborder",
-              "isActive": true
+              "value": "buttonborder"
             },
             {
               "name": "border-left-color",
-              "value": "buttonborder",
-              "isActive": true
+              "value": "buttonborder"
             },
             {
               "name": "border-image-source",
-              "value": "initial",
-              "isActive": true
+              "value": "initial"
             },
             {
               "name": "border-image-slice",
-              "value": "initial",
-              "isActive": true
+              "value": "initial"
             },
             {
               "name": "border-image-width",
-              "value": "initial",
-              "isActive": true
+              "value": "initial"
             },
             {
               "name": "border-image-outset",
-              "value": "initial",
-              "isActive": true
+              "value": "initial"
             },
             {
               "name": "border-image-repeat",
-              "value": "initial",
-              "isActive": true
+              "value": "initial"
             },
             {
               "name": "box-sizing",
-              "value": "border-box",
-              "isActive": true
+              "value": "border-box"
             },
             {
               "name": "background-color",
-              "value": "buttonface",
-              "isActive": true
+              "value": "buttonface"
             },
             {
               "name": "color",
-              "value": "buttontext",
-              "isActive": true
+              "value": "buttontext"
             }
           ],
           "shorthandEntries": [
             {
               "name": "padding-block",
-              "value": "1px",
-              "isActive": true
+              "value": "1px"
             },
             {
               "name": "padding-inline",
-              "value": "6px",
-              "isActive": true
+              "value": "6px"
             },
             {
               "name": "border-width",
-              "value": "2px",
-              "isActive": true
+              "value": "2px"
             },
             {
               "name": "border-style",
-              "value": "outset",
-              "isActive": true
+              "value": "outset"
             },
             {
               "name": "border-color",
-              "value": "buttonborder",
-              "isActive": true
+              "value": "buttonborder"
             },
             {
               "name": "border-image",
-              "value": "initial",
-              "isActive": true
+              "value": "initial"
             }
           ]
         },
@@ -1116,7 +1037,10 @@ const initialState = {
         4
       ]
     }
-  ]
+  ],
+  shortToLongMap: {},
+  longToShortMap: {},
+  isActiveCache: {}
 };
 
 const stylesSlice = createSlice({
@@ -1134,6 +1058,69 @@ const stylesSlice = createSlice({
     findActiveStyles: (state) => {
       const cache = {};
 
+      // for all types for styles, add the styles which have isActive property to cache
+      state.userAgentStyles.forEach(each => {
+        const specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
+        const userAgentArrays = [each.rule.style.shorthandEntries, each.rule.style.cssProperties];
+      
+        userAgentArrays.forEach(userAgentArr => {
+          for (let prop of userAgentArr) {
+            if (prop.hasOwnProperty('isActive')) {
+              if (!cache[prop.name]) cache[prop.name] = [];
+              cache[prop.name].push({
+                specificity,
+                source: prop
+              });            
+            }
+          }
+        });
+      });
+
+      const regularAndInlineStyles = [state.regularStyles, state.inlineStyles];
+
+      regularAndInlineStyles.forEach(array => {
+        array.forEach(each => {
+          let specificity;
+          if (each.rule.origin === 'inline') {
+            // temporarily hardcoded until researched how to set specificity for inline styles (CDP returns inline styles without specificity and per Chat GPT 'inline styles have inherently highest specificity')
+            specificity = {
+              "a": 9,
+              "b": 9,
+              "c": 9
+            }
+          } else specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
+  
+          for (let cssProperty of each.rule.style.cssProperties) {
+            if (cssProperty.hasOwnProperty('isActive')) {
+              if (cssProperty.longhandProperties) {
+                if (!cache[cssProperty.name]) cache[cssProperty.name] = [];
+                cache[cssProperty.name].push({
+                  specificity,
+                  source: cssProperty
+                }); 
+              }
+              else {
+                if (state.longToShortMap[cssProperty.name]) {
+                  const shortProp = state.longToShortMap[cssProperty.name];
+                  if (!cache[shortProp]) cache[shortProp] = [];
+                  cache[shortProp].push({
+                    specificity,
+                    source: cssProperty
+                  });
+                }
+                else {
+                  if (!cache[cssProperty.name]) cache[cssProperty.name] = [];
+                  cache[cssProperty.name].push({
+                    specificity,
+                    source: cssProperty
+                  }); 
+                }
+              }
+            }
+          }
+        });
+      });
+
       const compareSpecificity = (specificity1, specificity2) => {
         if (specificity1.a !== specificity2.a) {
           return specificity1.a > specificity2.a ? 1 : -1;
@@ -1150,50 +1137,130 @@ const stylesSlice = createSlice({
         return 0;
       };
 
-      const toggleIsActive = (array, specificity) => {
-        for (let cssProperty of array) {
-          if (!cache[cssProperty.name]) cache[cssProperty.name] = [];
-
-          cache[cssProperty.name].push({
-            specificity,
-            source: cssProperty
-          });
-
-          let maxSpecificity = cache[cssProperty.name][0].specificity;
-          let maxSource = cache[cssProperty.name][0].source;
+      // go through cache and update isActive flag to false when needed
+      for (let key in cache) {
+        // if only 1 prop in array, it means there're no similar styles => no need to update isActive
+        if (cache[key].length > 1) {
+          let maxSpecificity = cache[key][0].specificity;
+          let maxSource = cache[key][0].source;
           maxSource.isActive = true;
 
-          cache[cssProperty.name].forEach(item => {
+          for (let i = 1; i < cache[key].length; i++) {
+            const item = cache[key][i];
             const result = compareSpecificity(maxSpecificity, item.specificity);
 
-            if (result === -1) {
-              // console.log('Found higher specificity!');
-              // console.log('Specificity1:   ', JSON.stringify(maxSpecificity));
-              // console.log('Specificity2:   ', JSON.stringify(item.specificity));
+            // if 2 specificies are the same, the latter takes precedence
+            if (result === -1 || result === 0) {
               maxSource.isActive = false;
               maxSpecificity = item.specificity;
               maxSource = item.source;
-              maxSource.isActive = true;
+              maxSource.isActive = true;          
             }
-            if (result === 1) {
+            else if (result === 1) {
               item.source.isActive = false;
             }
-          })
-        };
+          }
+        }
       };
 
-      state.userAgentStyles.forEach(each => {
-        const specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
+      state.isActiveCache = cache;
+    },
+    // iterates over shorthandEntries arr on all types of styles, builds: 
+    // 1) mapping of each shorthand property to corresponding longhand properties and saves to shortToLongMap state;
+    // 2) reverse mapping of each longhand property to its corresponding shorthand property and saves to longToShortMap state
+    updateShortLongMaps: (state) => {
+      const dummy = document.querySelector('#longhand-getter');
 
-        const shortAndLongProps = [each.rule.style.cssProperties, each.rule.style.shorthandEntries];
+      const allStyles = [state.userAgentStyles, state.regularStyles, state.inlineStyles];
 
-        for (let arr of shortAndLongProps) toggleIsActive(arr, specificity);
+      allStyles.forEach(array => {
+        array.forEach(each => {
+          for (let shortProp of each.rule.style.shorthandEntries) {
+            // only add props to maps which have valid values and not add them again if they're already in the maps
+            if (shortProp.value && !state.shortToLongMap[shortProp.name]) {
+              // assign 1 shorthand property to a dummy DOM element
+              dummy.style.setProperty(shortProp.name, shortProp.value);
+              // get names of all longhand properties corresponding to the shorthand property
+              const longhandProps = [...dummy.style];
+              // for each shorthand, add all corresponding longhands to shortToLongMap state
+              state.shortToLongMap[shortProp.name] = longhandProps;
+              // for each longhand, add its shorthand property to longToShortMap state
+              longhandProps.forEach(ls => {
+                state.longToShortMap[ls] = shortProp.name;
+              })
+              // reset the dummy element for the next iteration
+              dummy.style.removeProperty(shortProp.name);
+            }
+          }
+        })
+      })
+      // console.log('UPDATED SHORT TO LONG MAP:   ', JSON.stringify(state.shortToLongMap));
+      // console.log('UPDATED LONG TO SHORT MAP:   ', JSON.stringify(state.longToShortMap));
+    },
+    // iterates over all types of styles and sets isActive flag only on the css properties which get rendered
+    setIsActiveFlag: (state) => {
+      const allStyles = [state.userAgentStyles, state.regularStyles, state.inlineStyles];
+
+      allStyles.forEach(array => {
+        array.forEach(each => {
+          // for user-agent styles, if shorthands are available they get rendered => add isActive for all shorthand properties first
+          if (each.rule.origin === 'user-agent' && each.rule.style.shorthandEntries.length) {
+            for (let shortStyle of each.rule.style.shorthandEntries) {
+              if (shortStyle.value) shortStyle.isActive = true;
+            }
+          };
+
+          for (let cssProperty of each.rule.style.cssProperties) {
+            // for user-agent styles, only longhand properties which do not have corresponding shorthand properties get rendered. If property is in longToShortMap it means it was already added as a shorthand property
+            if ((each.rule.origin === 'user-agent' && cssProperty.value && !state.longToShortMap[cssProperty.name]) ||
+                // for regular and inline styles, add isActive only to user-defined properties (which have text property on them)
+                (each.rule.origin === 'regular' && cssProperty.text) ||
+                (each.rule.origin === 'inline' && cssProperty.text)) {
+                  cssProperty.isActive = true;
+                }
+          }
+        })
       });
-      // console.log('CACHE:   ', JSON.stringify(cache));
-      // console.log('CACHE:   ', JSON.stringify(cache['text-align']));
+
+      // state.userAgentStyles.forEach(each => {
+      //   // add isActive for all shorthand properties first
+      //   if (each.rule.style.shorthandEntries.length) {
+      //     for (let shortStyle of each.rule.style.shorthandEntries) {
+      //       if (shortStyle.value) shortStyle.isActive = true;
+      //     }
+      //   };
+      //   // add isActive for longhand properties which do not have corresponding shorthand properties
+      //   for (let cssProperty of each.rule.style.cssProperties) {
+      //     if (cssProperty.value && !state.longToShortMap[cssProperty]) cssProperty.isActive = true; 
+      //   }
+      // });
+
+      // state.regularStyles.forEach(each => {
+      //   // add isActive for properties which have 'text' property on them, indicating these are styles defined by the user
+      //   for (let cssProperty of each.rule.style.cssProperties) {
+      //     if (cssProperty.text) cssProperty.isActive = true;
+      //   }
+      // });
+
+      // state.inlineStyles.forEach(each => {
+      //   // add isActive for properties which have 'text' property on them, indicating these are styles defined by the user
+      //   for (let cssProperty of each.rule.style.cssProperties) {
+      //     if (cssProperty.text) cssProperty.isActive = true;
+      //   }
+      // })
     }
   }
 });
 
-export const { updateInlineStyles, findActiveStyles } = stylesSlice.actions;
+const fetchShortLongProps = createAsyncThunk(
+  'styles/fetchShortLongProps',
+  async () => {
+    console.log('Inside ASYNC THUNK');
+    const parsedFiles = await css.listAll();
+    console.log('Files parsed from @webref/css package:   ', parsedFiles);
+  }
+);
+
+export const { updateInlineStyles, findActiveStyles, updateShortLongMaps, setIsActiveFlag } = stylesSlice.actions;
+export { fetchShortLongProps };
 export default stylesSlice.reducer;
