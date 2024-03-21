@@ -7,11 +7,22 @@ function SidebarStyling(props) {
     const dispatch = useDispatch();
 
     const { data } = useSelector(state => state.nodeData);
-    const liveProps = JSON.parse(JSON.stringify(props));
 
-    // console.log('\n\n\n');
-    // console.log('liveProps', liveProps);
-    // console.log('\n\n\n');
+    // making a deep copy of props, so that we can then modify it. props is immutable.
+    // using JSON.parse(JSON.stringify()) instead of
+    // copying props to liveProps. using JSON.parse(JSON.stringify(props)) to do so. this is a bit hacky, but it works. it involves converting props to a json string and then parsing it back into a new object.
+    // const liveProps = JSON.parse(JSON.stringify(props)); // using JSON.parse and JSON.stringify to create a deep copy of props. this is often used to make a copy of an object in js.
+
+    const liveProps = {...JSON.parse(JSON.stringify(props))}; // using the spread operator to create a deep copy of props, and JSON.parse to make sure any function or symbol values are preserved.
+
+    // creating a copy of props using the spread operator ({...props}). this is a new syntax in ES6 and it creates a shallow copy of the object.
+    // const liveProps = {...props};
+
+    // using Object.assign to make a shallow copy of props. Object.assign is a built-in function in js that is used to copy the values of all enumerable properties from one or more source objects to a target object.
+    // const liveProps = Object.assign({}, props);
+    console.log('\n\n\n');
+    console.log('liveProps', liveProps);
+    console.log('\n\n\n');
 
     const [values, setValues] = useState({});
 
@@ -55,25 +66,23 @@ function SidebarStyling(props) {
 
     const handleSubmit = async (cssProp, event) => {
         const updatedCssProp = {...cssProp, value: values[cssProp.name]};
-        event.preventDefault();
         updatedCssProp.valuePrev = cssProp.value;
         updatedCssProp.textPrev = updatedCssProp.text;
         updatedCssProp.text = `${cssProp.name}: ${values[updatedCssProp.name]};`;
-        console.log('\n');
-        console.log(cssProp.name);
-        console.log(cssProp.value);
-        console.log('->');
-        console.log(updatedCssProp.value);
-        console.log('\n');
+        // console.log('\n');
+        // console.log(cssProp.name);
+        // console.log(cssProp.value);
+        // console.log('->');
+        // console.log(updatedCssProp.value);
+        // console.log('\n');
 
         updatedCssProp.selector = liveProps.selector;
         updatedCssProp.sourcePath = liveProps.sourcePath;
 
         // console.log('data', data);
-        console.log('TRY: /write');
-        console.log('\n\n\n');
+        console.log('TRY: /patch');
         try {
-            const response = await fetch('/write', {
+            const response = await fetch('/patch', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -86,25 +95,20 @@ function SidebarStyling(props) {
                 console.log('TRY: /runCdp');
                 console.log('\n\n\n');
 
-                // wait for 1 second
+                // wait for .5 seconds. not doing this atm leads to a mismatch between the value in the input field and the corresponding value in the file, which then prevents further editing of that value (until the element is clicked again) because our patchFile function matches one to the other in order to replace the value with the new value.
                 await new Promise(resolve => setTimeout(resolve, 500));
-                runCdp();
-            }
-            else {
-                console.log('result was not true');
+
+                // running CDP again to update our redux store after patching the file.
+                await runCdp();
+
+                // and we'll update our tracking of undo/redo, our redux store perhaps, and source files here possibly.
+                // or source file edit from our server, store, etc.
             }
         }
         catch(error) {
             console.log('error in runCdp', error);
         }
-        //   const result = await response.json();
-        //   console.log('sideBarStyling: result:', result);
-
-
-
-        // and we'll update our tracking of undo/redo, our redux store perhaps, and source files here possibly.
-        // or source file edit from our server, store, etc.
-        };
+    };
 
     const styleParagraphs = liveProps.cssProperties.map((cssProp, idx) => {
         if ((liveProps.origin === 'regular' && cssProp.text)) {

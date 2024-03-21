@@ -8,9 +8,12 @@
     "build": "vite build",
     "preview": "vite preview --port 8888",
     "vite-dev": "concurrently \"vite\" \"NODE_ENV=development nodemon server/server.js\"",
-    "dev": "port=5555 npm run startRemoteChrome && npm run vite-dev",
-    "prod": "npm run build && port=8888 npm run startRemoteChrome && npm run start",
-    "startRemoteChrome": "PORT=$port ./scripts/startRemoteChrome.sh",
+    "dev": "concurrently \"PORT=5555 npm run startRemoteChromeJs\" \"npm run vite-dev\"",
+    "dev-sh": "PORT=5555 npm run startRemoteChrome && npm run vite-dev",
+    "prod": "concurrently \"npm run build\" \"PORT=8888 npm run startRemoteChromeJs\" \"npm run start\"",
+    "prod-sh": "npm run build && PORT=8888 npm run startRemoteChromeJs && npm run start",
+    "startRemoteChrome": "./scripts/startRemoteChrome.sh",
+    "startRemoteChromeJs": "PORT=$PORT node ./scripts/startRemoteChrome.js",
     "postInstall": "node ./scripts/postInstall.js"
   },
   "type": "module",
@@ -19,7 +22,7 @@
     "url": "git+https://github.com/oslabs-beta/cssxe.git"
   },
   "bin": {
-    "remoteChrome": "./startRemoteChrome.sh"
+    "remoteChrome": "startRemoteChrome.sh"
   },
   "keywords": [
     "CSS",
@@ -30,7 +33,7 @@
     "workspace",
     "source-maps"
   ],
-  "author": "",
+  "author": "pandawhale",
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
@@ -51,5 +54,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "vite": "^5.1.4"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/oslabs-beta/cssxe/issues"
+  },
+  "homepage": "https://github.com/oslabs-beta/cssxe#readme"
 }

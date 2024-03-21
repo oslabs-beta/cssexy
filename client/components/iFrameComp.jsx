@@ -26,8 +26,7 @@ const iFrameComp = ({ src, proxy, className }) => {
     const handleLoad = () => {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-        console.log('iFrameComp: iframeDoc', iframeDoc);
+        // console.log('iFrameComp: iframeDoc', iframeDoc);
 
         const handleClick = async (event) => {
           const element = event.target;
@@ -43,8 +42,6 @@ const iFrameComp = ({ src, proxy, className }) => {
             // attributes: {},
           };
 
-
-
           // a POST request to the /cdp endpoint
           const response = await fetch('/cdp', {
             method: 'POST',
@@ -54,7 +51,7 @@ const iFrameComp = ({ src, proxy, className }) => {
             body: JSON.stringify(data),
           });
 
-          console.log('iFrameComp: response', response);
+          // console.log('iFrameComp: response', response);
 
           const result = await response.json();
 

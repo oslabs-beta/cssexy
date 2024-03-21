@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import cdpProcess from '../client/cdp/cdp0process.js';
-import writeFile from '../client/writeFile.js';
+import patchFile from '../client/patchFile.js';
 
 const app = express();
 const PORT = 8888;
@@ -25,20 +25,20 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../dist')));
 }
 
-app.post('/write', async (req, res) => {
+app.post('/patch', async (req, res) => {
   console.log('POST /write');
   // console.log(req.body);
   const data = req.body;
 
   try {
-    console.log('server: /write: writeFile about to start');
-    const result = await writeFile(data);
-    console.log('server: /write: result should be returning now');
-    console.log('server: /write: result:', result);
+    console.log('server: /patch: writeFile about to start');
+    const result = await patchFile(data);
+    console.log('server: /patch: result should be returning now');
+    console.log('server: /patch: result:', result);
     return res.json( result );
   } catch (error) {
     console.error('Error processing data:', error);
-    return res.status(500).json({ error: 'Failed to process data' });
+    return res.status(500).json({ error: 'Failed to patch data' });
   }
 });
 

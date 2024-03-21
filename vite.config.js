@@ -17,7 +17,7 @@ export default defineConfig({
     port: 5555,
     proxy: {
       '/cdp': 'http://localhost:8888',
-      '/write': 'http://localhost:8888',
+      '/patch': 'http://localhost:8888',
       '/read': 'http://localhost:8888',
     }
   }

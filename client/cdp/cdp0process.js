@@ -66,8 +66,6 @@ const cdpProcess = async (data) => {
         // extracting the 'domains' from the CDP client.
         const { DOM, CSS, Network, Page, iframeNode, styleSheets } = await cdpEnable(cdpClient, proxy);
 
-
-
         // these allow us to see / save all of the methods and properties that the CDP client exposes.
         // fs.writeFileSync('./data/domains/DOM.json', JSON.stringify(Object.entries(DOM), null, 2));
         // fs.writeFileSync('./data/domains/Network.json', JSON.stringify(Object.entries(Network), null, 2));
