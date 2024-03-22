@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import * as css from '@webref/css';
 
 const initialState = {
   // allStyles property includes both matchedCSSRules and inlineCSSRules
   // matchedCSSRules are styles specified in .css files (origin=regular) and default browser styles (origin=user-agent)
   // inlineCSSRules are styles specified directly on components (origin=inline)
-  regularStyles: [
+  regularRules: [
     {
       "rule": {
         "styleSheetId": "style-sheet-33556-41",
@@ -500,7 +499,7 @@ const initialState = {
       ]
     }
   ],
-  inlineStyles: [
+  inlineRules: [
     {
       "rule": {
         "origin": "inline",
@@ -622,7 +621,7 @@ const initialState = {
       }
     }
   ],
-  userAgentStyles: [
+  userAgentRules: [
     {
       "rule": {
         "selectorList": {
@@ -1049,8 +1048,8 @@ const stylesSlice = createSlice({
   reducers: {
     // every time user selects a DOM element, this triggers update of inline styles
     // now triggered by cdp scripts - need to change later
-    updateInlineStyles: (state, action) => {
-      state.inlineStyles = action.payload;
+    updateInlineRules: (state, action) => {
+      state.inlineRules = action.payload;
     },
     updateMatchedStyles: (state, action) => {
       state.matchedStyles = action.payload;
@@ -1059,7 +1058,7 @@ const stylesSlice = createSlice({
       const cache = {};
 
       // for all types for styles, add the styles which have isActive property to cache
-      state.userAgentStyles.forEach(each => {
+      state.userAgentRules.forEach(each => {
         const specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
         const userAgentArrays = [each.rule.style.shorthandEntries, each.rule.style.cssProperties];
       
@@ -1076,9 +1075,9 @@ const stylesSlice = createSlice({
         });
       });
 
-      const regularAndInlineStyles = [state.regularStyles, state.inlineStyles];
+      const regularAndInlineRules = [state.regularRules, state.inlineRules];
 
-      regularAndInlineStyles.forEach(array => {
+      regularAndInlineRules.forEach(array => {
         array.forEach(each => {
           let specificity;
           if (each.rule.origin === 'inline') {
@@ -1171,7 +1170,7 @@ const stylesSlice = createSlice({
     updateShortLongMaps: (state) => {
       const dummy = document.querySelector('#longhand-getter');
 
-      const allStyles = [state.userAgentStyles, state.regularStyles, state.inlineStyles];
+      const allStyles = [state.userAgentRules, state.regularRules, state.inlineRules];
 
       allStyles.forEach(array => {
         array.forEach(each => {
@@ -1194,12 +1193,10 @@ const stylesSlice = createSlice({
           }
         })
       })
-      // console.log('UPDATED SHORT TO LONG MAP:   ', JSON.stringify(state.shortToLongMap));
-      // console.log('UPDATED LONG TO SHORT MAP:   ', JSON.stringify(state.longToShortMap));
     },
     // iterates over all types of styles and sets isActive flag only on the css properties which get rendered
     setIsActiveFlag: (state) => {
-      const allStyles = [state.userAgentStyles, state.regularStyles, state.inlineStyles];
+      const allStyles = [state.userAgentRules, state.regularRules, state.inlineRules];
 
       allStyles.forEach(array => {
         array.forEach(each => {
@@ -1221,36 +1218,9 @@ const stylesSlice = createSlice({
           }
         })
       });
-
-      // state.userAgentStyles.forEach(each => {
-      //   // add isActive for all shorthand properties first
-      //   if (each.rule.style.shorthandEntries.length) {
-      //     for (let shortStyle of each.rule.style.shorthandEntries) {
-      //       if (shortStyle.value) shortStyle.isActive = true;
-      //     }
-      //   };
-      //   // add isActive for longhand properties which do not have corresponding shorthand properties
-      //   for (let cssProperty of each.rule.style.cssProperties) {
-      //     if (cssProperty.value && !state.longToShortMap[cssProperty]) cssProperty.isActive = true; 
-      //   }
-      // });
-
-      // state.regularStyles.forEach(each => {
-      //   // add isActive for properties which have 'text' property on them, indicating these are styles defined by the user
-      //   for (let cssProperty of each.rule.style.cssProperties) {
-      //     if (cssProperty.text) cssProperty.isActive = true;
-      //   }
-      // });
-
-      // state.inlineStyles.forEach(each => {
-      //   // add isActive for properties which have 'text' property on them, indicating these are styles defined by the user
-      //   for (let cssProperty of each.rule.style.cssProperties) {
-      //     if (cssProperty.text) cssProperty.isActive = true;
-      //   }
-      // })
     }
   }
 });
 
-export const { updateInlineStyles, findActiveStyles, updateShortLongMaps, setIsActiveFlag } = stylesSlice.actions;
+export const { updateInlineRules, findActiveStyles, updateShortLongMaps, setIsActiveFlag } = stylesSlice.actions;
 export default stylesSlice.reducer;

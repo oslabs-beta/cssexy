@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Style(props) {
+function SidebarStyling(props) {
     const styleParagraphs = props.cssProperties.map((cssProp, idx) => {
-        if ((props.origin === 'regular' && cssProp.text) || 
+        if ((props.origin === 'regular' && cssProp.text) ||
             props.origin === 'user-agent' ||
             (props.origin === 'inline' && cssProp.text)) {
             // cssProperties arr includes both user defined 'shorthand' styles and css 'longhand' styles. We want to render only user defined styles => style is user defined if it has .text property
@@ -24,12 +24,13 @@ function Style(props) {
     return (
         <div className='style-container'>
             <div className='selector-div'>
-                {props.selector && <p>{props.selector} {'{'}</p>}
+                {props.selector && <p>{props.selector} </p>}
+            {/* {props?.source?.paths[0] && <p>{props?.source?.paths[0]} </p>} */}
             </div>
             {styleParagraphs}
-            <p>{'}'}</p>
+            <br />
         </div>
     )
 };
 
-export default Style;
+export default SidebarStyling;

@@ -1,4 +1,7 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component with event handling for click events.
@@ -10,39 +13,35 @@ import React, { useEffect } from 'react';
  * @returns {JSX.Element} The rendered iframe component.
  */
 
-const iFrameComp = ({ src, className, proxy }) => {
+const iFrameComp = ({ src, proxy, className }) => {
+  const dispatch = useDispatch();
 
+  // waiting for the iframe DOM to load before we add event listeners
+  // without this, the event listeners would try to be added to an unexisting iframe
   useEffect(() => {
+    // getting our iframe
     const iframe = document.querySelector(`.${className}`);
-
-    // console.log('iframe', iframe);
+    console.log('iFrameComp: iframe', iframe);
 
     const handleLoad = () => {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
-        console.log('iframeDoc', iframeDoc);
+        console.log('iFrameComp: iframeDoc', iframeDoc);
 
         const handleClick = async (event) => {
           const element = event.target;
           console.log('iFrameComp: element', element);
           const data = {
-            nodeName: element.nodeName,
-            nodeType: element.nodeType,
-            textContent: element.textContent,
-            innerHTML: element.innerHTML,
             id: element.id,
+            nodeName: element.nodeName,
             className: element.className,
-            attributes: {},
+            proxy: proxy,
+            // nodeType: element.nodeType,
+            // textContent: element.textContent,
+            // innerHTML: element.innerHTML,
+            // attributes: {},
           };
-
-
-          const attributes = element.attributes;
-          console.log('iFrameComp: attributes', attributes);
-          for (let i = 0; i < attributes.length; i++) {
-            data.attributes[attributes[i].name] = attributes[i].value;
-          }
-          console.log('iFrameComp: data', data);
 
           // a POST request to the /cdp endpoint
           const response = await fetch('/cdp', {
@@ -52,15 +51,43 @@ const iFrameComp = ({ src, className, proxy }) => {
             },
             body: JSON.stringify(data),
           });
+
+          console.log('iFrameComp: response', response);
+
           const result = await response.json();
-          console.log('Result from /cdp:', result);
+
+          // console.log('iFrameComp: Result returned from /cdp');
+
+          // dispatching the results from the /cdp endpoint to the store
+          dispatch(updateInlineRules(result.inlineRules));
+          dispatch(updateRegularRules(result.regularRules));
+          dispatch(updateUserAgentRules(result.userAgentRules));
+          dispatch(updateStyleSheets(result.styleSheets));
+          // dispatch(updateInheritedRules(result.inheritedRules));
+          // dispatch(updateKeyframeRules(result.keyframeRules));
         };
 
 
-        iframeDoc.addEventListener('click', handleClick, false);
+        // This event listener needs to be added to the iframe's contentDocument because
+        // we're listening for clicks inside the iframe, and those clicks won't be
+        // handled by React's event delegation system. By adding this event listener,
+        // we're essentially making the iframe's contentDocument a "portal" for
+        // clicks to be handled by React.
 
-        // Cleanup function to remove event listener
+        iframeDoc.addEventListener('click', (event) => {
+          // Calling the handleClick function
+          handleClick(event);
+
+          // Set focus back to the parent document
+          // This allows CSSxe to receive keyboard events again after clicking inside the iframe
+          // before doing this, CSSxe would not receive keyboard events again until we clicked inside of the sidebar
+          window.parent.focus();
+
+        }, false);
+
         return () => {
+          // Cleanup function to remove event listener
+          // Prevents memory leaks
           iframeDoc.removeEventListener('click', handleClick, false);
         };
       } catch (error) {
