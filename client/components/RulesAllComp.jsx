@@ -8,7 +8,8 @@ function RulesAllComp() {
     const regularRules = useSelector(state => state.rules.regularRules);
     const styleSheets = useSelector(state => state.rules.styleSheets);
 
-    const [source, setSource] = useState(null);
+    const [sourcePath, setSourcePath] = useState(null);
+    const [sourceName, setSourceName] = useState(null);
 
     const RulesInlineComp = inlineRules.map((each, idx) => {
         // console.log('inlineRules', inlineRules);
@@ -29,8 +30,14 @@ function RulesAllComp() {
         // console.log('styleSheetId', each.rule.style.styleSheetId);
         // console.log('styleSheets[each.rule.style.styleSheetId]?', styleSheets[each.rule.style.styleSheetId]);
 
-        if (styleSheets[each.rule.style.styleSheetId] && source != styleSheets[each.rule.style.styleSheetId].paths[0]) {
-            setSource(styleSheets[each.rule.style.styleSheetId].paths[0]);
+        const styleSheetId = each.rule.style.styleSheetId;
+        const firstSourcePath = styleSheets[styleSheetId].paths[0];
+
+        if (styleSheets[styleSheetId] && sourcePath != firstSourcePath)  {
+            setSourcePath(firstSourcePath);
+            const splitPaths = firstSourcePath.split('/')
+            const sourceNameString = `/${splitPaths[splitPaths.length - 1]}`
+            setSourceName(sourceNameString);
         }
 
         return (
@@ -39,20 +46,19 @@ function RulesAllComp() {
                 selector={each.rule.selectorList?.selectors[0].text}
                 cssProperties={each.rule.style.cssProperties}
                 origin={each.rule.origin}
-            // source={styleSheets[each.rule.style.styleSheetId]}
             />
         )
     });
 
     return (
         <div>
-            {/* the below is iff we only want to display a given header when there are styles  of that type for the element */}
-            {/* {inlineRules[0]?.rule?.style.cssProperties.length > 0 && <h3>inline:</h3>} */}
             <h3>inline</h3>
-            {RulesInlineComp}
-            <h3>.css</h3>
-            {source && <p>{source} </p>}
-            {RulesRegularComp}
+            {/* ternary to render a line break if there are no rules. Improves readability imo */}
+            <>{RulesInlineComp.length ? RulesInlineComp : <br/>}</>
+            {/* <h3>.css</h3> */}
+            <h3>{sourceName ? sourceName : 'css file'}</h3>
+            {/* same ternary, same reason */}
+            <>{RulesRegularComp.length ? RulesRegularComp : <br/>}</>
             <RulesUserAgentComp />
         </div>
     )

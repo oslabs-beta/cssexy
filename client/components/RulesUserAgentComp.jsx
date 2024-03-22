@@ -61,11 +61,14 @@ function RulesUserAgentComp() {
     return (
         <div>
         <h3>user agent</h3>
-            <SidebarStyling
-                selector={userAgentSelector}
-                cssProperties={ObjToArr(userAgentRules)}
-                origin={'user-agent'}
-            />
+        {/* making this conditionally rendered as otherwise there is a bottom border where there's not one for inline and regular */}
+            {Object.keys(userAgentRules).length > 0 &&
+                <SidebarStyling
+                    selector={userAgentSelector}
+                    cssProperties={ObjToArr(userAgentRules)}
+                    origin={'user-agent'}
+                />
+            }
         </div>
     )
 };

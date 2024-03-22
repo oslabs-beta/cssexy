@@ -9,7 +9,13 @@
 # For prod mode, the port is 8888.
 
 # other flags:
-# --app=localhost:$PORT // not quite correct i dont think.
+
+# when not doing '--app':
+  # --new-window \
+  # http://localhost:$PORT &
+  # --app=http://localhost:$PORT &
+
+
 # --auto-open-devtools-for-tabs \
 
 
