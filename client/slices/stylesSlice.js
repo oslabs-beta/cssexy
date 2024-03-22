@@ -1252,15 +1252,5 @@ const stylesSlice = createSlice({
   }
 });
 
-const fetchShortLongProps = createAsyncThunk(
-  'styles/fetchShortLongProps',
-  async () => {
-    console.log('Inside ASYNC THUNK');
-    const parsedFiles = await css.listAll();
-    console.log('Files parsed from @webref/css package:   ', parsedFiles);
-  }
-);
-
 export const { updateInlineStyles, findActiveStyles, updateShortLongMaps, setIsActiveFlag } = stylesSlice.actions;
-export { fetchShortLongProps };
 export default stylesSlice.reducer;

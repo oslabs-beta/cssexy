@@ -19,8 +19,8 @@ function SidebarComp() {
   // const regularStyles = useSelector(state => state.styles.userAgentStyles);
   // useEffect(() => console.log('REGULAR STYLES WITH IS ACTIVE UPDATED:   ', regularStyles));
 
-  const isActiveCache = useSelector(state => state.styles.isActiveCache);
-  useEffect(() => console.log('IS ACTIVE CACHE:   ', isActiveCache));
+  // const isActiveCache = useSelector(state => state.styles.isActiveCache);
+  // useEffect(() => console.log('IS ACTIVE CACHE:   ', isActiveCache));
 
   return (
     <div className="sidebar">
