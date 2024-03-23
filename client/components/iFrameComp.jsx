@@ -29,33 +29,7 @@ const iFrameComp = ({ src, proxy, className }) => {
         // console.log('iFrameComp: iframeDoc', iframeDoc);
 
         const handleClick = async (event) => {
-          // This function is the event listener for click events inside the iframe.
-          // It prevents the default behavior of the click (following a link) and
-          // grabs a reference to the element that was clicked inside the iframe.
-          // This function is added to the iframe's contentDocument when the iframe
-          // loads, and is triggered whenever the user clicks inside the iframe.
-
-          // The event comes from the iframe, so we need to prevent the default
-          // behavior of following the link.
-
-          // The element that was clicked inside the iframe is available as event.target.
           const element = event.target;
-
-          // Other options like this include stopPropagation, which prevents the event
-          // from bubbling up to parent elements.
-          // event.stopPropagation();
-
-          // How to manipulate it:
-          // You can use element.tagName to get the HTML tag name of the element that was clicked.
-          // console.log('tagName:', element.tagName);
-          // You can use element.id to get the ID of the element that was clicked.
-          // console.log('id:', element.id);
-          // You can use element.className to get the class names of the element that was clicked.
-          // console.log('className:', element.className);
-          // You can use element.innerHTML to get the inner HTML of the element that was clicked.
-          // console.log('innerHTML:', element.innerHTML);
-          // You can use element.textContent to get the text content of the element that was clicked.
-          // console.log('textContent:', element.textContent);
 
           console.log('iFrameComp: element', element);
           const data = {
@@ -69,7 +43,13 @@ const iFrameComp = ({ src, proxy, className }) => {
             innerHTML: element.innerHTML,
             // attributes: {},
           };
+          // The event comes from the iframe, so we need to prevent the default
+          // behavior of following the link.
           event.preventDefault();
+
+                    // Other options like this include stopPropagation, which prevents the event
+          // from bubbling up to parent elements.
+          // event.stopPropagation();
 
           console.log('iFrameComp: data', data);
 
