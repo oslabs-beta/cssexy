@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, updateNodeData } from '../slices/rulesSlice.js';
+import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, setIsActiveFlag, updateNodeData } from '../slices/rulesSlice.js';
 
 function SidebarStyling(props) {
 
@@ -20,6 +20,7 @@ function SidebarStyling(props) {
 
     // using Object.assign to make a shallow copy of props. Object.assign is a built-in function in js that is used to copy the values of all enumerable properties from one or more source objects to a target object.
     // const liveProps = Object.assign({}, props);
+
     // console.log('\n\n\n');
     // console.log('liveProps', liveProps);
     // console.log('\n\n\n');
@@ -60,6 +61,9 @@ function SidebarStyling(props) {
               dispatch(updateRegularRules(result.regularRules));
               dispatch(updateUserAgentRules(result.userAgentRules));
               dispatch(updateStyleSheets(result.styleSheets));
+              dispatch(updateShortLongMaps());
+              dispatch(setIsActiveFlag());
+              dispatch(findActiveStyles());
             }
           };
 
@@ -117,11 +121,12 @@ function SidebarStyling(props) {
             // longhand example: border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: blueviolet
             return (
                 <p key={`styleParagraphs-${idx}`} className='style-paragraph'>
-                    <span className='style-property-span'>{cssProp.name}:</span>
-                        {/* <span className='style-value-span'>{cssProp.value}</span> */}
+                    <span className={`style-property-span ${!cssProp.isActive ? 'style-property-overwritten-span' : ''}`}>
+                        {cssProp.name}:
+                    </span>
                         <input
                             // ref={valueSpanRef}
-                            className='style-value-input-span'
+                            className={`style-value-input-span ${!cssProp.isActive ? 'style-value-input-overwritten-span' : ''}`}
                             value={values[cssProp.name] || cssProp.value || ''}
                             onChange={(e) => setValues({...values, [cssProp.name]: e.target.value})}
                             onKeyDown={(e) => {
@@ -142,9 +147,12 @@ function SidebarStyling(props) {
         (liveProps.origin === 'inline' && cssProp.text)) {
              return (
                 <p key={`styleParagraphs-${idx}`} className='style-paragraph'>
-                    <span className='style-property-span'>{cssProp.name}:</span>
-                    {/* <span className='style-value-span'>{cssProp.value}</span> */}
-                    <span className='style-value-span'>{cssProp.value}</span>
+                    <span className={`style-property-span ${!cssProp.isActive ? 'style-property-overwritten-span' : ''}`}>
+                        {cssProp.name}:
+                    </span>
+                    <span className={`style-value-span ${!cssProp.isActive ? 'style-value-overwritten-span' : ''}`}>
+                        {cssProp.value}
+                    </span>
                 </p>
             )
         }

@@ -107,6 +107,20 @@ body {
   cursor: text;
 }
 
+.style-value-input-overwritten-span {
+  background: rgba(0,0,0,0.3);
+  text-decoration: line-through #906bc7;
+}
+
+
+.style-value-overwritten-span {
+  text-decoration: line-through #906bc7;
+}
+
 .style-value-input-span:focus {
   outline: 0.5px solid #906bc7;
+}
+
+.style-property-overwritten-span {
+  text-decoration: line-through white;
 }
