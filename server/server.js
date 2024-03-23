@@ -2,28 +2,34 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import dotenv from 'dotenv';
+
 import cdpProcess from '../client/cdp/cdp0process.js';
 import patchFile from '../client/patchFile.js';
 
 const app = express();
 const PORT = 8888;
+const environment = process.env.NODE_ENV || 'development';
 
+// need to do this when doing ES modules, when using Vite.
 
-// need to do this when doing ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+const proxy = process.env.VITE_PROXY;
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-console.log('Current environment:', process.env.NODE_ENV);
-
 app.use(express());
 
-if (process.env.NODE_ENV === 'production') {
-  // Serve static files (CSSxe UI)
+if (environment === 'production') {
+  // Serve static files (CSSxe UI) when in prod mode
   app.use(express.static(path.join(__dirname, '../dist')));
 }
+
+
 
 app.post('/patch', async (req, res) => {
   console.log('POST /write');
@@ -59,8 +65,6 @@ app.post('/cdp', async (req, res) => {
   }
 });
 
-
-
 app.use((req, res) => res.sendStatus(404));
 
 app.use((err, req, res, next) => {
@@ -68,4 +72,11 @@ app.use((err, req, res, next) => {
   res.sendStatus(500);
 });
 
-app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));
+app.listen(PORT, () =>
+console.log('\n'),
+console.log('\n'),
+console.log('Server: environment:', environment),
+console.log('Server: proxy:', proxy ),
+console.log(`Server: listening on port: ${PORT}`),
+
+);

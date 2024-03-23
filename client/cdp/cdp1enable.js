@@ -10,7 +10,7 @@
 
 
 import { writeFileSync, mkdir } from 'node:fs';
-const cdpEnable = async (client, proxy, selector) => {
+const cdpEnable = async (client) => {
   // extract the different 'domains' from the client.
   const { DOM, CSS, Network, Page } = client;
 
@@ -38,18 +38,23 @@ const cdpEnable = async (client, proxy, selector) => {
       // console.log('decodedMap', decodedMap);
       writeFileSync('./data/output/decodedMap.json', JSON.stringify(decodedMap, null, 2));
       const sources = decodedMap.sources;
-      const paths = []
+      const absolutePaths = []
+      const relativePaths = [];
       sources.forEach(source => {
         // splitting the source string on the '://'
         // pushing the second part, the path, into the paths array
-        paths.push(source.split('://')[1]);
+        if (source.includes('://')){
+          relativePaths.push(source.split('://')[1]);
+        }
+        else {
+          absolutePaths.push(source);
+        }
       })
-
-      // console.log('paths', paths);
 
       styleSheets[id] = {
         sources,
-        paths
+        absolutePaths,
+        relativePaths
       }
     }
     else {
@@ -78,7 +83,7 @@ const cdpEnable = async (client, proxy, selector) => {
   // TBD if there would be more than one if the site we are targeting has iframes within it.
   const iframeNodeId = await nodes.filter(node => node.nodeName === 'IFRAME')[0].nodeId;
 
-  // console.log('iframeNodeId', iframeNodeId);
+  console.log('iframeNodeId', iframeNodeId);
 
   // describeNode: gets a description of a node with a given DOM nodeId, i.e. the type of node, its name, and its children.
   const { node } = await DOM.describeNode({ nodeId: iframeNodeId });
@@ -88,10 +93,10 @@ const cdpEnable = async (client, proxy, selector) => {
   // from there we get the contentDocument of the iframeNode,
   // which is the html document of the iframe
   const iframeNode = node.contentDocument;
-  // console.log('Node inside iframe', iframeNode);
+  console.log('Node inside iframe', iframeNode);
 
-  // this console logs the contentDocument node of the iframe
-  // writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
+  // this saves the contentDocument node of the iframe
+  writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
 
   // Return the enabled domains and the nodeId of the iframe root node to the process
   return { DOM, CSS, Network, Page, iframeNode, styleSheets };

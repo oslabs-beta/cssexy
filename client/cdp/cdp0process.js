@@ -24,33 +24,42 @@ import cdpRules from './cdp2rules.js';
 
 const cdpProcess = async (data) => {
     const id = data?.id;
+    const innerHTML = data?.innerHTML;
     const nodeName = data?.nodeName;
     const className = data?.className;
-    const proxy = data?.proxy;
-    // const nodeType = data?.nodeType;
-    // const textContent = data?.textContent;
-    // const innerHTML = data?.innerHTML;
+    // const proxy = data?.proxy;
+    const nodeType = data?.nodeType;
+    const textContent = data?.textContent;
     // const attributes = data?.attributes;
 
     // console.log('cdpProcess: proxy:', proxy);
     let cdpClient;
     try {
-
-        // setting our selector based on the attributes we received from the iframe
-        // starting with the most specific selector and working our way down
+        // setting our selector based on the attributes we received from the iframe.
+        // starting with the most specific selector and working our way down.
         let selector = '';
         if (id) {
             console.log('element id:', id);
             selector = `#${id}`;
         }
-        else if (className) {
+        else if (className && !className.includes(' ')) {
             console.log('element class:', className);
             selector = `.${className}`;
         }
         else if (nodeName) {
             console.log('element nodeName:', nodeName);
+            console.log('element className:', className);
             selector = `${nodeName}`;
         }
+        else if (innerHTML) {
+            console.log('element innerHTML:', innerHTML);
+            selector = `${innerHTML}`;
+        }
+        else if (textContent) {
+            console.log('element textContent:', textContent);
+            selector = `${textContent}`;
+        }
+
         // console.log('cdpProcess: selector:', selector);
 
         // console.log('cdpProcess: trying to connect to CDP');
@@ -64,7 +73,7 @@ const cdpProcess = async (data) => {
         // console.log('Connected to Chrome DevTools Protocol via chrome-remote-interface');
 
         // extracting the 'domains' from the CDP client.
-        const { DOM, CSS, Network, Page, iframeNode, styleSheets } = await cdpEnable(cdpClient, proxy);
+        const { DOM, CSS, Network, Page, iframeNode, styleSheets } = await cdpEnable(cdpClient);
 
         // these allow us to see / save all of the methods and properties that the CDP client exposes.
         // fs.writeFileSync('./data/domains/DOM.json', JSON.stringify(Object.entries(DOM), null, 2));

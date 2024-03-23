@@ -31,7 +31,7 @@ function RulesAllComp() {
         // console.log('styleSheets[each.rule.style.styleSheetId]?', styleSheets[each.rule.style.styleSheetId]);
 
         const styleSheetId = each.rule.style.styleSheetId;
-        const firstSourcePath = styleSheets[styleSheetId].paths[0];
+        const firstSourcePath = styleSheets[styleSheetId].absolutePaths[0] ? styleSheets[styleSheetId].absolutePaths[0] : styleSheets[styleSheetId].relativePaths[0];
 
         if (styleSheets[styleSheetId] && sourcePath != firstSourcePath)  {
             setSourcePath(firstSourcePath);

@@ -41,9 +41,10 @@ try {
 
   // a command to start Chrome with remote debugging enabled and a new window opened to 'http://localhost:PORT'
   // i tried splitting the command into separate lines to make it easier to read but that caused an error.
-  const command = `/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir="${DIR}" --no-first-run --no-default-browser-check --disable-web-security --new-window http://localhost:${PORT} &`;
+  // const command = `/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir="${DIR}" --no-first-run --no-default-browser-check --disable-web-security --new-window http://localhost:${PORT} &`;
+  const command = `/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir="${DIR}" --no-first-run --no-default-browser-check --disable-web-security --new-window http://localhost:${PORT} &`
 
-    // console.log('\n\n\n');
+  // console.log('\n\n\n');
   // console.log('About to run command:', command);
 
   // 'exec' is a built-in Node.js function that takes three arguments: the command to run, a callback function to execute when the command completes, and an optional options object.
