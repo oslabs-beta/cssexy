@@ -1,29 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import RulesAllComp from "./RulesAllComp.jsx";
-import { findActiveStyles, updateShortLongMaps, setIsActiveFlag } from "../slices/stylesSlice.js";
-import { useDispatch, useSelector } from "react-redux";
 
 function SidebarComp() {
   // local state variable for toggling the sidebar
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const dispatch = useDispatch();
-
-  // actions needed for style overwrite functionality: create longhand to shorthand maps, set isActive flag on styles to be rendered and update isActive to reflect active/inactive styles
-  useEffect(() => {
-    dispatch(updateShortLongMaps());
-    dispatch(setIsActiveFlag());
-    dispatch(findActiveStyles());
-  }, []);
-
-  // KEEP CONSOLE LOG UNTIL STYLE OVERWRITE FUNCTIONALITY IS FINALIZED
-  // const longToShortMap = useSelector(state => state.styles.longToShortMap);
-  // useEffect(() => console.log('LONG TO SHORT MAP:   ', longToShortMap));
-
-  // const regularStyles = useSelector(state => state.styles.userAgentStyles);
-  // useEffect(() => console.log('REGULAR STYLES WITH IS ACTIVE UPDATED:   ', regularStyles));
-
-  // const isActiveCache = useSelector(state => state.styles.isActiveCache);
-  // useEffect(() => console.log('IS ACTIVE CACHE:   ', isActiveCache));
 
   // Toggling the sidebar visibility when the user presses Shift + Enter
   useEffect(() => {

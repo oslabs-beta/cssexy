@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets } from '../slices/rulesSlice.js';
+import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, setIsActiveFlag } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component with event handling for click events.
@@ -21,17 +21,17 @@ const iFrameComp = ({ src, proxy, className }) => {
   useEffect(() => {
     // getting our iframe
     const iframe = document.querySelector(`.${className}`);
-    console.log('iFrameComp: iframe', iframe);
+    // console.log('iFrameComp: iframe', iframe);
 
     const handleLoad = () => {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 
-        console.log('iFrameComp: iframeDoc', iframeDoc);
+        // console.log('iFrameComp: iframeDoc', iframeDoc);
 
         const handleClick = async (event) => {
           const element = event.target;
-          console.log('iFrameComp: element', element);
+          // console.log('iFrameComp: element', element);
           const data = {
             id: element.id,
             nodeName: element.nodeName,
@@ -52,11 +52,12 @@ const iFrameComp = ({ src, proxy, className }) => {
             body: JSON.stringify(data),
           });
 
-          console.log('iFrameComp: response', response);
+          // console.log('iFrameComp: response', response);
 
           const result = await response.json();
 
-          // console.log('iFrameComp: Result returned from /cdp');
+          console.log('iFrameComp: Result returned from /cdp');
+          console.log('iFrameComp: Result :   ', result);
 
           // dispatching the results from the /cdp endpoint to the store
           dispatch(updateInlineRules(result.inlineRules));
@@ -65,6 +66,11 @@ const iFrameComp = ({ src, proxy, className }) => {
           dispatch(updateStyleSheets(result.styleSheets));
           // dispatch(updateInheritedRules(result.inheritedRules));
           // dispatch(updateKeyframeRules(result.keyframeRules));
+
+          // actions needed for style overwrite functionality
+          dispatch(updateShortLongMaps());
+          dispatch(setIsActiveFlag());
+          dispatch(findActiveStyles());
         };
 
 
@@ -103,6 +109,18 @@ const iFrameComp = ({ src, proxy, className }) => {
       };
     }
   }, []);
+
+  const userAgentRules = useSelector(state => state.rules.userAgentRules);
+  useEffect(() => console.log('iFRAME COMP - USER AGENT RULES:   ', userAgentRules));
+
+  const inlineRules = useSelector(state => state.rules.inlineRules);
+  useEffect(() => console.log('iFRAME COMP - INLINE RULES:   ', inlineRules));
+
+  const regularRules = useSelector(state => state.rules.regularRules);
+  useEffect(() => console.log('iFRAME COMP - REGULAR RULES:   ', regularRules));
+
+  const longToShortMap = useSelector(state => state.rules.longToShortMap);
+  useEffect(() => console.log('LONG TO SHORT MAP:   ', JSON.stringify(longToShortMap)));
 
   return (
     <iframe

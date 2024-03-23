@@ -89,12 +89,7 @@ body {
       font-weight: 300;
 }
 
-
-/*TO KEITH: 
-please update 2 style rules below (.style-property-span{}, .style-property-span, .style-value-span {} )
-I had a merge conflict and don't know how to solve it*/
 .style-property-span {
-    color: #F95738;
     padding-left: 15px;
 }
 
