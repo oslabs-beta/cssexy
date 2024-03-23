@@ -56,8 +56,8 @@ const iFrameComp = ({ src, proxy, className }) => {
 
           const result = await response.json();
 
-          console.log('iFrameComp: Result returned from /cdp');
-          console.log('iFrameComp: Result :   ', result);
+          // console.log('iFrameComp: Result returned from /cdp');
+          // console.log('iFrameComp: Result :   ', result);
 
           // dispatching the results from the /cdp endpoint to the store
           dispatch(updateInlineRules(result.inlineRules));
@@ -109,18 +109,6 @@ const iFrameComp = ({ src, proxy, className }) => {
       };
     }
   }, []);
-
-  const userAgentRules = useSelector(state => state.rules.userAgentRules);
-  useEffect(() => console.log('iFRAME COMP - USER AGENT RULES:   ', userAgentRules));
-
-  const inlineRules = useSelector(state => state.rules.inlineRules);
-  useEffect(() => console.log('iFRAME COMP - INLINE RULES:   ', inlineRules));
-
-  const regularRules = useSelector(state => state.rules.regularRules);
-  useEffect(() => console.log('iFRAME COMP - REGULAR RULES:   ', regularRules));
-
-  const longToShortMap = useSelector(state => state.rules.longToShortMap);
-  useEffect(() => console.log('LONG TO SHORT MAP:   ', JSON.stringify(longToShortMap)));
 
   return (
     <iframe

@@ -23,7 +23,7 @@ const rulesSlice = createSlice({
   reducers: {
     // every time user selects a DOM element, inline, regular, and user-agent rules are dispatched by the iFrameComp, updating the store via the reducers below.
     updateInlineRules: (state, action) => {
-      console.log('rulesSlice: state.inlineRules: updated', action.payload);
+      // console.log('rulesSlice: state.inlineRules: updated', action.payload);
       state.inlineRules = action.payload;
     },
     updateRegularRules: (state, action) => {
