@@ -39,10 +39,15 @@ try {
   // PORT is set in whichever script is run from our package.json file, and it is the port that our server is running on. In dev mode, it's set to 5555, giving us access to Vite's dev server. In prod mode, it's set to 8888, giving us access to the production server.
   const PORT = process.env.PORT
 
+  // unused flags:
+  // --auto-open-devtools-for-tabs
+
   // a command to start Chrome with remote debugging enabled and a new window opened to 'http://localhost:PORT'
   // i tried splitting the command into separate lines to make it easier to read but that caused an error.
+  // when wanting a normal looking window:
   // const command = `/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir="${DIR}" --no-first-run --no-default-browser-check --disable-web-security --new-window http://localhost:${PORT} &`;
-  const command = `/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir="${DIR}" --no-first-run --no-default-browser-check --disable-web-security --new-window http://localhost:${PORT} &`
+  // when wanting a window without the address bar, i.e. app mode:
+  const command = `/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir="${DIR}" --no-first-run --no-default-browser-check --disable-web-security --app=http://localhost:${PORT} &`
 
   // console.log('\n\n\n');
   // console.log('About to run command:', command);

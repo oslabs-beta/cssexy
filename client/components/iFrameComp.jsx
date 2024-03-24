@@ -37,11 +37,10 @@ const iFrameComp = ({ src, proxy, className }) => {
             id: element.id,
             nodeName: element.nodeName || element.tagName,
             className: element.className,
-            proxy: proxy,
+            innerHTML: element.innerHTML,
             textContent: element.textContent,
             nodeType: element.nodeType,
-            textContent: element.textContent,
-            innerHTML: element.innerHTML,
+            proxy: proxy,
             // attributes: {},
           };
           // The event comes from the iframe, so we need to prevent the default

@@ -63,6 +63,23 @@ const cdpEnable = async (client) => {
     }
   });
 
+
+  // const { root } = await client.send('DOM.getDocument', { depth: -1 });
+
+  // console.log('root:', root);
+
+  // const { nodeIds } = await client.send('DOM.querySelectorAll', {
+  //   nodeId: root.nodeId,
+  //   selector: '*'
+  // });
+  // const nodes = await Promise.all(nodeIds.map(id => client.send('DOM.describeNode', { nodeId: id })));
+  // nodes.forEach(node => {
+  //   if (node.node) {
+
+  //   }
+  // })
+
+
   // console.log('getting nodes');
   // getFlattenedDocument: returns a flattened array of the DOM tree at the specified depth
   // if no depth is specified, the entire DOM tree is returned.
@@ -71,19 +88,56 @@ const cdpEnable = async (client) => {
   // -> >= 0 would correspond to a specific depth of the DOM tree.
   const { nodes } = await DOM.getFlattenedDocument({ depth: -1 });
 
+
+//   const { root: { nodeId } } = await client.send('DOM.getDocument');
+// const { nodeIds } = await client.send('DOM.querySelectorAll', {
+//   nodeId,
+//   selector: '*'
+// });
+// const nodes = await Promise.all(nodeIds.map(id => client.send('DOM.describeNode', { nodeId: id })));
+
+
+// if (!frame) {
+//   throw new Error('Could not find iframe with title "CSSxe"');
+// }
+// const { root } = await client.send('DOM.getDocument', { frameId: frame.frameId });
+// const { nodeIds } = await client.send('DOM.querySelectorAll', {
+//   nodeId: root.nodeId,
+//   selector: '*'
+// });
+// const nodes = await Promise.all(nodeIds.map(id => client.send('DOM.describeNode', { nodeId: id })));
+// nodes.forEach(node => {
+//   if (node.children) {
+//     node.children.forEach(child => {
+//       nodes.push(child);
+//     });
+//   }
+// })
+
   //Create the directory before trying to add the file.
   await mkdir((new URL('../../data/output/', import.meta.url)), { recursive: true }, (err) => {
     if (err) throw err;
   });
 
-  // writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
+  writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
+
+//   const { frameTree } = await client.send('Page.getFrameTree');
+// console.log('frameTree', frameTree);
+// const frame = frameTree.childFrames.find(f => f.title === 'CSSxe');
+// console.log('frame', frame);
+
 
   // Find nodes where the nodeName property is 'IFRAME'.
   // In looking through the nodes, I saw only one IFRAME node, which corresponded to the root node of the iframe.
   // TBD if there would be more than one if the site we are targeting has iframes within it.
-  const iframeNodeId = await nodes.filter(node => node.nodeName === 'IFRAME')[0].nodeId;
 
-  console.log('iframeNodeId', iframeNodeId);
+  const iframeNodeActual = await nodes.filter(node => node.nodeName === 'IFRAME')[0];
+  // console.log('iframeNodeActual', iframeNodeActual);
+  // console.log('\n\n');
+
+  const iframeNodeId = iframeNodeActual.nodeId;
+  // console.log('iframeNodeId', iframeNodeId);
+  // console.log('\n\n');
 
   // describeNode: gets a description of a node with a given DOM nodeId, i.e. the type of node, its name, and its children.
   const { node } = await DOM.describeNode({ nodeId: iframeNodeId });
@@ -93,7 +147,7 @@ const cdpEnable = async (client) => {
   // from there we get the contentDocument of the iframeNode,
   // which is the html document of the iframe
   const iframeNode = node.contentDocument;
-  console.log('Node inside iframe', iframeNode);
+  // console.log('Node inside iframe', iframeNode);
 
   // this saves the contentDocument node of the iframe
   writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));

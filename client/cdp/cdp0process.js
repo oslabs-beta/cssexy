@@ -11,6 +11,7 @@
  */
 import fs from 'fs';
 import CDP from 'chrome-remote-interface';
+import { writeFileSync, mkdir } from 'node:fs';
 
 import cdpEnable from './cdp1enable.js';
 import cdpRules from './cdp2rules.js';
@@ -21,6 +22,8 @@ import cdpRules from './cdp2rules.js';
  * @param {string} proxy - The proxy to connect to for the Chrome DevTools Protocol
  *
  */
+
+
 
 const cdpProcess = async (data) => {
     const id = data?.id;
@@ -60,15 +63,14 @@ const cdpProcess = async (data) => {
             selector = `${textContent}`;
         }
 
-        // console.log('cdpProcess: selector:', selector);
+        console.log('cdpProcess: selector:', selector);
 
         // console.log('cdpProcess: trying to connect to CDP');
-
 
         // cdpClient is a newly created object that serves as our interface to send commands
         // and listen to events in Chrome via the Chrome DevTools Protocol (CDP) by way of
         // chrome-remote-interface, a library that allows for easy access to the Chrome DevTools Protocol.
-        cdpClient = await CDP();
+        cdpClient = await CDP({tab: 'http://localhost:5555'});
 
         // console.log('Connected to Chrome DevTools Protocol via chrome-remote-interface');
 
