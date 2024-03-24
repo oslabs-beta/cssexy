@@ -70,12 +70,14 @@ const cdpProcess = async (data) => {
         // cdpClient is a newly created object that serves as our interface to send commands
         // and listen to events in Chrome via the Chrome DevTools Protocol (CDP) by way of
         // chrome-remote-interface, a library that allows for easy access to the Chrome DevTools Protocol.
-        cdpClient = await CDP({tab: 'http://localhost:5555'});
+        cdpClient = await CDP();
+        // a version where we specify the tab we want to connect to, though I didn’t notice any difference or benefit in trying it.
+        // cdpClient = await CDP({tab: 'http://localhost:5555'});
 
         // console.log('Connected to Chrome DevTools Protocol via chrome-remote-interface');
 
         // extracting the 'domains' from the CDP client.
-        const { DOM, CSS, Network, Page, iframeNode, styleSheets } = await cdpEnable(cdpClient);
+        const {DOM, CSS, Network, Page, Overlay, iframeNode, styleSheets } = await cdpEnable(cdpClient);
 
         // these allow us to see / save all of the methods and properties that the CDP client exposes.
         // fs.writeFileSync('./data/domains/DOM.json', JSON.stringify(Object.entries(DOM), null, 2));
@@ -87,7 +89,7 @@ const cdpProcess = async (data) => {
         // console.log('cdpProcess: calling cdpRules');
 
         // right now, result is an object that has both the matched and inline styles for the element clicked.
-        const result = await cdpRules(DOM, CSS, Network, Page, iframeNode, selector, styleSheets);
+        const result = await cdpRules(cdpClient, DOM, CSS, Network, Page, Overlay, iframeNode, selector, styleSheets);
         //   console.log(`Rules for ${selector} retrieved`, result);
         return result;
 

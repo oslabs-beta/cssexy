@@ -25,14 +25,25 @@ body {
 .sidebar-container {
   position: relative;
   width: 30%;
+  height: 100%;
   border-right: 3px solid #1B1929; /* darker purple for the border */
   /* max-width: 25%; */
+  /* overflow-y: scroll; */
+
+    /* scrollbar-width: thin; */
+  /* scrollbar-color: rgba(74, 67, 139, 0.1) transparent; */
+
 }
 
 .sidebar {
+  height: 97%; /* 97% of the container height. this + 100% for the sidebar container is the combo that allows for the interior to scroll without adding a scrollbar to the right side of the window. */
   padding: 0px 20px 20px 20px; /* top, right, bottom, left */
-  overflow: auto; /* allows the sidebar to be scrollable.
-  in this case, this being true allows it to be hidden when the user clicks the collapse button */
+
+  /* allows the sidebar to be scrollable. in this case, this being true allows it to be hidden when the user clicks the collapse button */
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(74, 67, 139, 0.1) transparent;
 
   /* enable these below to make the sidebar horizontally scrollable */
   /* however, it only scrolls about 10% of the container */
@@ -40,8 +51,8 @@ body {
   /* max-width: calc(93% - 20px); 80% of the container width, minus padding */
   /* min-width: calc(93% - 20px); 80% of the container width, minus padding */
   /* resize: horizontal; */
-  /* scrollbar-width: thin; */
-  /* scrollbar-color: rgba(74, 67, 139, 0.1) transparent; */
+
+
 
 }
 

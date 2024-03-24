@@ -46,7 +46,9 @@ const cdpInlineRules = async (CSS, nodeId, selector) => {
   }
 }
 
-const cdpRules = async (DOM, CSS, Network, Page, iframeNode, selector, styleSheets) => {
+const cdpRules = async (cdpClient, DOM, CSS, Network, Page, Overlay, iframeNode, selector, styleSheets) => {
+
+
 
   const iframeNodeId = iframeNode.nodeId;
   // console.log('cdpRules: root frame node id:', iframeNodeId);
@@ -56,6 +58,26 @@ const cdpRules = async (DOM, CSS, Network, Page, iframeNode, selector, styleShee
     nodeId: iframeNodeId,
     selector: selector
   });
+
+
+  // highlights the node. doesn’t work every time.
+  // await DOM.highlightNode({
+  //   nodeId,
+  //   highlightConfig: {
+  //     borderColor: { r: 255, g: 0, b: 0 },
+  //     contentColor: { r: 255, g: 255, b: 255 }
+  //   }
+  // });
+
+  // highlights a specific area on the page
+  // await DOM.highlightRect({
+  //   nodeId,
+  //   x: 0,
+  //   y: 0,
+  //   width: 100,
+  //   height: 100,
+  //   color: { r: 255, g: 0, b: 0 },
+  // });
 
   // console.log('cdpRules: nodeId for selector', selector, 'is:', nodeId);
 
@@ -101,12 +123,12 @@ const cdpRules = async (DOM, CSS, Network, Page, iframeNode, selector, styleShee
     // keyframeRules
   }
 
-  // fs.writeFileSync('./data/output/allRules.json', JSON.stringify(result, null, 2));
-  // fs.writeFileSync('./data/output/inlineRules.json', JSON.stringify(inlineRules, null, 2));
-  // fs.writeFileSync('./data/output/regularRules.json', JSON.stringify(regularRules, null, 2));
-  // fs.writeFileSync('./data/output/userAgentRules.json', JSON.stringify(userAgentRules, null, 2));
-  // fs.writeFileSync('./data/output/inheritedRules.json', JSON.stringify(inheritedRules, null, 2));
-  // fs.writeFileSync('./data/output/keyframeRules.json', JSON.stringify(keyframeRules, null, 2));
+  fs.writeFileSync('./data/output/allRules.json', JSON.stringify(result, null, 2));
+  fs.writeFileSync('./data/output/inlineRules.json', JSON.stringify(inlineRules, null, 2));
+  fs.writeFileSync('./data/output/regularRules.json', JSON.stringify(regularRules, null, 2));
+  fs.writeFileSync('./data/output/userAgentRules.json', JSON.stringify(userAgentRules, null, 2));
+  fs.writeFileSync('./data/output/inheritedRules.json', JSON.stringify(inheritedRules, null, 2));
+  fs.writeFileSync('./data/output/keyframeRules.json', JSON.stringify(keyframeRules, null, 2));
 
   console.log('cdpRules: returning result {inlineRules, regularRules, userAgentRules}');
   return result;
