@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 import dotenv from 'dotenv';
 
-// import cdpProcess from '../client/cdp/cdp0process.js';
+import cdpProcess from '../client/cdp/cdp0process.js';
 import patchFile from '../client/patchFile.js';
 
 import { pup, callPupProcess } from '../client/puppeteer/pup.js';
@@ -22,6 +22,11 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 const proxy = process.env.VITE_PROXY;
 
+// to run CSSxe in puppeteer mode, set this to true in .env, and then run dev-pup or prod-pup respectively (rather than dev or prod). As of 2024-03-25_12-51-PM.
+const puppeteerMode = process.env.VITE_PUPPETEER_MODE;
+
+// console.log('puppeteerMode:', puppeteerMode);
+
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
@@ -31,8 +36,6 @@ if (environment === 'production') {
   // Serve static files (CSSxe UI) when in prod mode
   app.use(express.static(path.join(__dirname, '../dist')));
 }
-
-
 
 app.post('/patch', async (req, res) => {
   console.log('POST /write');
@@ -58,8 +61,8 @@ app.post('/cdp', async (req, res) => {
 
   try {
     console.log('server: /cdp: cdpProcess about to start');
-    // const result = await cdpProcess(data);
-    const result = await callPupProcess(data);
+    const result = puppeteerMode === 'false' ? await cdpProcess(data) : await callPupProcess(data);
+
     console.log('server: /cdp: result should be returning now');
     // console.log('server: cdp: result:', result);
     return res.json( result );
@@ -82,6 +85,6 @@ app.listen(PORT, () =>
   console.log('Server: environment:', environment),
   console.log('Server: proxy:', proxy ),
   console.log(`Server: listening on port: ${PORT}`),
-  pup(browserPort).catch(console.error)
+  puppeteerMode === 'false' ? null : pup(browserPort).catch(console.error)
 
 );
