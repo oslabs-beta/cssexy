@@ -1,7 +1,17 @@
 import puppeteer from 'puppeteer'
+import { writeFileSync, mkdir } from 'node:fs';
+
+import { pupProcess } from './pup0Process.js';
+
+let client;
+const styleSheets = {};
+
+const pup = async (browserPort) => {
+
+const targetUrl = `http://localhost:${browserPort}/`;
 
 const pupArgs =[
-    '--app=http://localhost:8888', // Replace with your desired URL
+    // `--app=${targetUrl}`,
     '--disable-web-security',
 ]
 
@@ -14,42 +24,88 @@ const browser = await puppeteer.launch({
 
 let [page] = await browser.pages();
 
-console.log('browser args',pupArgs);
+console.log('browser args', pupArgs);
 if (pupArgs[0].includes('--app')) {
   console.log('pupArgs includes --app');
 }
 else {
   console.log('pupArgs does not include --app');
-
-  const page = await browser.newPage();
-  await page.goto('http://localhost:8888');
+  await page.goto(targetUrl);
 }
 
-const session = await page.createCDPSession()
-const sessionId = session.id();
+client = await page.createCDPSession();
 
-await session.send('DOM.enable')
-await session.send('CSS.enable')
+await Promise.all([
+  client.send('DOM.enable', () => {}),
+  client.send('CSS.enable', () => {}),
+  client.send('Network.enable',() => {}),
+  client.send('Page.enable', () => {}),
+  client.send('Overlay.enable', () => {})
+]);
 
-const doc = await session.send('DOM.getDocument');
+client.on('CSS.styleSheetAdded', async (param) => {
+  console.log('styleSheetAdded');
+  if (param.header.sourceMapURL) {
+    console.log('styleSheetAdded with sourceMapURL');
+    const id = param.header.styleSheetId;
 
-//Query the nodes on the page by selector type use * to get all nodes on the page
-const nodes = await session.send('DOM.querySelectorAll', {
-    nodeId: doc.root.nodeId,
-    selector: 'loadingText'
-});
+    const sourceMapData = Buffer.from(param.header.sourceMapURL.split(',')[1], 'base64').toString('utf-8');
+    const decodedMap = JSON.parse(sourceMapData);
+    // console.log('\n\n\n');
+    // console.log('decodedMap', decodedMap);
+    writeFileSync('./data/output/decodedMap.json', JSON.stringify(decodedMap, null, 2));
+    const sources = decodedMap.sources;
+    const absolutePaths = []
+    const relativePaths = [];
+    sources.forEach(source => {
+      // splitting the source string on the '://'
+      // pushing the second part, the path, into the paths array
+      if (source.includes('://')) {
+        relativePaths.push(source.split('://')[1]);
+      }
+      else {
+        absolutePaths.push(source);
+      }
+    })
 
-const stylesForNodes = []
+    styleSheets[id] = {
+      sources,
+      absolutePaths,
+      relativePaths
+    }
+    // console.log('styleSheets', styleSheets);
+  }
+  else {
+    console.log('styleSheetAdded: no sourceMapURL');
+    // console.log('styleSheetParamHeader:', param.header);
+  }
+}) ;
+};
 
-for (const id of nodes.nodeIds) {
-  stylesForNodes.push(await session.send('CSS.getMatchedRulesForNode', {nodeId: id}));
-}
-//See all the Nodes Requested
-console.log("Rules for Nodes Array ===>", stylesForNodes)
 
-//Get Rules for single Node Id
-const styleForSingleNode = await session.send('CSS.getMatchedRulesForNode', {nodeId: 4});
-console.log("Single Node Id: 4 ===>", styleForSingleNode)
+const callPupProcess = async (...args) => await pupProcess(client, styleSheets, ...args);
+
+export { pup, callPupProcess };
+
+// const doc = await session.send('DOM.getDocument');
+
+// //Query the nodes on the page by selector type use * to get all nodes on the page
+// const nodes = await session.send('DOM.querySelectorAll', {
+//     nodeId: doc.root.nodeId,
+//     selector: 'loadingText'
+// });
+
+// const stylesForNodes = []
+
+// for (const id of nodes.nodeIds) {
+//   stylesForNodes.push(await session.send('CSS.getMatchedRulesForNode', {nodeId: id}));
+// }
+// //See all the Nodes Requested
+// console.log("Rules for Nodes Array ===>", stylesForNodes)
+
+// //Get Rules for single Node Id
+// const styleForSingleNode = await session.send('CSS.getMatchedRulesForNode', {nodeId: 4});
+// console.log("Single Node Id: 4 ===>", styleForSingleNode)
 
 
 //Get Specificity

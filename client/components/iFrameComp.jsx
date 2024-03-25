@@ -63,12 +63,12 @@ const iFrameComp = ({ src, proxy, className }) => {
           });
 
           // console.log('iFrameComp: response', response);
-          // console.log('iFrameComp: response', response);
+          console.log('iFrameComp: response', response);
 
           const result = await response.json();
 
           // console.log('iFrameComp: Result returned from /cdp');
-          // console.log('iFrameComp: Result :   ', result);
+          console.log('iFrameComp: Result :   ', result);
 
           // dispatching the results from the /cdp endpoint to the store
           dispatch(updateInlineRules(result.inlineRules));

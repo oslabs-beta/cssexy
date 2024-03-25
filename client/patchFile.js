@@ -6,10 +6,10 @@ const patchFile = async (data) => {
     // console.log('patchFile: data:', data);
     // importing the target directory path from the environment variables. later we can set this programmatically.
     const targetDirPath = process.env.VITE_TARGET_DIR_PATH;
-console.log('\n\n');
+    console.log('\n\n');
     console.log('patchFile: data:', data);
     console.log('\n\n');
-    console.log('patchFile, first char of sourcePath:', data.sourcePath[0]);
+    console.log('patchFile, first char of sourcePath:', data?.sourcePath[0] || 'undefined');
     console.log('\n\n');
     const targetFilePath = data.sourcePath[0] === '.' ? `${targetDirPath}${data.sourcePath.slice(1)}` : data.sourcePath;
     const selector = data.selector;

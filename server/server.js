@@ -4,12 +4,15 @@ import { fileURLToPath } from 'url';
 
 import dotenv from 'dotenv';
 
-import cdpProcess from '../client/cdp/cdp0process.js';
+// import cdpProcess from '../client/cdp/cdp0process.js';
 import patchFile from '../client/patchFile.js';
+
+import { pup, callPupProcess } from '../client/puppeteer/pup.js';
 
 const app = express();
 const PORT = 8888;
 const environment = process.env.NODE_ENV || 'development';
+const browserPort = process.env.NODE_BROWSER_PORT;
 
 // need to do this when doing ES modules, when using Vite.
 
@@ -55,7 +58,8 @@ app.post('/cdp', async (req, res) => {
 
   try {
     console.log('server: /cdp: cdpProcess about to start');
-    const result = await cdpProcess(data);
+    // const result = await cdpProcess(data);
+    const result = await callPupProcess(data);
     console.log('server: /cdp: result should be returning now');
     // console.log('server: cdp: result:', result);
     return res.json( result );
@@ -73,10 +77,11 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () =>
-console.log('\n'),
-console.log('\n'),
-console.log('Server: environment:', environment),
-console.log('Server: proxy:', proxy ),
-console.log(`Server: listening on port: ${PORT}`),
+  console.log('\n'),
+  console.log('\n'),
+  console.log('Server: environment:', environment),
+  console.log('Server: proxy:', proxy ),
+  console.log(`Server: listening on port: ${PORT}`),
+  pup(browserPort).catch(console.error)
 
 );

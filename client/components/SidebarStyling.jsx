@@ -7,6 +7,7 @@ function SidebarStyling(props) {
     const dispatch = useDispatch();
 
     const { data } = useSelector(state => state.nodeData);
+    const { inlineRules } = useSelector(state => state.inlineRules || {});
 
     // making a deep copy of props, so that we can then modify it. props is immutable.
     // using JSON.parse(JSON.stringify()) instead of
@@ -36,7 +37,7 @@ function SidebarStyling(props) {
         );
     }, [props.cssProperties]);
 
-    const runCdp = async () => {
+    const callCdp = async () => {
             if (!data) {
               console.log('RunCdp: runCdp: data is undefined');
               return;
@@ -69,6 +70,7 @@ function SidebarStyling(props) {
 
 
     const handleSubmit = async (cssProp, event) => {
+        console.log('cssProp', cssProp);
         const updatedCssProp = {...cssProp, value: values[cssProp.name]};
         updatedCssProp.valuePrev = cssProp.value;
         updatedCssProp.textPrev = updatedCssProp.text;
@@ -82,6 +84,11 @@ function SidebarStyling(props) {
 
         updatedCssProp.selector = liveProps.selector;
         updatedCssProp.sourcePath = liveProps.sourcePath;
+        if (updatedCssProp.sourcePath[0] === 'undefined' && updatedCssProp.range.startLine === 0 && updatedCssProp.range.endLine === 0) {
+            updatedCssProp.inlineText = inlineRules[0].styles.cssText;
+        }
+        // }
+        console.log('updatedCssProp', updatedCssProp);
 
         // console.log('data', data);
         console.log('TRY: /patch');
@@ -103,7 +110,7 @@ function SidebarStyling(props) {
                 await new Promise(resolve => setTimeout(resolve, 500));
 
                 // running CDP again to update our redux store after patching the file.
-                await runCdp();
+                await callCdp();
 
                 // and we'll update our tracking of undo/redo, our redux store perhaps, and source files here possibly.
                 // or source file edit from our server, store, etc.
@@ -115,7 +122,21 @@ function SidebarStyling(props) {
     };
 
     const styleParagraphs = liveProps.cssProperties.map((cssProp, idx) => {
-        if ((liveProps.origin === 'regular' && cssProp.text)) {
+
+        // KG: 2024-03-18_07-44-PM: setting inline styles to not editable for now, until we setup that functionality.
+        if ((liveProps.origin === 'user-agent')) {
+             return (
+                <p key={`styleParagraphs-${idx}`} className='style-paragraph'>
+                    <span className={`style-property-span ${!cssProp.isActive ? 'style-property-overwritten-span' : ''}`}>
+                        {cssProp.name}:
+                    </span>
+                    <span className={`style-value-span ${!cssProp.isActive ? 'style-value-overwritten-span' : ''}`}>
+                        {cssProp.value}
+                    </span>
+                </p>
+            )
+        }
+        else if ((liveProps.origin && cssProp.text)) {
             // cssProperties arr includes both user defined 'shorthand' styles and css 'longhand' styles. We want to render only user defined styles => style is user defined if it has .text property
             // shorthand example: 'border-bottom: 3px solid blueviolet'
             // longhand example: border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: blueviolet
@@ -139,20 +160,6 @@ function SidebarStyling(props) {
                             spellCheck='false' /* Disable spellcheck, i.e. no more red squiggles under the values when clicked/edited */
                         />
 
-                </p>
-            )
-        }
-        // KG: 2024-03-18_07-44-PM: setting inline styles to not editable for now, until we setup that functionality.
-        else if ((liveProps.origin === 'user-agent') ||
-        (liveProps.origin === 'inline' && cssProp.text)) {
-             return (
-                <p key={`styleParagraphs-${idx}`} className='style-paragraph'>
-                    <span className={`style-property-span ${!cssProp.isActive ? 'style-property-overwritten-span' : ''}`}>
-                        {cssProp.name}:
-                    </span>
-                    <span className={`style-value-span ${!cssProp.isActive ? 'style-value-overwritten-span' : ''}`}>
-                        {cssProp.value}
-                    </span>
                 </p>
             )
         }
