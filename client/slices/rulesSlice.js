@@ -54,23 +54,38 @@ const rulesSlice = createSlice({
 
       const allStyles = [state.userAgentRules, state.regularRules, state.inlineRules];
 
+      // gets all longhand styles for passed in shorthand and update shortToLongMap and longToShortMap redux state
+      const getLonghandStyles = (dummy, propName, propVal, shortToLongMap, longToShortMap) => {
+        // assign 1 shorthand property to a dummy DOM element
+        dummy.style.setProperty(propName, propVal);
+        // get names of all longhand properties corresponding to a shorthand property
+        const longhandProps = [...dummy.style];
+        // for each shorthand, add all corresponding longhands to shortToLongMap state. If longhandProps array has only 1 element, propName passed in was not a shorthand
+        if (longhandProps.length > 1) {
+          shortToLongMap[propName] = longhandProps;
+          // for each longhand, add its shorthand property to longToShortMap state
+          longhandProps.forEach(ls => {
+            longToShortMap[ls] = propName;
+          });
+        }
+        // reset the dummy element for the next iteration
+        dummy.style.removeProperty(propName);
+      };
+
       allStyles.forEach(array => {
         array.forEach(each => {
           for (let shortProp of each.rule.style.shorthandEntries) {
             // only add props to maps which have valid values and not add them again if they're already in the maps
             if (shortProp.value && !state.shortToLongMap[shortProp.name]) {
-              // assign 1 shorthand property to a dummy DOM element
-              dummy.style.setProperty(shortProp.name, shortProp.value);
-              // get names of all longhand properties corresponding to the shorthand property
-              const longhandProps = [...dummy.style];
-              // for each shorthand, add all corresponding longhands to shortToLongMap state
-              state.shortToLongMap[shortProp.name] = longhandProps;
-              // for each longhand, add its shorthand property to longToShortMap state
-              longhandProps.forEach(ls => {
-                state.longToShortMap[ls] = shortProp.name;
-              })
-              // reset the dummy element for the next iteration
-              dummy.style.removeProperty(shortProp.name);
+              getLonghandStyles(dummy, shortProp.name, shortProp.value, state.shortToLongMap, state.longToShortMap);
+            }
+          };
+
+          for (let cssProperty of each.rule.style.cssProperties) {
+            if (each.rule.origin === 'regular' && 
+                cssProperty.text &&
+                !state.shortToLongMap[cssProperty.name]) {
+              getLonghandStyles(dummy, cssProperty.name, cssProperty.value, state.shortToLongMap, state.longToShortMap);
             }
           }
         })
