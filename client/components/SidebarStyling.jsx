@@ -6,8 +6,8 @@ function SidebarStyling(props) {
 
     const dispatch = useDispatch();
 
-    const { data } = useSelector(state => state.nodeData);
-    const { inlineRules } = useSelector(state => state.inlineRules || {});
+    const data = useSelector(state => state.nodeData.data);
+    const inlineRules = useSelector(state => state.rules.inlineRules);
 
     // making a deep copy of props, so that we can then modify it. props is immutable.
     // using JSON.parse(JSON.stringify()) instead of
@@ -84,13 +84,11 @@ function SidebarStyling(props) {
 
         updatedCssProp.selector = liveProps.selector;
         updatedCssProp.sourcePath = liveProps.sourcePath;
-        if (updatedCssProp.sourcePath[0] === 'undefined' && updatedCssProp.range.startLine === 0 && updatedCssProp.range.endLine === 0) {
-            updatedCssProp.inlineText = inlineRules[0].styles.cssText;
-        }
-        // }
-        console.log('updatedCssProp', updatedCssProp);
 
-        // console.log('data', data);
+        const textPrevAll = inlineRules[0].rule.style.cssText;
+        updatedCssProp.textPrevAll = textPrevAll;
+
+        console.log('data', updatedCssProp);
         console.log('TRY: /patch');
         try {
             const response = await fetch('/patch', {
