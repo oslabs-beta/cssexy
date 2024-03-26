@@ -14,6 +14,8 @@ const initialState = {
   error: null, // if we want to track errors
   shortToLongMap: {},
   longToShortMap: {},
+  // stores mapping between mid level properties and its high level parent (border-style: border)
+  midToShortMap: {},
   isActiveCache: {},
 };
 
@@ -65,7 +67,8 @@ const rulesSlice = createSlice({
           shortToLongMap[propName] = longhandProps;
           // for each longhand, add its shorthand property to longToShortMap state
           longhandProps.forEach(ls => {
-            longToShortMap[ls] = propName;
+            if (!longToShortMap[ls]) longToShortMap[ls] = []; 
+            longToShortMap[ls].push(propName);
           });
         }
         // reset the dummy element for the next iteration
@@ -90,6 +93,31 @@ const rulesSlice = createSlice({
           }
         })
       })
+    },
+    // iterates over all longhand properties from longToShort redux state, identifies high level vs mid level properties and adds them to midToShortMap in redux state (mid is mid level, short is high level, e.g. border-style: border)
+    updateMidShortMap: (state) => {
+      for (let longhand in state.longToShortMap) {
+        const parentCandidates = state.longToShortMap[longhand];
+        // If array has more than 1 element, that would mean that this is a complex hierarchy (high-mid-low) => need to add to midToShortMap
+        if (parentCandidates.length > 1) {
+          let minChars = Infinity;
+          let parent;
+          
+          // assumption is that high level properties (e.g. border) will have shorter length than mid-level (e.g. border-style). This should work in majority cases
+          parentCandidates.forEach(candidate => {
+            if (candidate.length < minChars) {
+              minChars = candidate.length;
+              parent = candidate;
+            };
+          });
+
+          parentCandidates.forEach(candidate => {
+            if (candidate !== parent) {
+              if (!state.midToShortMap[candidate]) state.midToShortMap[candidate] = parent;
+            }
+          });
+        }
+      }
     },
     // iterates over all types of styles and sets isActive flag only on the css properties which get rendered
     setIsActiveFlag: (state) => {
@@ -237,7 +265,8 @@ export const {
   updateKeyframeRules,
   updateStyleSheets,
   findActiveStyles, 
-  updateShortLongMaps, 
+  updateShortLongMaps,
+  updateMidShortMap,
   setIsActiveFlag 
 } = rulesSlice.actions;
 
