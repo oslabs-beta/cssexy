@@ -155,13 +155,25 @@ const rulesSlice = createSlice({
         userAgentArrays.forEach(userAgentArr => {
           for (let prop of userAgentArr) {
             if (prop.hasOwnProperty('isActive')) {
-              if (!cache[prop.name]) cache[prop.name] = [];
-              cache[prop.name].push({
-                specificity,
-                source: prop
-              });            
-            }
-          }
+              // checks if cur property has a high level parent => cur property is a mid level property
+              // e.g. it checks if 'border-width' has a parent and it does ('border'). If so, it pushes it to property 'border' of isActiveCache
+              if (state.midToShortMap[prop.name]) {
+                const highLevelProp = state.midToShortMap[prop.name];
+                if (!cache[highLevelProp]) cache[highLevelProp] = [];
+                cache[highLevelProp].push({
+                  specificity,
+                  source: prop
+                });
+              }
+              else {
+                if (!cache[prop.name]) cache[prop.name] = [];
+                cache[prop.name].push({
+                  specificity,
+                  source: prop
+                });
+              };
+            };
+          };
         });
       });
 
@@ -181,15 +193,38 @@ const rulesSlice = createSlice({
   
           for (let cssProperty of each.rule.style.cssProperties) {
             if (cssProperty.hasOwnProperty('isActive')) {
+              // properties which have 'longhandProperties' array are shorthands - either high or mid level 
               if (cssProperty.longhandProperties) {
+                // TO DO: need to determine if cur shorthand is high or mid
+                // checks if cur property has a high level parent => cur property is a mid level property
+                // e.g. it checks if 'border-width' has a parent and it does ('border'). If so, it pushes it to property 'border' of isActiveCache
+                // if (state.midToShortMap[cssProperty.name]) {
+                //   const highLevelProp = state.midToShortMap[cssProperty.name];
+                //   if (!cache[highLevelProp]) cache[highLevelProp] = [];
+                //   cache[highLevelProp].push({
+                //     specificity,
+                //     source: cssProperty
+                //   });
+                // }
+                // else {
+                //   if (!cache[cssProperty.name]) cache[cssProperty.name] = [];
+                //   cache[cssProperty.name].push({
+                //     specificity,
+                //     source: cssProperty
+                //   });
+                // };
+                //////////////////////////
                 if (!cache[cssProperty.name]) cache[cssProperty.name] = [];
                 cache[cssProperty.name].push({
                   specificity,
                   source: cssProperty
                 }); 
               }
+              // if property does not have longhand properties, this property is a longhand (low level)
               else {
+                // if this longhand has a shorthand parent
                 if (state.longToShortMap[cssProperty.name]) {
+                  // TO DO: fix this logic as shortProp points to an array now but it need to point to highest parent
                   const shortProp = state.longToShortMap[cssProperty.name];
                   if (!cache[shortProp]) cache[shortProp] = [];
                   cache[shortProp].push({
@@ -197,6 +232,7 @@ const rulesSlice = createSlice({
                     source: cssProperty
                   });
                 }
+                // if this longhand doesn't have a parent, it is just a standalone property
                 else {
                   if (!cache[cssProperty.name]) cache[cssProperty.name] = [];
                   cache[cssProperty.name].push({
