@@ -67,8 +67,13 @@ const rulesSlice = createSlice({
           shortToLongMap[propName] = longhandProps;
           // for each longhand, add its shorthand property to longToShortMap state
           longhandProps.forEach(ls => {
-            if (!longToShortMap[ls]) longToShortMap[ls] = []; 
-            longToShortMap[ls].push(propName);
+            if (!longToShortMap[ls]) {
+              longToShortMap[ls] = {
+                allParents: [],
+                highestParent: ''
+              }
+            }
+            longToShortMap[ls].allParents.push(propName);
           });
         }
         // reset the dummy element for the next iteration
@@ -97,20 +102,24 @@ const rulesSlice = createSlice({
     // iterates over all longhand properties from longToShort redux state, identifies high level vs mid level properties and adds them to midToShortMap in redux state (mid is mid level, short is high level, e.g. border-style: border)
     updateMidShortMap: (state) => {
       for (let longhand in state.longToShortMap) {
-        const parentCandidates = state.longToShortMap[longhand];
+        const parentCandidates = state.longToShortMap[longhand].allParents;
         // If array has more than 1 element, that would mean that this is a complex hierarchy (high-mid-low) => need to add to midToShortMap
-        if (parentCandidates.length > 1) {
-          let minChars = Infinity;
-          let parent;
-          
-          // assumption is that high level properties (e.g. border) will have shorter length than mid-level (e.g. border-style). This should work in majority cases
-          parentCandidates.forEach(candidate => {
-            if (candidate.length < minChars) {
-              minChars = candidate.length;
-              parent = candidate;
-            };
-          });
+        let minChars = Infinity;
+        let parent;
+        
+        // find high level parent
+        parentCandidates.forEach(candidate => {
+          if (candidate.length < minChars) {
+            minChars = candidate.length;
+            parent = candidate;
+          };
+        });
+        // for each longhand set its high level parent
+        state.longToShortMap[longhand].highestParent = parent;
 
+        // assumption is that high level properties (e.g. border) will have shorter length than mid-level (e.g. border-style). This should work in majority cases
+        if (parentCandidates.length > 1) {
+          // find all mid level styles and add them to midToShortMap
           parentCandidates.forEach(candidate => {
             if (candidate !== parent) {
               if (!state.midToShortMap[candidate]) state.midToShortMap[candidate] = parent;
@@ -147,39 +156,11 @@ const rulesSlice = createSlice({
     findActiveStyles: (state) => {
       const cache = {};
 
+      const allStyles = [state.userAgentRules, state.regularRules, state.inlineRules];
+
       // for all types for styles, add the styles which have isActive property to cache
-      state.userAgentRules.forEach(each => {
-        const specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
-        const userAgentArrays = [each.rule.style.shorthandEntries, each.rule.style.cssProperties];
-      
-        userAgentArrays.forEach(userAgentArr => {
-          for (let prop of userAgentArr) {
-            if (prop.hasOwnProperty('isActive')) {
-              // checks if cur property has a high level parent => cur property is a mid level property
-              // e.g. it checks if 'border-width' has a parent and it does ('border'). If so, it pushes it to property 'border' of isActiveCache
-              if (state.midToShortMap[prop.name]) {
-                const highLevelProp = state.midToShortMap[prop.name];
-                if (!cache[highLevelProp]) cache[highLevelProp] = [];
-                cache[highLevelProp].push({
-                  specificity,
-                  source: prop
-                });
-              }
-              else {
-                if (!cache[prop.name]) cache[prop.name] = [];
-                cache[prop.name].push({
-                  specificity,
-                  source: prop
-                });
-              };
-            };
-          };
-        });
-      });
-
-      const regularAndInlineRules = [state.regularRules, state.inlineRules];
-
-      regularAndInlineRules.forEach(array => {
+      // if parent and children properties are present (e.g. 'border', 'border-style', 'border-top-style'), they should be all added into an array corresponding to highest level property (border: [border obj, border-style obj, border-top-style obj])
+      allStyles.forEach(array => {
         array.forEach(each => {
           let specificity;
           if (each.rule.origin === 'inline') {
@@ -190,59 +171,52 @@ const rulesSlice = createSlice({
               "c": 9
             }
           } else specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
-  
-          for (let cssProperty of each.rule.style.cssProperties) {
-            if (cssProperty.hasOwnProperty('isActive')) {
-              // properties which have 'longhandProperties' array are shorthands - either high or mid level 
-              if (cssProperty.longhandProperties) {
-                // TO DO: need to determine if cur shorthand is high or mid
-                // checks if cur property has a high level parent => cur property is a mid level property
-                // e.g. it checks if 'border-width' has a parent and it does ('border'). If so, it pushes it to property 'border' of isActiveCache
-                // if (state.midToShortMap[cssProperty.name]) {
-                //   const highLevelProp = state.midToShortMap[cssProperty.name];
-                //   if (!cache[highLevelProp]) cache[highLevelProp] = [];
-                //   cache[highLevelProp].push({
-                //     specificity,
-                //     source: cssProperty
-                //   });
-                // }
-                // else {
-                //   if (!cache[cssProperty.name]) cache[cssProperty.name] = [];
-                //   cache[cssProperty.name].push({
-                //     specificity,
-                //     source: cssProperty
-                //   });
-                // };
-                //////////////////////////
-                if (!cache[cssProperty.name]) cache[cssProperty.name] = [];
-                cache[cssProperty.name].push({
-                  specificity,
-                  source: cssProperty
-                }); 
-              }
-              // if property does not have longhand properties, this property is a longhand (low level)
-              else {
-                // if this longhand has a shorthand parent
-                if (state.longToShortMap[cssProperty.name]) {
-                  // TO DO: fix this logic as shortProp points to an array now but it need to point to highest parent
-                  const shortProp = state.longToShortMap[cssProperty.name];
-                  if (!cache[shortProp]) cache[shortProp] = [];
-                  cache[shortProp].push({
-                    specificity,
-                    source: cssProperty
-                  });
-                }
-                // if this longhand doesn't have a parent, it is just a standalone property
-                else {
-                  if (!cache[cssProperty.name]) cache[cssProperty.name] = [];
-                  cache[cssProperty.name].push({
-                    specificity,
-                    source: cssProperty
-                  }); 
-                }
-              }
-            }
-          }
+
+          let properties;
+          if (each.rule.origin === 'user-agent') properties = [each.rule.style.shorthandEntries, each.rule.style.cssProperties];
+          else properties = [each.rule.style.cssProperties];
+
+          const bundleRelatedProperties = (origin, targetProps) => {
+            targetProps.forEach(arr => {
+              for (let prop of arr) {
+                if (prop.hasOwnProperty('isActive')) {
+                  // checks if cur property is a mid level property (has a high level parent)
+                  // e.g. if 'border-width' has a parent and it does ('border'), push it to property 'border' of isActiveCache
+                  if ((origin === 'user-agent' && state.midToShortMap[prop.name]) ||
+                    // regular/inline properties which have 'longhandProperties' array are shorthands - either high or mid level
+                      ((origin === 'regular' || origin === 'inline') && prop.longhandProperties && state.midToShortMap[prop.name])) {
+                    const highLevelProp = state.midToShortMap[prop.name];
+                    if (!cache[highLevelProp]) cache[highLevelProp] = [];
+                    cache[highLevelProp].push({
+                      specificity,
+                      source: prop
+                    });
+                  }
+                  // checks if cur property is a longhand property which has a shorthand parent)
+                  // e.g. if 'background-image' has a parent and it does ('background'), push it to property 'background' of isActiveCache  
+                  else if ((origin === 'user-agent' && state.longToShortMap[prop.name]) || 
+                          ((origin === 'regular' || origin === 'inline') && !prop.longhandProperties && state.longToShortMap[prop.name])) {
+                    const highLevelProp = state.longToShortMap[prop.name].highestParent;
+                    if (!cache[highLevelProp]) cache[highLevelProp] = [];
+                    cache[highLevelProp].push({
+                      specificity,
+                      source: prop
+                    });
+                  }
+                  // checks if cur property is high level property (e.g.'border') or standalone property with no corresponding shorthand/longhand
+                  else {
+                    if (!cache[prop.name]) cache[prop.name] = [];
+                    cache[prop.name].push({
+                      specificity,
+                      source: prop
+                    });
+                  };
+                };
+              };
+            });
+          };
+
+          bundleRelatedProperties(each.rule.origin, properties);
         });
       });
 
