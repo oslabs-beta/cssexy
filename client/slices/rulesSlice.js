@@ -92,11 +92,11 @@ const rulesSlice = createSlice({
           for (let cssProperty of each.rule.style.cssProperties) {
             // for user-agent styles, only longhand properties which do not have corresponding shorthand properties get rendered. If property is in longToShortMap it means it was already added as a shorthand property
             if ((each.rule.origin === 'user-agent' && cssProperty.value && !state.longToShortMap[cssProperty.name]) ||
-                // for regular and inline styles, add isActive only to user-defined properties (which have text property on them)
-                (each.rule.origin === 'regular' && cssProperty.text) ||
-                (each.rule.origin === 'inline' && cssProperty.text)) {
-                  cssProperty.isActive = true;
-                }
+              // for regular and inline styles, add isActive only to user-defined properties (which have text property on them)
+              (each.rule.origin === 'regular' && cssProperty.text) ||
+              (each.rule.origin === 'inline' && cssProperty.text)) {
+              cssProperty.isActive = true;
+            }
           }
         })
       });
@@ -219,7 +219,7 @@ const rulesSlice = createSlice({
 });
 
 const initialNodeDataState = {
-  data:{},
+  data: {},
   error: null, // if we want to track errors
 };
 

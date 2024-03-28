@@ -17,29 +17,29 @@ const getInlineRules = async (client, nodeId, selector) => {
   // retrieve the inline styles for the node with the provided nodeId
   try {
 
-    const { inlineStyle } = await client.send('CSS.getInlineStylesForNode',{ nodeId });
+    const { inlineStyle } = await client.send('CSS.getInlineStylesForNode', { nodeId });
 
-  const inlineRule = [];
+    const inlineRule = [];
 
-  // console.log('cdpInlineRules: inlineRule:', inlineRule);
+    // console.log('cdpInlineRules: inlineRule:', inlineRule);
 
-  // check if there are any inline styles for this node
-  if (inlineStyle) {
+    // check if there are any inline styles for this node
+    if (inlineStyle) {
 
-    console.log(`Found: inline styles for selector '${selector}' with nodeId ${nodeId}.`);
-    // push the inline styles to the inlineRule array
-    inlineRule.push({
-      "rule": {
-        "origin": "inline",
-        "style":  inlineStyle,
+      console.log(`Found: inline styles for selector '${selector}' with nodeId ${nodeId}.`);
+      // push the inline styles to the inlineRule array
+      inlineRule.push({
+        "rule": {
+          "origin": "inline",
+          "style": inlineStyle,
         }
-    })
+      })
 
-  } else {
-    // if no inline styles are present
-    console.log(`Not Found: inline styles for selector '${selector}' with nodeId ${nodeId}.`);
-  }
-  return inlineRule;
+    } else {
+      // if no inline styles are present
+      console.log(`Not Found: inline styles for selector '${selector}' with nodeId ${nodeId}.`);
+    }
+    return inlineRule;
 
   } catch (error) {
     console.log('cdpInlineRules: error:', error);

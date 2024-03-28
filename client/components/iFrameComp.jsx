@@ -47,7 +47,7 @@ const iFrameComp = ({ src, proxy, className }) => {
           // behavior of following the link.
           event.preventDefault();
 
-                    // Other options like this include stopPropagation, which prevents the event
+          // Other options like this include stopPropagation, which prevents the event
           // from bubbling up to parent elements.
           // event.stopPropagation();
 
