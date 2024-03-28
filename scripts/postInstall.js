@@ -8,8 +8,8 @@ const __dirname = dirname(__filename);
 
 // new script commands. examples for now
 const newScripts = {
-  "dev-sexy": "cssxe dev -p 8888",
-  "build-sexy": "cssxe build"
+  "sexy-dev": "cssxe dev",
+  "sexy": "cssxe prod"
 };
 /*
   what storybook installs in package.json
