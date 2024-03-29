@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, setIsActiveFlag } from '../slices/rulesSlice.js';
+import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, updateMidShortMap, setIsActiveFlag } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component with event handling for click events.
@@ -69,6 +69,7 @@ const iFrameComp = ({ src, proxy, className }) => {
 
           // actions needed for style overwrite functionality
           dispatch(updateShortLongMaps());
+          dispatch(updateMidShortMap());
           dispatch(setIsActiveFlag());
           dispatch(findActiveStyles());
         };

@@ -240,24 +240,21 @@ const rulesSlice = createSlice({
       for (let key in cache) {
         // if only 1 prop in array, it means there're no similar styles => no need to update isActive
         if (cache[key].length > 1) {
+          // find the max specificity for all related properties
           let maxSpecificity = cache[key][0].specificity;
-          let maxSource = cache[key][0].source;
-          maxSource.isActive = true;
 
           for (let i = 1; i < cache[key].length; i++) {
             const item = cache[key][i];
             const result = compareSpecificity(maxSpecificity, item.specificity);
+            if (result === -1) maxSpecificity = item.specificity;
+          };
 
-            // if 2 specificies are the same, the latter takes precedence
-            if (result === -1 || result === 0) {
-              maxSource.isActive = false;
-              maxSpecificity = item.specificity;
-              maxSource = item.source;
-              maxSource.isActive = true;          
-            }
-            else if (result === 1) {
-              item.source.isActive = false;
-            }
+          // turn isActive to true for styles matching max specificity and to false for styles with lower specificity
+          for (let i = 0; i < cache[key].length; i++) {
+            const item = cache[key][i];
+            const result = compareSpecificity(maxSpecificity, item.specificity);
+            if (result === 1) item.source.isActive = false;
+            else if (result === 0) item.source.isActive = true;
           }
         }
       };
