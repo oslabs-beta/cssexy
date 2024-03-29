@@ -1,15 +1,15 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import ignore from 'ignore';
+// import { fileURLToPath } from 'url';
+// import { dirname } from 'path';
+// import ignore from 'ignore';
 
-const patchFile = async (data) => {
-
+const patchFile = async (data, targetDir) => {
   try {
-    const targetDirPath = process.env.VITE_TARGET_DIR_PATH;
-    // console.log('patchFile: data:', data);
     // importing the target directory path from the environment variables. later we can set this programmatically.
+    // const targetDir = path.resolve(process.cwd(), '..');
+    console.log('patchFile: targetDir:', targetDir);
+    console.log('\n\n');
 
     const selector = data?.selector;
     const text = data.text;
@@ -37,22 +37,22 @@ const patchFile = async (data) => {
         .replace(new RegExp(`\;`, 'g'), `'`);
       data.textJs = textJs;
 
-      console.log('data updated', data);
+      // console.log('data updated', data);
 
       const textAllJs = textPrevAllJs.replace(new RegExp(textPrevJs, 'g'), textJs);
       // console.log('\n\n');
 
       // Read directory contents
-      // const dirData = await fs.promises.readdir(targetDirPath);
+      // const dirData = await fs.promises.readdir(targetDir);
       // console.log('dirData:', dirData);
 
-      async function findJsxFiles(clientDir) {
+      async function findJsxFiles() {
         let jsxFiles = [];
-        // const dir = targetDirPath;
+        // const dir = targetDir;
         // console.log('dir:', dir);
-        // console.log('targetDirPath:', targetDirPath);
+        // console.log('targetDir:', targetDir);
         const entriesPromise = new Promise((resolve, reject) => {
-          fs.readdir(clientDir, { withFileTypes: true }, (err, entries) => {
+          fs.readdir(targetDir, { withFileTypes: true }, (err, entries) => {
             if (err) {
               reject(err);
             } else {
@@ -61,14 +61,14 @@ const patchFile = async (data) => {
           });
         });
         const entries = await entriesPromise;
-        // const gitignore = await ignore().add((await fs.promises.readFile(path.join(targetDirPath, '.gitignore'))).toString());
-        // const gitignorePaths = (await fs.promises.readFile(path.join(targetDirPath, '.gitignore'))).toString().split('\n').map(p => path.join(targetDirPath, p)).filter(p => !p.endsWith('/') && !p.endsWith('\\'));
+        // const gitignore = await ignore().add((await fs.promises.readFile(path.join(targetDir, '.gitignore'))).toString());
+        // const gitignorePaths = (await fs.promises.readFile(path.join(targetDir, '.gitignore'))).toString().split('\n').map(p => path.join(targetDir, p)).filter(p => !p.endsWith('/') && !p.endsWith('\\'));
         // console.log('gitignore:', gitignorePaths);
         // console.log('\n\n');
 
 
         for (let entry of entries) {
-          const fullPath = path.join(clientDir, entry.name);
+          const fullPath = path.join(targetDir, entry.name);
           if (entry.isDirectory()) {
             jsxFiles = jsxFiles.concat(await findJsxFiles(fullPath));
           } else if (entry.isFile() && path.extname(fullPath) === '.jsx') {
@@ -79,7 +79,7 @@ const patchFile = async (data) => {
         return jsxFiles;
       }
 
-      const jsxFiles = await findJsxFiles(`${targetDirPath}/client`);
+      const jsxFiles = await findJsxFiles();
       // console.log('jsxFiles:', jsxFiles);
 
       jsxFiles.forEach(async (jsxFilePath) => {
@@ -104,14 +104,12 @@ const patchFile = async (data) => {
       });
     }
     else {
-      console.log('\n\n');
-      console.log('patchFile: data:', data);
-      console.log('\n\n');
+      // console.log('\n\n');
+      // console.log('patchFile: data:', data);
+      // console.log('\n\n');
       // console.log('patchFile, first char of sourcePath:', data?.sourcePath[0] || 'undefined');
-      console.log('\n\n');
 
-      const targetFilePath = data.sourcePath[0] === '.' ? `${targetDirPath}${data.sourcePath.slice(1)}` : data.sourcePath;
-
+      const targetFilePath = data.sourcePath[0] === '.' ? `${targetDir}${data.sourcePath.slice(1)}` : data.sourcePath;
 
       // console.log('patchFile: name:', name);
 

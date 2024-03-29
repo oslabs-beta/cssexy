@@ -13,6 +13,9 @@ const app = express();
 const PORT = 8888;
 const environment = process.env.NODE_ENV || 'development';
 const browserPort = process.env.NODE_BROWSER_PORT;
+const targetDir = process.env.NODE_TARGET_DIR.toString().split('\n').slice(-1)[0]
+
+// console.log('server: targetDir:', targetDir);
 
 // need to do this when doing ES modules, when using Vite.
 
@@ -20,12 +23,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
-const proxy = process.env.VITE_PROXY;
+
 
 // to run CSSxe in puppeteer mode, set this to 1 in .env, and then run dev-pup or prod-pup respectively (rather than dev or prod). As of 2024-03-25_12-51-PM.
 const puppeteerMode = process.env.VITE_PUPPETEER_MODE;
 
-console.log('puppeteerMode:', puppeteerMode);
+// console.log('puppeteerMode:', puppeteerMode);
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -38,7 +41,7 @@ if (environment === 'production') {
 }
 
 app.post('/cdp', async (req, res) => {
-  console.log('POST /cdp');
+  // console.log('POST /cdp');
   // console.log(req.body);
   const data = req.body;
 
@@ -47,7 +50,7 @@ app.post('/cdp', async (req, res) => {
     // if puppeteerMode is set to true, then call the puppeteer process, otherwise call the cdp process
     const result = puppeteerMode == 0 ? await cdpProcess(data) : await callPupProcess(data);
 
-    console.log('server: /cdp: result should be returning now');
+    // console.log('server: /cdp: result should be returning now');
     // console.log('server: cdp: result:', result);
     return res.json( result );
   } catch (error) {
@@ -57,14 +60,14 @@ app.post('/cdp', async (req, res) => {
 });
 
 app.post('/patch', async (req, res) => {
-  console.log('POST /write');
+  // console.log('POST /write');
   // console.log(req.body);
   const data = req.body;
 
   try {
-    console.log('server: /patch: writeFile about to start');
-    const result = await patchFile(data);
-    console.log('server: /patch: result should be returning now');
+    // console.log('server: /patch: writeFile about to start');
+    const result = await patchFile(data, targetDir);
+    // console.log('server: /patch: result should be returning now');
     // console.log('server: /patch: result:', result);
     return res.json( result );
   } catch (error) {
@@ -84,7 +87,6 @@ app.listen(PORT, () =>
   console.log('\n'),
   console.log('\n'),
   console.log('Server: environment:', environment),
-  console.log('Server: proxy:', proxy ),
   console.log(`Server: listening on port: ${PORT}`),
   // if puppeteerMode is set to true, then call pup, which is the Puppeteer equivalent of the prior startRemoteChrome script.
   // findJsxFiles(),

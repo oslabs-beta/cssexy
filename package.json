@@ -8,16 +8,19 @@
     "build": "vite build",
     "serve": "vite",
     "preview": "vite preview --port 8888",
-    "vite-dev": "concurrently --kill-others-on-fail \"vite\" \"NODE_ENV=development NODE_BROWSER_PORT=5555 nodemon server/server.js\"",
+    "vite-dev": "concurrently --kill-others-on-fail \"PORT=5555 vite\" \"NODE_ENV=development NODE_BROWSER_PORT=5555 nodemon server/server.js\"",
     "dev": "npm run vite-dev",
+    "cssxe:dev": "npm run getTargetPort && NODE_TARGET_DIR=$TARGET_DIR npm run vite-dev",
     "dev-cdp": "concurrently \"PORT=5555 npm run startRemoteChromeJs\" \"npm run vite-dev\"",
     "dev-sh": "PORT=5555 npm run startRemoteChrome && npm run vite-dev",
     "prod": "concurrently \"npm run build\" \"npm run start\"",
+    "cssxe:prod": "npm run getTargetPort && NODE_TARGET_DIR=$TARGET_DIR npm run prod",
     "prod-cdp": "concurrently --kill-others-on-fail \"npm run build\" \"PORT=8888 npm run startRemoteChromeJs\" \"npm run start\"",
     "prod-sh": "npm run build && PORT=8888 npm run startRemoteChromeJs && npm run start",
     "startRemoteChrome": "./scripts/startRemoteChrome.sh",
     "startRemoteChromeJs": "PORT=$PORT node ./scripts/startRemoteChrome.js",
-    "postInstall": "node ./scripts/postInstall.js"
+    "postInstall": "node ./scripts/postInstall.js",
+    "getTargetPort": "node ./scripts/getTargetPort.js"
   },
   "type": "module",
   "repository": {
