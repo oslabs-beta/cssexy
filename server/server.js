@@ -9,11 +9,6 @@ import { patchFile } from '../client/patchFile.js';
 
 import { pup, callPupProcess } from '../client/puppeteer/pup.js';
 
-const app = express();
-const PORT = 8888;
-const environment = process.env.NODE_ENV || 'development';
-const browserPort = process.env.NODE_BROWSER_PORT;
-const targetDir = process.env.NODE_TARGET_DIR.toString().split('\n').slice(-1)[0]
 
 // console.log('server: targetDir:', targetDir);
 
@@ -28,9 +23,19 @@ dotenv.config({ path: path.resolve(__dirname, '../.env') });
 // to run CSSxe in puppeteer mode, set this to 1 in .env, and then run dev-pup or prod-pup respectively (rather than dev or prod). As of 2024-03-25_12-51-PM.
 const puppeteerMode = process.env.VITE_PUPPETEER_MODE;
 
+const environment = process.env.NODE_ENV || 'development';
+const browserPort = process.env.NODE_BROWSER_PORT;
+const targetDir = process.env.NODE_TARGET_DIR ? process.env.NODE_TARGET_DIR.toString().split('\n').slice(-1)[0] : process.env.NODE_TARGET_DIR_PATH_BACKUP
+
+console.log('server targetDir:', targetDir);
+
 // console.log('puppeteerMode:', puppeteerMode);
 
 // Middleware to parse JSON request bodies
+
+const app = express();
+const PORT = 8888;
+
 app.use(express.json());
 
 app.use(express());
@@ -66,6 +71,8 @@ app.post('/patch', async (req, res) => {
 
   try {
     // console.log('server: /patch: writeFile about to start');
+    console.log('\n\n');
+    console.log('server: /patch: targetDir:', targetDir);
     const result = await patchFile(data, targetDir);
     // console.log('server: /patch: result should be returning now');
     // console.log('server: /patch: result:', result);

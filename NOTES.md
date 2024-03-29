@@ -1,6 +1,16 @@
 # COMMIT, PR, ETC. NOTES
 
 Commit notes:
+  keith_2024-03-28_npmLink:
+    npm link working.
+    cssxe can now be run from inside of another repo.
+    To link, in the cssxe directory first run npm init, then npm link.
+    Then, in the target repo directory, run npm link cssxe.
+    Then add the following script to the target repo package.json:
+      "sexy": "TARGET_DIR=$(pwd) npm run cssxe:dev --prefix node_modules/cssxe".
+    npm link doesn’t programatically obtain the port (at the moment), so for now its set to 8000 in getTargetPort. But if cssxe was installed as an npm package the logic for getting the port programatically would work.
+
+
   keith_puppeteer_2024-03-25:
     To run CSSxe in puppeteer mode:
       - in .env, set VITE_PUPPETEER_MODE to true.

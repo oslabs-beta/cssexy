@@ -8,8 +8,8 @@ const patchFile = async (data, targetDir) => {
   try {
     // importing the target directory path from the environment variables. later we can set this programmatically.
     // const targetDir = path.resolve(process.cwd(), '..');
-    console.log('patchFile: targetDir:', targetDir);
-    console.log('\n\n');
+    // console.log('patchFile: targetDir:', targetDir);
+    // console.log('\n\n');
 
     const selector = data?.selector;
     const text = data.text;
@@ -20,6 +20,7 @@ const patchFile = async (data, targetDir) => {
     const textPrevAll = data.textPrevAll;
 
     if (data.textPrevAll.length > 0 && !data.sourcePath) {
+      // console.log('patchFile: data.textPrevAll.length > 0 && !data.sourcePath');
 
       const textPrevAllJs = textPrevAll.replace(new RegExp(`\: `, 'g'), `\: \'`)
         .replace(new RegExp(`\; `, 'g'), `', `)
@@ -46,13 +47,13 @@ const patchFile = async (data, targetDir) => {
       // const dirData = await fs.promises.readdir(targetDir);
       // console.log('dirData:', dirData);
 
-      async function findJsxFiles() {
+      async function findJsxFiles(dir) {
         let jsxFiles = [];
         // const dir = targetDir;
         // console.log('dir:', dir);
         // console.log('targetDir:', targetDir);
         const entriesPromise = new Promise((resolve, reject) => {
-          fs.readdir(targetDir, { withFileTypes: true }, (err, entries) => {
+          fs.readdir(dir, { withFileTypes: true }, (err, entries) => {
             if (err) {
               reject(err);
             } else {
@@ -61,14 +62,14 @@ const patchFile = async (data, targetDir) => {
           });
         });
         const entries = await entriesPromise;
-        // const gitignore = await ignore().add((await fs.promises.readFile(path.join(targetDir, '.gitignore'))).toString());
-        // const gitignorePaths = (await fs.promises.readFile(path.join(targetDir, '.gitignore'))).toString().split('\n').map(p => path.join(targetDir, p)).filter(p => !p.endsWith('/') && !p.endsWith('\\'));
+        // const gitignore = await ignore().add((await fs.promises.readFile(path.join(dir, '.gitignore'))).toString());
+        // const gitignorePaths = (await fs.promises.readFile(path.join(dir, '.gitignore'))).toString().split('\n').map(p => path.join(dir, p)).filter(p => !p.endsWith('/') && !p.endsWith('\\'));
         // console.log('gitignore:', gitignorePaths);
         // console.log('\n\n');
 
 
         for (let entry of entries) {
-          const fullPath = path.join(targetDir, entry.name);
+          const fullPath = path.join(dir, entry.name);
           if (entry.isDirectory()) {
             jsxFiles = jsxFiles.concat(await findJsxFiles(fullPath));
           } else if (entry.isFile() && path.extname(fullPath) === '.jsx') {
@@ -79,7 +80,7 @@ const patchFile = async (data, targetDir) => {
         return jsxFiles;
       }
 
-      const jsxFiles = await findJsxFiles();
+      const jsxFiles = await findJsxFiles(targetDir);
       // console.log('jsxFiles:', jsxFiles);
 
       jsxFiles.forEach(async (jsxFilePath) => {
