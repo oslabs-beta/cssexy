@@ -62,16 +62,9 @@ const iFrameComp = ({ src, proxy, className }) => {
           // behavior of following the link.
           event.preventDefault();
 
-          // const elementPath = DOMPath.fullQualifiedSelector(element, true);
-          // console.log('\n\n');
-          // console.log('iFrameComp: elementPath', elementPath);
-
-          console.log('\n\n');
-
-
           // Other options like this include stopPropagation, which prevents the event
           // from bubbling up to parent elements.
-          event.stopPropagation();
+          // event.stopPropagation();
 
           // console.log('iFrameComp: data', data);
 
@@ -85,12 +78,11 @@ const iFrameComp = ({ src, proxy, className }) => {
           });
 
           // console.log('iFrameComp: response', response);
-          // console.log('iFrameComp: response', response);
 
           const result = await response.json();
 
           // console.log('iFrameComp: Result returned from /cdp');
-          // console.log('iFrameComp: Result :   ', result);
+          // console.log('iFrameComp: Result : ', result);
 
           // dispatching the results from the /cdp endpoint to the store
           dispatch(updateInlineRules(result.inlineRules));
