@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import SidebarStyling from './SidebarStyling.jsx';
 import RulesUserAgentComp from "./RulesUserAgentComp.jsx";
@@ -10,10 +10,26 @@ function RulesAllComp() {
 
     const [sourcePath, setSourcePath] = useState(null);
     const [sourceName, setSourceName] = useState(null);
+    const [firstSourcePath, setFirstSourcePath] = useState(null);
+
+    console.log('inlineRules', inlineRules);
+    console.log('\n\n');
+
+    useEffect(() => {
+
+        if (regularRules.length > 0) {
+          const styleSheetId = regularRules[0].rule.style.styleSheetId;
+          setFirstSourcePath(styleSheets[styleSheetId].absolutePaths[0] ? styleSheets[styleSheetId].absolutePaths[0] : styleSheets[styleSheetId].relativePaths[0]);
+          if (styleSheets[styleSheetId] && sourcePath !== firstSourcePath) {
+            setSourcePath(firstSourcePath);
+            const splitPaths = firstSourcePath.split('/');
+            const sourceNameString = `/${splitPaths[splitPaths.length - 1]}`;
+            setSourceName(sourceNameString);
+          }
+        }
+      }, [styleSheets, regularRules]);
 
     const RulesInlineComp = inlineRules.map((each, idx) => {
-        // console.log('inlineRules', inlineRules);
-
         return (
             <SidebarStyling
                 key={`inline-style-${idx}`}
@@ -25,21 +41,6 @@ function RulesAllComp() {
     });
 
     const RulesRegularComp = regularRules.map((each, idx) => {
-        // console.log('regularRules', regularRules);
-        // console.log('styleSheets', styleSheets);
-        // console.log('styleSheetId', each.rule.style.styleSheetId);
-        // console.log('styleSheets[each.rule.style.styleSheetId]?', styleSheets[each.rule.style.styleSheetId]);
-
-        const styleSheetId = each.rule.style.styleSheetId;
-        const firstSourcePath = styleSheets[styleSheetId].absolutePaths[0] ? styleSheets[styleSheetId].absolutePaths[0] : styleSheets[styleSheetId].relativePaths[0];
-
-        if (styleSheets[styleSheetId] && sourcePath != firstSourcePath)  {
-            setSourcePath(firstSourcePath);
-            const splitPaths = firstSourcePath.split('/')
-            const sourceNameString = `/${splitPaths[splitPaths.length - 1]}`
-            setSourceName(sourceNameString);
-        }
-
         return (
             <SidebarStyling
                 key={`regular-style-${idx}`}

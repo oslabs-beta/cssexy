@@ -8,7 +8,7 @@ Commit notes:
     Then, in the target repo directory, run npm link cssxe.
     Then add the following script to the target repo package.json:
       "sexy": "TARGET_DIR=$(pwd) npm run cssxe:dev --prefix node_modules/cssxe".
-    npm link doesn’t programatically obtain the port (at the moment), so for now its set to 8000 in getTargetPort. But if cssxe was installed as an npm package the logic for getting the port programatically would work.
+    the cssxe package doesn’t programatically obtain the port (at the moment) due to being run with npm link. so for now its set to 8000, the .env file. But if cssxe was installed as an npm package the logic for getting the port programatically would work now.
 
 
   keith_puppeteer_2024-03-25:

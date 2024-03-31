@@ -27,7 +27,7 @@ const rulesSlice = createSlice({
       state.inlineRules = action.payload;
     },
     updateRegularRules: (state, action) => {
-      console.log('rulesSlice: state.regularRules: updated', action.payload);
+      // console.log('rulesSlice: state.regularRules: updated', action.payload);
       state.regularRules = action.payload;
     },
     updateUserAgentRules: (state, action) => {
@@ -212,7 +212,7 @@ const rulesSlice = createSlice({
       state.isActiveCache = cache;
     },
     updateStyleSheets: (state, action) => {
-      console.log('rulesSlice: state.styleSheets: updated', action.payload);
+      // console.log('rulesSlice: state.styleSheets: updated', action.payload);
       state.styleSheets = action.payload;
     },
   },
@@ -231,8 +231,8 @@ const nodeDataSlice = createSlice({
   reducers: {
     // every time user selects a DOM element, inline, regular, and user-agent rules are dispatched by the iFrameComp, updating the store via the reducers below.
     updateNodeData: (state, action) => {
-      console.log('nodeDataSlice: state.nodeData: updated', action.payload);
-      console.log('\n\n\n');
+      // console.log('nodeDataSlice: state.nodeData: updated', action.payload);
+      // console.log('\n\n\n');
       state.data = action.payload;
     },
   },

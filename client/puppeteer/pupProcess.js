@@ -10,36 +10,46 @@ const pupProcess = async (client, styleSheets, data) => {
     // const proxy = data?.proxy;
     const nodeType = data?.nodeType;
     const textContent = data?.textContent;
+    const selector = data?.selector;
     // const attributes = data?.attributes;
 
     console.log('pupProcess');
-    // console.log('pupProcess: data', data);
+    console.log('pupProcess: data', data);
+    console.log('\n\n');
+
+    console.log('\n\n');
+
     try {
         // setting our selector based on the attributes we received from the iframe.
         // starting with the most specific selector and working our way down.
-        let selector = '';
-        if (id) {
-            console.log('element id:', id);
-            selector = `#${id}`;
-        }
-        else if (className && !className.includes(' ')) {
-            console.log('element class:', className);
-            selector = `.${className}`;
-        }
-        else if (nodeName) {
-            console.log('element nodeName:', nodeName);
-            console.log('element className:', className);
-            selector = `${nodeName}`;
-        }
-        else if (innerHTML) {
-            console.log('element innerHTML:', innerHTML);
-            selector = `${innerHTML}`;
-        }
-        else if (textContent) {
-            console.log('element textContent:', textContent);
-            selector = `${textContent}`;
-        }
-        console.log('pupProcess: selector:', selector);
+        // let selectorOG = '';
+        // if (id) {
+        //     console.log('element id:', id);
+        //     selectorOG = `#${id}`;
+        // }
+        // else if (className && !className.includes(' ')) {
+        //     console.log('element class:', className);
+        //     selectorOG = `.${className}`;
+        // }
+        // else if (nodeName) {
+        //     console.log('element nodeName:', nodeName);
+        //     console.log('element className:', className);
+        //     selectorOG = `${nodeName}`;
+        // }
+        // else if (innerHTML) {
+        //     console.log('element innerHTML:', innerHTML);
+        //     selectorOG = `${innerHTML}`;
+        // }
+        // else if (textContent) {
+        //     console.log('element textContent:', textContent);
+        //     selectorOG = `${textContent}`;
+        // }
+        // console.log('\n\n');
+        // console.log('pupProcess: selector:', selector);
+        // console.log('pupProcess: selectorOG:', selectorOG);
+
+
+        console.log('\n\n');
 
         // getDocument: returns the root DOM node of the document.
         // 'nested destructuring' to get the nodeId.
@@ -76,11 +86,18 @@ const pupProcess = async (client, styleSheets, data) => {
             if (err) throw err;
         });
 
+        console.log('\n\n');
+        console.log('pupProcess: calling writeFileSync');
+        console.log('\n\n');
+
         // this saves the nodes
         writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
 
         // this saves the contentDocument node of the iframe
         writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
+
+        // this saves the element
+        // writeFileSync('./data/output/element.json', JSON.stringify(element), null, 2);
 
         // this is the core functionality of cssxe that retrieves styles from a website
         console.log('pupProcess: calling pupRules');
@@ -98,8 +115,8 @@ const pupProcess = async (client, styleSheets, data) => {
         // It is considered a best practice to close resources such as connections in a finally block.
         // This ensures they are properly cleaned up, even in the event of an error.
         // Leaving connections open can lead to resource leaks and potential issues with system performance.
-        // if (pupClient) {
-        //     await pupClient.close();
+        // if (client) {
+        //     await client.close();
         //     console.log('Puppeteer client closed');
         // }
     }

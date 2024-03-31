@@ -49,6 +49,14 @@ function SidebarComp() {
       </button>
     </div>
 
+    // version without the collapse button or its logic
+    //   <div className={`sidebar-container`}>
+    //   <div className={`sidebar`}>
+    //     <h3 style={{ textAlign: 'center' }}>styles</h3>
+    //     <RulesAllComp />
+    //   </div>
+    // </div>
+
   );
 }
 

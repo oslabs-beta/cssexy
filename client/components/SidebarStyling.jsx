@@ -66,7 +66,7 @@ function SidebarStyling(props) {
               dispatch(setIsActiveFlag());
               dispatch(findActiveStyles());
             }
-          };
+    };
 
 
     const handleSubmit = async (cssProp, event) => {

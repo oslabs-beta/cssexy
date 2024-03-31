@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import DOMPath from 'chrome-dompath';
 
 import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, setIsActiveFlag, updateNodeData } from '../slices/rulesSlice.js';
 
@@ -33,6 +34,7 @@ const iFrameComp = ({ src, proxy, className }) => {
           const element = event.target;
 
           console.log('iFrameComp: element', element);
+
           const data = {
             id: element.id,
             nodeName: element.nodeName || element.tagName,
@@ -40,18 +42,38 @@ const iFrameComp = ({ src, proxy, className }) => {
             innerHTML: element.innerHTML,
             textContent: element.textContent,
             nodeType: element.nodeType,
+            localName: element.localName,
+            // nextElementSibling: element.nextElementSibling,
+            // nextSibling: element.nextSibling,
+            // offsetParent: element.offsetParent,
+            // childNodes: element.childNodes,
+            // parentElement: element.parentElement,
+            // parentNode: element.parentNode,
+            class: element.class,
+            currentSrc: element.currentSrc,
+            outerHTML: element.outerHTML,
+            src: element.src,
             proxy: proxy,
+            selector: DOMPath.fullQualifiedSelector(element, true),
+            // attributes: element.attributes,
             // attributes: {},
           };
           // The event comes from the iframe, so we need to prevent the default
           // behavior of following the link.
           event.preventDefault();
 
+          // const elementPath = DOMPath.fullQualifiedSelector(element, true);
+          // console.log('\n\n');
+          // console.log('iFrameComp: elementPath', elementPath);
+
+          console.log('\n\n');
+
+
           // Other options like this include stopPropagation, which prevents the event
           // from bubbling up to parent elements.
-          // event.stopPropagation();
+          event.stopPropagation();
 
-          console.log('iFrameComp: data', data);
+          // console.log('iFrameComp: data', data);
 
           // a POST request to the /cdp endpoint
           const response = await fetch('/cdp', {
@@ -63,12 +85,12 @@ const iFrameComp = ({ src, proxy, className }) => {
           });
 
           // console.log('iFrameComp: response', response);
-          console.log('iFrameComp: response', response);
+          // console.log('iFrameComp: response', response);
 
           const result = await response.json();
 
           // console.log('iFrameComp: Result returned from /cdp');
-          console.log('iFrameComp: Result :   ', result);
+          // console.log('iFrameComp: Result :   ', result);
 
           // dispatching the results from the /cdp endpoint to the store
           dispatch(updateInlineRules(result.inlineRules));

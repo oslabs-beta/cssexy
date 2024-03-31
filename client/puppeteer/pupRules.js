@@ -1,8 +1,8 @@
 /**
- * cdp2styles.js
+ * pup2styles.js
  * Retrieves the CSS rules for a specified DOM node, returns the applied rules
  *
- * @param {object} cdpClient - The Chrome DevTools Protocol client
+ * @param {object} client - The Puppeteer CDP client
  * @param {object} DOM - The DOM domain object
  * @param {object} CSS - The CSS domain object
  * @param {object} Network - The Network domain object
@@ -19,9 +19,11 @@ const getInlineRules = async (client, nodeId, selector) => {
 
     const { inlineStyle } = await client.send('CSS.getInlineStylesForNode', { nodeId });
 
+    // console.log('pupInlineRules: inlineStyle:', inlineStyle);
+
     const inlineRule = [];
 
-    // console.log('cdpInlineRules: inlineRule:', inlineRule);
+    // console.log('pupInlineRules: inlineRule:', inlineRule);
 
     // check if there are any inline styles for this node
     if (inlineStyle) {
@@ -42,7 +44,7 @@ const getInlineRules = async (client, nodeId, selector) => {
     return inlineRule;
 
   } catch (error) {
-    console.log('cdpInlineRules: error:', error);
+    console.log('pupInlineRules: error:', error);
   }
 }
 
@@ -51,13 +53,16 @@ const pupRules = async (client, iframeNode, selector, styleSheets) => {
 
 
   const iframeNodeId = iframeNode.nodeId;
-  // console.log('cdpRules: root frame node id:', iframeNodeId);
+  // console.log('pupRules: root frame node id:', iframeNodeId);
 
   // Get the nodeId of the node based on its CSS selector
   const { nodeId } = await client.send('DOM.querySelector', {
     nodeId: iframeNodeId,
     selector: selector
   });
+
+
+  console.log('pupRules: nodeId for selector', selector, 'is:', nodeId);
 
 
   // highlights the node. doesn’t work every time.
@@ -79,14 +84,14 @@ const pupRules = async (client, iframeNode, selector, styleSheets) => {
   //   color: { r: 255, g: 0, b: 0 },
   // });
 
-  // console.log('cdpRules: nodeId for selector', selector, 'is:', nodeId);
+  // console.log('pupRules: nodeId for selector', selector, 'is:', nodeId);
 
-  // console.log('cdpRules: Getting inline styles for element:', selector);
+  // console.log('pupRules: Getting inline styles for element:', selector);
   // Get the inline styles
   const inlineRules = await getInlineRules(client, nodeId, selector);
 
 
-  // console.log('cdpRules: Getting matched styles for element:', selector);
+  console.log('pupRules: Getting matched styles for element:', selector);
 
   // get all CSS rules that are applied to the node
   // => matchedCSSRules contains CSS rules that are directly applied to the node
@@ -97,7 +102,7 @@ const pupRules = async (client, iframeNode, selector, styleSheets) => {
   const regularRules = [];
   const userAgentRules = [];
 
-  // console.log('cdpRules: matchedCSSRules:', matchedCSSRules);
+  // console.log('pupRules: matchedCSSRules:', matchedCSSRules);
 
   // this separates the matchedCSSRules into regularRules and userAgentRules
   // ahead of them being returned to iframeComp, where they then update the store
@@ -123,14 +128,14 @@ const pupRules = async (client, iframeNode, selector, styleSheets) => {
     // keyframeRules
   }
 
-  fs.writeFileSync('./data/output/allRules.json', JSON.stringify(result, null, 2));
-  fs.writeFileSync('./data/output/inlineRules.json', JSON.stringify(inlineRules, null, 2));
-  fs.writeFileSync('./data/output/regularRules.json', JSON.stringify(regularRules, null, 2));
-  fs.writeFileSync('./data/output/userAgentRules.json', JSON.stringify(userAgentRules, null, 2));
-  fs.writeFileSync('./data/output/inheritedRules.json', JSON.stringify(inheritedRules, null, 2));
-  fs.writeFileSync('./data/output/keyframeRules.json', JSON.stringify(keyframeRules, null, 2));
+  // fs.writeFileSync('./data/output/allRules.json', JSON.stringify(result, null, 2));
+  // fs.writeFileSync('./data/output/inlineRules.json', JSON.stringify(inlineRules, null, 2));
+  // fs.writeFileSync('./data/output/regularRules.json', JSON.stringify(regularRules, null, 2));
+  // fs.writeFileSync('./data/output/userAgentRules.json', JSON.stringify(userAgentRules, null, 2));
+  // fs.writeFileSync('./data/output/inheritedRules.json', JSON.stringify(inheritedRules, null, 2));
+  // fs.writeFileSync('./data/output/keyframeRules.json', JSON.stringify(keyframeRules, null, 2));
 
-  console.log('cdpRules: returning result {inlineRules, regularRules, userAgentRules}');
+  console.log('pupRules: returning result {inlineRules, regularRules, userAgentRules}');
   return result;
 }
 
