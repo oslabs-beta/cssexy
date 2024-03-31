@@ -88,8 +88,8 @@ function SidebarStyling(props) {
         const textPrevAll = inlineRules[0].rule.style.cssText;
         updatedCssProp.textPrevAll = textPrevAll;
 
-        console.log('data', updatedCssProp);
-        console.log('TRY: /patch');
+        // console.log('data', updatedCssProp);
+        // console.log('TRY: /patch');
         try {
             const response = await fetch('/patch', {
                 method: 'POST',
@@ -101,8 +101,8 @@ function SidebarStyling(props) {
             });
             const result = await response.json();
             if (result === true) {
-                console.log('TRY: /runCdp');
-                console.log('\n\n\n');
+                // console.log('TRY: /runCdp');
+                // console.log('\n\n\n');
 
                 // wait for .5 seconds. not doing this atm leads to a mismatch between the value in the input field and the corresponding value in the file, which then prevents further editing of that value (until the element is clicked again) because our patchFile function matches one to the other in order to replace the value with the new value.
                 await new Promise(resolve => setTimeout(resolve, 500));

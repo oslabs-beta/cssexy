@@ -16,18 +16,25 @@ function RulesAllComp() {
     console.log('\n\n');
 
     useEffect(() => {
-
+        console.log('RulesAllComp: line 19');
         if (regularRules.length > 0) {
-          const styleSheetId = regularRules[0].rule.style.styleSheetId;
-          setFirstSourcePath(styleSheets[styleSheetId].absolutePaths[0] ? styleSheets[styleSheetId].absolutePaths[0] : styleSheets[styleSheetId].relativePaths[0]);
+            console.log('RulesAllComp: line 21');
+          const styleSheetId = regularRules[0]?.rule.style.styleSheetId;
+          console.log('RulesAllComp: line 23');
+          setFirstSourcePath(styleSheets[styleSheetId]?.absolutePaths[0] ? styleSheets[styleSheetId]?.absolutePaths[0] : styleSheets[styleSheetId]?.relativePaths[0]);
+          console.log('RulesAllComp: line 25');
           if (styleSheets[styleSheetId] && sourcePath !== firstSourcePath) {
+            console.log('RulesAllComp: line 27');
             setSourcePath(firstSourcePath);
             const splitPaths = firstSourcePath.split('/');
             const sourceNameString = `/${splitPaths[splitPaths.length - 1]}`;
             setSourceName(sourceNameString);
+            console.log('RulesAllComp: line 32');
           }
         }
       }, [styleSheets, regularRules]);
+
+      console.log('RulesAllComp: line 37');
 
     const RulesInlineComp = inlineRules.map((each, idx) => {
         return (

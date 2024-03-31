@@ -3,54 +3,18 @@ import { writeFileSync, mkdir } from 'node:fs';
 import { pupRules } from './pupRules.js';
 
 const pupProcess = async (client, styleSheets, data) => {
-    const id = data?.id;
-    const innerHTML = data?.innerHTML;
-    const nodeName = data?.nodeName;
-    const className = data?.className;
+    // const id = data?.id;
+    // const innerHTML = data?.innerHTML;
+    // const nodeName = data?.nodeName;
+    // const className = data?.className;
     // const proxy = data?.proxy;
-    const nodeType = data?.nodeType;
-    const textContent = data?.textContent;
-    const selector = data?.selector;
+    // const nodeType = data?.nodeType;
+    // const textContent = data?.textContent;
     // const attributes = data?.attributes;
-
-    console.log('pupProcess');
-    console.log('pupProcess: data', data);
-    console.log('\n\n');
-
-    console.log('\n\n');
+    const selector = data?.selector;
 
     try {
-        // setting our selector based on the attributes we received from the iframe.
-        // starting with the most specific selector and working our way down.
-        // let selectorOG = '';
-        // if (id) {
-        //     console.log('element id:', id);
-        //     selectorOG = `#${id}`;
-        // }
-        // else if (className && !className.includes(' ')) {
-        //     console.log('element class:', className);
-        //     selectorOG = `.${className}`;
-        // }
-        // else if (nodeName) {
-        //     console.log('element nodeName:', nodeName);
-        //     console.log('element className:', className);
-        //     selectorOG = `${nodeName}`;
-        // }
-        // else if (innerHTML) {
-        //     console.log('element innerHTML:', innerHTML);
-        //     selectorOG = `${innerHTML}`;
-        // }
-        // else if (textContent) {
-        //     console.log('element textContent:', textContent);
-        //     selectorOG = `${textContent}`;
-        // }
-        // console.log('\n\n');
-        // console.log('pupProcess: selector:', selector);
-        // console.log('pupProcess: selectorOG:', selectorOG);
-
-
-        console.log('\n\n');
-
+        // console.log('pupProcess: data', data);
         // getDocument: returns the root DOM node of the document.
         // 'nested destructuring' to get the nodeId.
         const { root: { nodeId } } = await client.send('DOM.getDocument');
@@ -86,21 +50,19 @@ const pupProcess = async (client, styleSheets, data) => {
             if (err) throw err;
         });
 
-        console.log('\n\n');
-        console.log('pupProcess: calling writeFileSync');
-        console.log('\n\n');
+        // console.log('pupProcess: calling writeFileSync');
 
         // this saves the nodes
-        writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
+        // writeFileSync('./data/output/nodes.json', JSON.stringify(nodes, null, 2));
 
         // this saves the contentDocument node of the iframe
-        writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
+        // writeFileSync('./data/output/iframeNode.json', JSON.stringify(iframeNode, null, 2));
 
         // this saves the element
         // writeFileSync('./data/output/element.json', JSON.stringify(element), null, 2);
 
         // this is the core functionality of cssxe that retrieves styles from a website
-        console.log('pupProcess: calling pupRules');
+        // console.log('pupProcess: calling pupRules');
 
         // right now, result is an object that has both the matched and inline styles for the element clicked.
         const result = await pupRules(client, iframeNode, selector, styleSheets);
@@ -110,15 +72,6 @@ const pupProcess = async (client, styleSheets, data) => {
 
     } catch (err) {
         console.error('Error connecting to Chrome', err);
-    }
-    finally {
-        // It is considered a best practice to close resources such as connections in a finally block.
-        // This ensures they are properly cleaned up, even in the event of an error.
-        // Leaving connections open can lead to resource leaks and potential issues with system performance.
-        // if (client) {
-        //     await client.close();
-        //     console.log('Puppeteer client closed');
-        // }
     }
 }
 

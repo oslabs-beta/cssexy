@@ -23,8 +23,6 @@ const getInlineRules = async (client, nodeId, selector) => {
 
     const inlineRule = [];
 
-    // console.log('pupInlineRules: inlineRule:', inlineRule);
-
     // check if there are any inline styles for this node
     if (inlineStyle) {
 
@@ -61,10 +59,6 @@ const pupRules = async (client, iframeNode, selector, styleSheets) => {
     selector: selector
   });
 
-
-  console.log('pupRules: nodeId for selector', selector, 'is:', nodeId);
-
-
   // highlights the node. doesn’t work every time.
   // await DOM.highlightNode({
   //   nodeId,
@@ -84,14 +78,13 @@ const pupRules = async (client, iframeNode, selector, styleSheets) => {
   //   color: { r: 255, g: 0, b: 0 },
   // });
 
-  // console.log('pupRules: nodeId for selector', selector, 'is:', nodeId);
+  // console.log('pupRules: Getting inline styles for element:', selector, ', nodeId:', nodeId);
 
-  // console.log('pupRules: Getting inline styles for element:', selector);
   // Get the inline styles
   const inlineRules = await getInlineRules(client, nodeId, selector);
 
 
-  console.log('pupRules: Getting matched styles for element:', selector);
+  console.log('pupRules: Getting matched styles for element:', selector, ', nodeId:', nodeId);
 
   // get all CSS rules that are applied to the node
   // => matchedCSSRules contains CSS rules that are directly applied to the node
@@ -135,7 +128,7 @@ const pupRules = async (client, iframeNode, selector, styleSheets) => {
   // fs.writeFileSync('./data/output/inheritedRules.json', JSON.stringify(inheritedRules, null, 2));
   // fs.writeFileSync('./data/output/keyframeRules.json', JSON.stringify(keyframeRules, null, 2));
 
-  console.log('pupRules: returning result {inlineRules, regularRules, userAgentRules}');
+  // console.log('pupRules: returning result {inlineRules, regularRules, userAgentRules}');
   return result;
 }
 

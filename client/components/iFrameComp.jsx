@@ -39,7 +39,7 @@ const iFrameComp = ({ src, proxy, className }) => {
             id: element.id,
             nodeName: element.nodeName || element.tagName,
             className: element.className,
-            innerHTML: element.innerHTML,
+            // innerHTML: element.innerHTML,
             textContent: element.textContent,
             nodeType: element.nodeType,
             localName: element.localName,
@@ -51,7 +51,7 @@ const iFrameComp = ({ src, proxy, className }) => {
             // parentNode: element.parentNode,
             class: element.class,
             currentSrc: element.currentSrc,
-            outerHTML: element.outerHTML,
+            // outerHTML: element.outerHTML,
             src: element.src,
             proxy: proxy,
             selector: DOMPath.fullQualifiedSelector(element, true),
@@ -60,7 +60,7 @@ const iFrameComp = ({ src, proxy, className }) => {
           };
           // The event comes from the iframe, so we need to prevent the default
           // behavior of following the link.
-          event.preventDefault();
+          // event.preventDefault();
 
           // Other options like this include stopPropagation, which prevents the event
           // from bubbling up to parent elements.
@@ -107,13 +107,17 @@ const iFrameComp = ({ src, proxy, className }) => {
         // clicks to be handled by React.
 
         iframeDoc.addEventListener('click', (event) => {
-          // Calling the handleClick function
-          handleClick(event);
+          const tagName = event.target.tagName.toLowerCase();
 
-          // Set focus back to the parent document
-          // This allows CSSxe to receive keyboard events again after clicking inside the iframe
-          // before doing this, CSSxe would not receive keyboard events again until we clicked inside of the sidebar
-          window.parent.focus();
+          handleClick(event);
+          if (tagName !== 'input' && tagName !== 'textarea' && tagName !== 'select') {
+            // Calling the handleClick function
+
+            // Set focus back to the parent document
+            // This allows CSSxe to receive keyboard events again after clicking inside the iframe
+            // before doing this, CSSxe would not receive keyboard events again until we clicked inside of the sidebar
+            window.parent.focus();
+          }
 
         }, false);
 
