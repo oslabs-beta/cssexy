@@ -6,16 +6,11 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// new script commands. examples for now
+// new script commands to add to user's package.json
 const newScripts = {
-  "dev-sexy": "cssxe dev -p 8888",
-  "build-sexy": "cssxe build"
+  "sexy": "TARGET_DIR=$(pwd) npm run cssxe:dev --prefix node_modules/cssxe",
+  "sexy-prod": "TARGET_DIR=$(pwd) npm run cssxe:prod --prefix node_modules/cssxe",
 };
-/*
-  what storybook installs in package.json
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
-*/
 
 function updateScripts(scripts) {
   // scripts: an object containing current scripts from package.json

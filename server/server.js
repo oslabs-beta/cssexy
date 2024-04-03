@@ -1,44 +1,88 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { spawn } from 'child_process';
+
+import { config } from 'dotenv';
 
 import cdpProcess from '../client/cdp/cdp0process.js';
+import { patchFile } from '../client/patchFile.js';
 
-const app = express();
-const PORT = 8888;
+import { callPupProcess } from '../client/puppeteer/pup.js';
 
-
-// need to do this when doing ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const __envPath = path.resolve(__dirname, '../.env')
+const __scripts = path.join(__dirname, '../scripts/');
 
-// Middleware to parse JSON request bodies
+console.log('filename:', __filename);
+console.log('dirname:', __dirname);
+console.log('path:', __envPath);
+// normally we could just use config(), as that looks for the .env file in the root directory.
+// but once this is an npm package installed in a given repo, the root directory
+// will be that repo. so instead we use config({ path: path.resolve(__dirname, '.env') })
+// to point it at cssxe's own root directory.
+config({ path: __envPath });
+
+const environment = process.env.NODE_ENV || 'development';
+const browserPort = process.env.BROWSER_PORT || process.env.BROWSER_PORT_BACKUP;
+const proxy = process.env.PROXY || process.env.PROXY_BACKUP;
+const targetDir = process.env.TARGET_DIR ? process.env.TARGET_DIR.toString().split('\n').slice(-1)[0] : process.env.TARGET_DIR_BACKUP;
+
+// to run CSSxe in puppeteer mode, set this to 1 in .env.
+const puppeteerMode = process.env.PUPPETEER_MODE;
+
+const PORT = 8888;
+const app = express();
+app.use(express());
 app.use(express.json());
 
-console.log('Current environment:', process.env.NODE_ENV);
+!browserPort ? console.log('server: error: BROWSER_PORT is not set') && process.exit(1) : null;
+!proxy ? console.log('server: error: PROXY is not set') && process.exit(1) : null;
+!targetDir ? console.log('server: error: TARGET_DIR is not set') && process.exit(1) : null;
 
-app.use(express());
 
-if (process.env.NODE_ENV === 'production') {
-  // Serve static files (CSSxe UI)
+// Start Puppeteer if puppeteerMode is set to 1.
+if (puppeteerMode == 1) {
+  // `spawn` from the `child_process` module in Node.js is used to create new child processes.
+  // These run independently, but can communicate with the parent process via IPC (Inter-Process Communication) channels.
+  // So in this case, puppeteer is a child process of this server process.
+  spawn('node', ['../client/puppeteer/pup.js', browserPort])
+}
+// else, start the cdp process.
+else {
+  console.log('pup.js: puppeteerMode set to 0. puppeteer will not be called')
+  spawn('node', [`${__scripts}startRemoteChrome.js`]);
+}
+
+if (environment === 'production') {
+  // Serve static files (CSSxe UI) when in prod mode
   app.use(express.static(path.join(__dirname, '../dist')));
 }
 
-
 app.post('/cdp', async (req, res) => {
-  console.log('POST /cdp');
-  // console.log(req.body);
   const data = req.body;
 
   try {
-    console.log('server: /cdp: cdpProcess about to start');
-    const result = await cdpProcess(data);
-    console.log('server: /cdp: result should be returning now');
-    // console.log('server: cdp: result:', result);
-    return res.json( result );
+    // if puppeteerMode is set to true, then call the puppeteer process, otherwise call the cdp process
+    const result = puppeteerMode == 0 ? await cdpProcess(data) : await callPupProcess(data);
+
+    return res.json(result);
   } catch (error) {
     console.error('Error processing data:', error);
     return res.status(500).json({ error: 'Failed to process data' });
+  }
+});
+
+app.post('/patch', async (req, res) => {
+  const data = req.body;
+
+  try {
+    const result = await patchFile(data, targetDir);
+    return res.json(result);
+  } catch (error) {
+    console.error('Error processing data:', error);
+    return res.status(500).json({ error: 'Failed to patch data' });
   }
 });
 
@@ -49,4 +93,10 @@ app.use((err, req, res, next) => {
   res.sendStatus(500);
 });
 
-app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));
+app.listen(PORT, () =>
+  console.log('\n'),
+  console.log('\n'),
+  console.log(`Server: environment ${environment}`),
+  console.log(`Server: listening on port ${PORT}`),
+  console.log(`Server: serving proxy ${proxy} on browserPort ${browserPort}`),
+);

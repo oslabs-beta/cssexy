@@ -17,7 +17,6 @@ body {
   overflow: hidden;
 }
 
-
 .sidebar-container, .sidebar {
   background: #252134;
 }
@@ -25,24 +24,35 @@ body {
 
 .sidebar-container {
   position: relative;
-  width: 25%;
+  width: 30%;
+  height: 100%;
   border-right: 3px solid #1B1929; /* darker purple for the border */
   /* max-width: 25%; */
+  /* overflow-y: scroll; */
+
+    /* scrollbar-width: thin; */
+  /* scrollbar-color: rgba(74, 67, 139, 0.1) transparent; */
+
 }
 
 .sidebar {
+  height: 97%; /* 97% of the container height. this + 100% for the sidebar container is the combo that allows for the interior to scroll without adding a scrollbar to the right side of the window. */
   padding: 0px 20px 20px 20px; /* top, right, bottom, left */
-  overflow: auto; /* allows the sidebar to be scrollable.
-  in this case, this being true allows it to be hidden when the user clicks the collapse button */
 
-  /* enable these below to make the sidebar scrollable */
+  /* allows the sidebar to be scrollable. in this case, this being true allows it to be hidden when the user clicks the collapse button */
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(74, 67, 139, 0.1) transparent;
+
+  /* enable these below to make the sidebar horizontally scrollable */
   /* however, it only scrolls about 10% of the container */
   /* width: calc(93% - 20px); 80% of the container width, minus padding */
   /* max-width: calc(93% - 20px); 80% of the container width, minus padding */
   /* min-width: calc(93% - 20px); 80% of the container width, minus padding */
   /* resize: horizontal; */
-  /* scrollbar-width: thin; */
-  /* scrollbar-color: rgba(74, 67, 139, 0.1) transparent; */
+
+
 
 }
 
@@ -71,32 +81,57 @@ body {
 .selector-div, .style-source-span, .style-container p, .style-paragraph,  .style-property-span {
   /* color: #D0C9D6; */
   color: #e5e0e9;
-
   margin: 1px 0; /* Margin for spacing around style entries */
 }
 
 .selector-div {
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 500;
   margin-top: 10px;
   margin-bottom: 5px;
 }
 
-.style-value-span {
+/* .style-value-form {
+  /* not beign used atm */
+  /* display: flex; */
+  /* display: inline;
+} */
+
+.style-property-span, .style-value-span, .style-value-input-span {
+  font-size: 12px;
   padding-left: 5px;
-      color: #906bc7;
-      /* color: #8D86C9; */
-      font-weight: 300;
 }
 
-.style-property-span {
-    padding-left: 15px;
+.style-value-span, .style-value-input-span {
+  padding-right: 0px;
+  color: #906bc7;
+  font-weight: 300;
+  border: none;
+  outline: none;
+  /* color: #8D86C9; */
+  /* width: var(--style-value-span-width); */
 }
 
-.style-property-span, .style-value-span {
-  font-size: 14px;
+.style-value-input-span {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  cursor: text;
 }
 
-.overwritten {
+.style-value-input-overwritten-span {
+  background: rgba(0,0,0,0.3);
+  text-decoration: line-through #906bc7;
+}
+
+
+.style-value-overwritten-span {
+  text-decoration: line-through #906bc7;
+}
+
+.style-value-input-span:focus {
+  outline: 0.5px solid #906bc7;
+}
+
+.style-property-overwritten-span {
   text-decoration: line-through white;
 }

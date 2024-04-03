@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import DOMPath from 'chrome-dompath';
 
-import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, updateMidShortMap, setIsActiveFlag } from '../slices/rulesSlice.js';
+import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, updateMidShortMap, setIsActiveFlag, updateNodeData } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component with event handling for click events.
@@ -9,7 +10,6 @@ import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInhe
  * @param {Object} props - The component props.
  * @param {string} props.src - The source URL for the iframe.
  * @param {string} props.className - The CSS class name for the iframe.
- * @param {boolean} props.proxy - Whether to use a proxy for the iframe.
  * @returns {JSX.Element} The rendered iframe component.
  */
 
@@ -26,22 +26,47 @@ const iFrameComp = ({ src, proxy, className }) => {
     const handleLoad = () => {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
         // console.log('iFrameComp: iframeDoc', iframeDoc);
 
-        const handleClick = async (event) => {
-          const element = event.target;
-          // console.log('iFrameComp: element', element);
+        const handleClick = async (element) => {
+          console.log('iFrameComp: element', element);
+
+          // getting the 'selector' of the element, i.e. the same thing that one would get by inspecting the element with dev tools, then right clicking in the dom tree and selecting copy selector.
+          // we get this using the DOMPath library, which is a port of the relevant piece of Chromium's Chrome Dev Tools front-end code that does the same thing. This should get us a unique, specific selector for the clicked element every time. In testing so far it has always worked. 2024-04-01_08-14-PM.
+          // https://github.com/testimio/DOMPath
+
+          const selector = DOMPath.fullQualifiedSelector(element, true);
+          // with true, we get an 'optimized' selector. doesn’t seem to matter which we choose so far. they both have worked. I'm including true now so we recall its an option. if for some reason it doesn’t work, we can switch to false (i.e. only pass one param, the selector)
+          // true: #landingAndSticky > div > h1
+          // false: div#landingAndSticky > div > h1
+
+          console.log('iFrameComp: selector', selector);
+
           const data = {
-            id: element.id,
-            nodeName: element.nodeName,
-            className: element.className,
-            proxy: proxy,
-            // nodeType: element.nodeType,
-            // textContent: element.textContent,
+            // id: element.id,
+            // nodeName: element.nodeName,
+            // className: element.className,
             // innerHTML: element.innerHTML,
-            // attributes: {},
+            // textContent: element.textContent,
+            // nodeType: element.nodeType,
+            // tagName: element.tagName,
+            // localName: element.localName,
+            // nextElementSibling: element.nextElementSibling,
+            // nextSibling: element.nextSibling,
+            // offsetParent: element.offsetParent,
+            // childNodes: element.childNodes,
+            // parentElement: element.parentElement,
+            // parentNode: element.parentNode,
+            // class: element.class,
+            // currentSrc: element.currentSrc,
+            // outerHTML: element.outerHTML,
+            // src: element.src,
+            // proxy: proxy,
+            // attributes: element.attributes,
+            selector
           };
+
+          // console.log('iFrameComp: data', data);
 
           // a POST request to the /cdp endpoint
           const response = await fetch('/cdp', {
@@ -57,14 +82,15 @@ const iFrameComp = ({ src, proxy, className }) => {
           const result = await response.json();
 
           // console.log('iFrameComp: Result returned from /cdp');
-          // console.log('iFrameComp: Result :   ', result);
+          // console.log('iFrameComp: Result : ', result);
 
           // dispatching the results from the /cdp endpoint to the store
           dispatch(updateInlineRules(result.inlineRules));
           dispatch(updateRegularRules(result.regularRules));
           dispatch(updateUserAgentRules(result.userAgentRules));
           dispatch(updateStyleSheets(result.styleSheets));
-          // dispatch(updateInheritedRules(result.inheritedRules));
+          dispatch(updateNodeData(data));
+          dispatch(updateInheritedRules(result.inheritedRules));
           // dispatch(updateKeyframeRules(result.keyframeRules));
 
           // actions needed for style overwrite functionality
@@ -80,15 +106,23 @@ const iFrameComp = ({ src, proxy, className }) => {
         // handled by React's event delegation system. By adding this event listener,
         // we're essentially making the iframe's contentDocument a "portal" for
         // clicks to be handled by React.
-
         iframeDoc.addEventListener('click', (event) => {
-          // Calling the handleClick function
-          handleClick(event);
+          const element = event.target;
+          const localName = element.localName;
 
-          // Set focus back to the parent document
-          // This allows CSSxe to receive keyboard events again after clicking inside the iframe
-          // before doing this, CSSxe would not receive keyboard events again until we clicked inside of the sidebar
-          window.parent.focus();
+          // Calling the handleClick function
+          handleClick(element);
+
+
+          // switch the focus to cssxe when the user clicks on something that isnt an input, textarea, or dropdown (select) field.
+          // without this their interaction with those elements is broken/interrupted, e.g. clicking in a text field in bookswap.
+          if (localName !== 'input' && localName !== 'textarea' && localName !== 'select') {
+
+            // Set focus back to the parent document
+            // This allows CSSxe to receive keyboard events again after a click has taken place inside the iframe.
+            // efore doing this, CSSxe would not receive keyboard events again until we clicked inside of the sidebar
+            window.parent.focus();
+          }
 
         }, false);
 

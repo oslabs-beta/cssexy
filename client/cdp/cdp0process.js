@@ -11,6 +11,7 @@
  */
 import fs from 'fs';
 import CDP from 'chrome-remote-interface';
+import { writeFileSync, mkdir } from 'node:fs';
 
 import cdpEnable from './cdp1enable.js';
 import cdpRules from './cdp2rules.js';
@@ -24,49 +25,58 @@ import cdpRules from './cdp2rules.js';
 
 const cdpProcess = async (data) => {
     const id = data?.id;
+    const innerHTML = data?.innerHTML;
     const nodeName = data?.nodeName;
     const className = data?.className;
-    const proxy = data?.proxy;
-    // const nodeType = data?.nodeType;
-    // const textContent = data?.textContent;
-    // const innerHTML = data?.innerHTML;
+    // const proxy = data?.proxy;
+    const nodeType = data?.nodeType;
+    const textContent = data?.textContent;
+    const selector = data?.selector;
     // const attributes = data?.attributes;
 
-    console.log('cdpProcess: proxy:', proxy);
+    // console.log('cdpProcess: proxy:', proxy);
     let cdpClient;
     try {
+        // setting our selector based on the attributes we received from the iframe.
+        // starting with the most specific selector and working our way down.
+        // let selector = '';
+        // if (id) {
+        //     console.log('element id:', id);
+        //     selector = `#${id}`;
+        // }
+        // else if (className && !className.includes(' ')) {
+        //     console.log('element class:', className);
+        //     selector = `.${className}`;
+        // }
+        // else if (nodeName) {
+        //     console.log('element nodeName:', nodeName);
+        //     console.log('element className:', className);
+        //     selector = `${nodeName}`;
+        // }
+        // else if (innerHTML) {
+        //     console.log('element innerHTML:', innerHTML);
+        //     selector = `${innerHTML}`;
+        // }
+        // else if (textContent) {
+        //     console.log('element textContent:', textContent);
+        //     selector = `${textContent}`;
+        // }
 
-        // setting our selector based on the attributes we received from the iframe
-        // starting with the most specific selector and working our way down
-        let selector = '';
-        if (id) {
-            console.log('element id:', id);
-            selector = `#${id}`;
-        }
-        else if (className) {
-            console.log('element class:', className);
-            selector = `.${className}`;
-        }
-        else if (nodeName) {
-            console.log('element nodeName:', nodeName);
-            selector = `${nodeName}`;
-        }
         console.log('cdpProcess: selector:', selector);
 
-        console.log('cdpProcess: trying to connect to CDP');
-
+        // console.log('cdpProcess: trying to connect to CDP');
 
         // cdpClient is a newly created object that serves as our interface to send commands
         // and listen to events in Chrome via the Chrome DevTools Protocol (CDP) by way of
         // chrome-remote-interface, a library that allows for easy access to the Chrome DevTools Protocol.
         cdpClient = await CDP();
+        // a version where we specify the tab we want to connect to, though I didn’t notice any difference or benefit in trying it.
+        // cdpClient = await CDP({tab: 'http://localhost:5555'});
 
-        console.log('Connected to Chrome DevTools Protocol via chrome-remote-interface');
+        // console.log('Connected to Chrome DevTools Protocol via chrome-remote-interface');
 
         // extracting the 'domains' from the CDP client.
-        const { DOM, CSS, Network, Page, iframeNode, styleSheets } = await cdpEnable(cdpClient, proxy);
-
-
+        const {DOM, CSS, Network, Page, Overlay, iframeNode, styleSheets } = await cdpEnable(cdpClient);
 
         // these allow us to see / save all of the methods and properties that the CDP client exposes.
         // fs.writeFileSync('./data/domains/DOM.json', JSON.stringify(Object.entries(DOM), null, 2));
@@ -75,10 +85,10 @@ const cdpProcess = async (data) => {
         // fs.writeFileSync('./data/domains/CSS.json', JSON.stringify(Object.entries(CSS), null, 2));
 
         // this is the core functionality of cssxe that retrieves styles from a website
-        console.log('cdpProcess: calling cdpRules');
+        // console.log('cdpProcess: calling cdpRules');
 
         // right now, result is an object that has both the matched and inline styles for the element clicked.
-        const result = await cdpRules(DOM, CSS, Network, Page, iframeNode, selector, styleSheets);
+        const result = await cdpRules(cdpClient, DOM, CSS, Network, Page, Overlay, iframeNode, selector, styleSheets);
         //   console.log(`Rules for ${selector} retrieved`, result);
         return result;
 
