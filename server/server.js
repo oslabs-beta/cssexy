@@ -1,8 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-import {spawn} from 'child_process';
+import { spawn } from 'child_process';
 
 import dotenv from 'dotenv';
 
@@ -18,31 +17,21 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // to run CSSxe in puppeteer mode, set this to 1 in .env, and then run dev-pup or prod-pup respectively (rather than dev or prod). As of 2024-03-25_12-51-PM.
-const puppeteerMode = process.env.VITE_PUPPETEER_MODE;
+const puppeteerMode = process.env.PUPPETEER_MODE;
 
 const environment = process.env.NODE_ENV || 'development';
 const browserPort = process.env.BROWSER_PORT;
-
-if (!browserPort) {
-  console.log('server: error: BROWSER_PORT is not set');
-  process.exit(1);
-}
-
 const targetPort = process.env.TARGET_PORT
-
-// console.log('server: targetPort:', targetPort);
-
 const targetDir = process.env.TARGET_DIR ? process.env.TARGET_DIR.toString().split('\n').slice(-1)[0] : null;
-
-if (!targetDir) {
-  console.log('server: error: TARGET_DIR is not set');
-  process.exit(1);
-}
 
 const PORT = 8888;
 const app = express();
 app.use(express());
 app.use(express.json());
+
+!browserPort ? console.log('server: error: BROWSER_PORT is not set') && process.exit(1) : null;
+!targetPort ? console.log('server: error: TARGET_PORT is not set') && process.exit(1) : null;
+!targetDir ? console.log('server: error: TARGET_DIR is not set') && process.exit(1) : null;
 
 // Start the Puppeteer process
 const pupStart = spawn('node', ['../client/puppeteer/pup.js', browserPort])

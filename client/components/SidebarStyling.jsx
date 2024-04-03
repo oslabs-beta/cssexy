@@ -37,6 +37,8 @@ function SidebarStyling(props) {
         );
     }, [props.cssProperties]);
 
+    // this is the same as the fetch and reducer code in iFrameComp.jsx.
+    // a good refactor would be to place this into its own reducer and fetch function, or at least in a nother file that is called by both iFrameComp and this file.
     const callCdp = async () => {
             if (!data) {
               console.log('RunCdp: runCdp: data is undefined');
@@ -50,7 +52,7 @@ function SidebarStyling(props) {
                 body: JSON.stringify(data),
               });
 
-              console.log('runCdp: response', response);
+            //   console.log('runCdp: response', response);
 
               const result = await response.json();
               console.log('runCdp:');

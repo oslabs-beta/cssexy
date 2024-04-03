@@ -3,6 +3,11 @@ import { writeFileSync, mkdir } from 'node:fs';
 import { pupRules } from './pupRules.js';
 
 const pupProcess = async (client, styleSheets, data) => {
+    const targetPort = process.env.VITE_PROXY;
+    const targetUrl = `http://localhost:${targetPort}/`;
+    // console.log('pupEnable: targetPort:', targetPort);
+
+
     // const id = data?.id;
     // const innerHTML = data?.innerHTML;
     // const nodeName = data?.nodeName;
@@ -14,7 +19,6 @@ const pupProcess = async (client, styleSheets, data) => {
     const selector = data?.selector;
 
     try {
-        // console.log('pupProcess: data', data);
         // getDocument: returns the root DOM node of the document.
         // 'nested destructuring' to get the nodeId.
         const { root: { nodeId } } = await client.send('DOM.getDocument');
@@ -32,11 +36,10 @@ const pupProcess = async (client, styleSheets, data) => {
         const nodes = await Promise.all(nodeIds.map(id => client.send('DOM.describeNode', { nodeId: id })));
         // console.log('nodes', nodes);
 
-        const targetUrl = `http://localhost:${process.env.VITE_PROXY}/`;
-        // console.log('pupEnable: targetUrl:', targetUrl);
+
 
         // In looking through the nodes, I saw only one node with IFRAME as the nodeName. It corresponded to the root node of the iframe.
-        // Find nodes where the nodeName is 'IFRAME' and the contentDocument.baseURL is the targetUrl.
+        // Find nodes where the nodeName is 'IFRAME' and the contentDocument.baseURL matches the targetUrl.
         // we expect only one, so we set the index to 0.
         // it's an object, with everything inside of the key 'node', so we access the 'node' key.
         // then we nested destructure again to get the contentDocument,
@@ -49,7 +52,6 @@ const pupProcess = async (client, styleSheets, data) => {
         await mkdir((new URL('../../data/output/', import.meta.url)), { recursive: true }, (err) => {
             if (err) throw err;
         });
-
         // console.log('pupProcess: calling writeFileSync');
 
         // this saves the nodes
@@ -61,15 +63,14 @@ const pupProcess = async (client, styleSheets, data) => {
         // this saves the element
         // writeFileSync('./data/output/element.json', JSON.stringify(element), null, 2);
 
-        // this is the core functionality of cssxe that retrieves styles from a website
         // console.log('pupProcess: calling pupRules');
 
-        // right now, result is an object that has both the matched and inline styles for the element clicked.
+        // right now, result is an object that has the matched and inline styles for the element clicked.
+        // this retrieves the styles for the clicked element
         const result = await pupRules(client, iframeNode, selector);
         result.styleSheets = styleSheets;
         //   console.log(`Rules for ${selector} retrieved`, result);
         return result;
-
 
     } catch (err) {
         console.error('Error connecting to Chrome', err);
