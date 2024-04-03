@@ -65,7 +65,8 @@ const pupProcess = async (client, styleSheets, data) => {
         // console.log('pupProcess: calling pupRules');
 
         // right now, result is an object that has both the matched and inline styles for the element clicked.
-        const result = await pupRules(client, iframeNode, selector, styleSheets);
+        const result = await pupRules(client, iframeNode, selector);
+        result.styleSheets = styleSheets;
         //   console.log(`Rules for ${selector} retrieved`, result);
         return result;
 
@@ -75,4 +76,4 @@ const pupProcess = async (client, styleSheets, data) => {
     }
 }
 
-export { pupProcess };
+export { pupProcess }

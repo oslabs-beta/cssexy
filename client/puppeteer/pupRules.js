@@ -46,7 +46,7 @@ const getInlineRules = async (client, nodeId, selector) => {
   }
 }
 
-const pupRules = async (client, iframeNode, selector, styleSheets) => {
+const pupRules = async (client, iframeNode, selector) => {
 
 
 
@@ -116,7 +116,6 @@ const pupRules = async (client, iframeNode, selector, styleSheets) => {
     inlineRules,
     regularRules,
     userAgentRules,
-    styleSheets,
     // inheritedRules,
     // keyframeRules
   }

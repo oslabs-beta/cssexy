@@ -10,7 +10,6 @@ import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInhe
  * @param {Object} props - The component props.
  * @param {string} props.src - The source URL for the iframe.
  * @param {string} props.className - The CSS class name for the iframe.
- * @param {boolean} props.proxy - Whether to use a proxy for the iframe.
  * @returns {JSX.Element} The rendered iframe component.
  */
 
@@ -27,43 +26,45 @@ const iFrameComp = ({ src, proxy, className }) => {
     const handleLoad = () => {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
         // console.log('iFrameComp: iframeDoc', iframeDoc);
 
         const handleClick = async (element) => {
           console.log('iFrameComp: element', element);
 
+          // getting the 'selector' of the element, i.e. the same thing that one would get by inspecting the element with dev tools, then right clicking in the dom tree and selecting copy selector.
+          // we get this using the DOMPath library, which is a port of the relevant piece of Chromium's Chrome Dev Tools front-end code that does the same thing. This should get us a unique, specific selector for the clicked element every time. In testing so far it has always worked. 2024-04-01_08-14-PM.
+          // https://github.com/testimio/DOMPath
+
+          const selector = DOMPath.fullQualifiedSelector(element, true);
+          // with true, we get an 'optimized' selector. doesn’t seem to matter which we choose so far. they both have worked. I'm including true now so we recall its an option. if for some reason it doesn’t work, we can switch to false (i.e. only pass one param, the selector)
+          // true: #landingAndSticky > div > h1
+          // false: div#landingAndSticky > div > h1
+
+          console.log('iFrameComp: selector', selector);
+
           const data = {
-            id: element.id,
-            nodeName: element.nodeName,
-            className: element.className,
+            // id: element.id,
+            // nodeName: element.nodeName,
+            // className: element.className,
             // innerHTML: element.innerHTML,
-            textContent: element.textContent,
-            nodeType: element.nodeType,
-            tagName: element.tagName,
-            localName: element.localName,
+            // textContent: element.textContent,
+            // nodeType: element.nodeType,
+            // tagName: element.tagName,
+            // localName: element.localName,
             // nextElementSibling: element.nextElementSibling,
             // nextSibling: element.nextSibling,
             // offsetParent: element.offsetParent,
             // childNodes: element.childNodes,
             // parentElement: element.parentElement,
             // parentNode: element.parentNode,
-            class: element.class,
-            currentSrc: element.currentSrc,
+            // class: element.class,
+            // currentSrc: element.currentSrc,
             // outerHTML: element.outerHTML,
-            src: element.src,
-            proxy: proxy,
-            selector: DOMPath.fullQualifiedSelector(element, true),
+            // src: element.src,
+            // proxy: proxy,
             // attributes: element.attributes,
-            // attributes: {},
+            selector
           };
-          // The event comes from the iframe, so we need to prevent the default
-          // behavior of following the link.
-          // event.preventDefault();
-
-          // Other options like this include stopPropagation, which prevents the event
-          // from bubbling up to parent elements.
-          // event.stopPropagation();
 
           // console.log('iFrameComp: data', data);
 
@@ -89,7 +90,7 @@ const iFrameComp = ({ src, proxy, className }) => {
           dispatch(updateUserAgentRules(result.userAgentRules));
           dispatch(updateStyleSheets(result.styleSheets));
           dispatch(updateNodeData(data));
-          // dispatch(updateInheritedRules(result.inheritedRules));
+          dispatch(updateInheritedRules(result.inheritedRules));
           // dispatch(updateKeyframeRules(result.keyframeRules));
 
           // actions needed for style overwrite functionality
@@ -104,15 +105,17 @@ const iFrameComp = ({ src, proxy, className }) => {
         // handled by React's event delegation system. By adding this event listener,
         // we're essentially making the iframe's contentDocument a "portal" for
         // clicks to be handled by React.
-
-
         iframeDoc.addEventListener('click', (event) => {
           const element = event.target;
           const localName = element.localName;
 
           // Calling the handleClick function
           handleClick(element);
-          if (localName !== 'input' && localName !== 'textarea' && localName !== 'select' && localName !== 'dropdown') {
+
+
+          // switch the focus to cssxe when the user clicks on something that isnt an input, textarea, or dropdown (select) field.
+          // without this their interaction with those elements is broken/interrupted, e.g. clicking in a text field in bookswap.
+          if (localName !== 'input' && localName !== 'textarea' && localName !== 'select') {
 
             // Set focus back to the parent document
             // This allows CSSxe to receive keyboard events again after a click has taken place inside the iframe.
