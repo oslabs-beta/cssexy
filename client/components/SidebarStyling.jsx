@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, setIsActiveFlag, updateNodeData } from '../slices/rulesSlice.js';
 
@@ -9,25 +9,17 @@ function SidebarStyling(props) {
     const data = useSelector(state => state.nodeData.data);
     const inlineRules = useSelector(state => state.rules.inlineRules);
 
-    // making a deep copy of props, so that we can then modify it. props is immutable.
-    // using JSON.parse(JSON.stringify()) instead of
-    // copying props to liveProps. using JSON.parse(JSON.stringify(props)) to do so. this is a bit hacky, but it works. it involves converting props to a json string and then parsing it back into a new object.
-    // const liveProps = JSON.parse(JSON.stringify(props)); // using JSON.parse and JSON.stringify to create a deep copy of props. this is often used to make a copy of an object in js.
+    // console.log('SidebarStyling: props', props);
 
-    const liveProps = {...JSON.parse(JSON.stringify(props))}; // using the spread operator to create a deep copy of props, and JSON.parse to make sure any function or symbol values are preserved.
+    // making a deep copy of props, so that we can then modify it.
+    const liveProps = {...props}; // using the spread operator to create a deep copy of props
 
-    // creating a copy of props using the spread operator ({...props}). this is a new syntax in ES6 and it creates a shallow copy of the object.
-    // const liveProps = {...props};
-
-    // using Object.assign to make a shallow copy of props. Object.assign is a built-in function in js that is used to copy the values of all enumerable properties from one or more source objects to a target object.
-    // const liveProps = Object.assign({}, props);
-
-    // console.log('\n\n\n');
     // console.log('liveProps', liveProps);
-    // console.log('\n\n\n');
 
     const [values, setValues] = useState({});
 
+    // this useEffect ensures that 'values' is updated only when props.cssProperties changes, rather than on every re-render.
+    // i was getting some rerendering errors prior to this when modifying source files.
     useEffect(() => {
         setValues(
             liveProps.cssProperties.reduce((acc, cssProp) => {
@@ -112,8 +104,7 @@ function SidebarStyling(props) {
                 // running CDP again to update our redux store after patching the file.
                 await callCdp();
 
-                // and we'll update our tracking of undo/redo, our redux store perhaps, and source files here possibly.
-                // or source file edit from our server, store, etc.
+                // probably around here is where we'll track undo/redo.
             }
         }
         catch(error) {
@@ -122,8 +113,6 @@ function SidebarStyling(props) {
     };
 
     const styleParagraphs = liveProps.cssProperties.map((cssProp, idx) => {
-
-        // KG: 2024-03-18_07-44-PM: setting inline styles to not editable for now, until we setup that functionality.
         if ((liveProps.origin === 'user-agent')) {
              return (
                 <p key={`styleParagraphs-${idx}`} className='style-paragraph'>
@@ -136,6 +125,7 @@ function SidebarStyling(props) {
                 </p>
             )
         }
+        // if not user agent style, then it's a regular or inline style (at the moment 2024-04-03), which we make editable below.
         else if ((liveProps.origin && cssProp.text)) {
             // cssProperties arr includes both user defined 'shorthand' styles and css 'longhand' styles. We want to render only user defined styles => style is user defined if it has .text property
             // shorthand example: 'border-bottom: 3px solid blueviolet'
@@ -146,7 +136,6 @@ function SidebarStyling(props) {
                         {cssProp.name}:
                     </span>
                         <input
-                            // ref={valueSpanRef}
                             className={`style-value-input-span ${!cssProp.isActive ? 'style-value-input-overwritten-span' : ''}`}
                             value={values[cssProp.name] || cssProp.value || ''}
                             onChange={(e) => setValues({...values, [cssProp.name]: e.target.value})}
@@ -157,7 +146,7 @@ function SidebarStyling(props) {
                                     e.currentTarget.blur()
                                 }
                             }}
-                            spellCheck='false' /* Disable spellcheck, i.e. no more red squiggles under the values when clicked/edited */
+                            spellCheck='false' /* Disable spellcheck, i.e. no more red squiggles under the values when clicked/edited but not a complete word */
                         />
 
                 </p>

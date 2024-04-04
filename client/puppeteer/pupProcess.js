@@ -7,36 +7,30 @@ const pupProcess = async (client, styleSheets, data) => {
     const targetUrl = `http://localhost:${proxy}/`;
     // console.log('pupEnable: proxy:', proxy);
 
-
-    // const id = data?.id;
-    // const innerHTML = data?.innerHTML;
-    // const nodeName = data?.nodeName;
-    // const className = data?.className;
-    // const proxy = data?.proxy;
-    // const nodeType = data?.nodeType;
-    // const textContent = data?.textContent;
-    // const attributes = data?.attributes;
     const selector = data?.selector;
 
     try {
         // getDocument: returns the root DOM node of the document.
-        // 'nested destructuring' to get the nodeId.
+        // 'nested destructuring' to get the nodeId of the root node.
         const { root: { nodeId } } = await client.send('DOM.getDocument');
         // console.log('pupProcess: root nodeId:', nodeId);
 
-        // returning all of the nodeIds of the document, passing in the nodeId of the root node.
+        // returning all of the nodeIds of the root node document
+        // `DOM.querySelectorAll` method called with a `nodeId` and a selector.
+        // `nodeId`: the ID of the node in which to search for matching elements.
+        // selector: a string containing one or more CSS selectors separated by commas.
+        // In this case, the selector is '*', which matches any element.
+        // Returns an object with a `nodeIds` property, which is an array of the IDs of the matching nodes.
         const { nodeIds } = await client.send('DOM.querySelectorAll', {
             nodeId,
             selector: '*'
         });
-        // console.log('nodeIds', nodeIds);
+        // console.log('PupProcess: nodeIds', nodeIds);
 
         // returning the full description of each node, i.e. the properties of each node.
-        // there are many so we use a Promise.all to wait for all of them to be returned.
+        // there are many so we use a Promise.all to execute them async and wait for all of them to be returned.
         const nodes = await Promise.all(nodeIds.map(id => client.send('DOM.describeNode', { nodeId: id })));
         // console.log('nodes', nodes);
-
-
 
         // In looking through the nodes, I saw only one node with IFRAME as the nodeName. It corresponded to the root node of the iframe.
         // Find nodes where the nodeName is 'IFRAME' and the contentDocument.baseURL matches the targetUrl.

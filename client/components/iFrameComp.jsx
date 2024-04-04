@@ -44,24 +44,12 @@ const iFrameComp = ({ src, proxy, className }) => {
 
           const data = {
             // id: element.id,
+            // innerHTML: element.innerHTML,
             // nodeName: element.nodeName,
             // className: element.className,
-            // innerHTML: element.innerHTML,
-            // textContent: element.textContent,
-            // nodeType: element.nodeType,
-            // tagName: element.tagName,
-            // localName: element.localName,
-            // nextElementSibling: element.nextElementSibling,
-            // nextSibling: element.nextSibling,
-            // offsetParent: element.offsetParent,
-            // childNodes: element.childNodes,
-            // parentElement: element.parentElement,
-            // parentNode: element.parentNode,
-            // class: element.class,
-            // currentSrc: element.currentSrc,
-            // outerHTML: element.outerHTML,
-            // src: element.src,
             // proxy: proxy,
+            // nodeType: element.nodeType,
+            // textContent: element.textContent,
             // attributes: element.attributes,
             selector
           };

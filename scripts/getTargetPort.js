@@ -31,12 +31,12 @@ const getTargetPort = async () => {
       //
       // grep DIR: only look at lines with "DIR" in them.
       //
-      // grep -v cwd: exclude lines with "cwd" in them (we don't care about our process's current working directory)
+      // grep -v cwd: exclude lines with "cwd" (i.e. processes in our current working directory)
+      // we'll probably need to remove the grep -v part when this is installed as a package
       //
       // awk: print only unique lines (using the 'seen' array)
       // !seen[$2]++: if this line hasn't been seen before, print it and remember it as seen
       // print $2: print the second column of the line, which is the process ID.
-      // we'll probably need to remove the grep -v part when this is installed as a package
       const pids = execSync(`lsof +D ${targetDir} | grep DIR | grep -v cwd | awk '!seen[$2]++ {print $2}'`)
         .toString() // convert the Buffer object to a string
         .trim() // remove leading and trailing whitespace
@@ -50,7 +50,7 @@ const getTargetPort = async () => {
         // -P flag: show only the process ID and process name (not the parent process name)
         // -n flag: show numerical IDs instead of names
         // -p flag: only show info for processes with the given ID
-        // ${pid} part is a template literal, it inserts the value of the 'pid' variable into the string
+        // ${pid}: the given process ID being searched
         // grep ${pid}: regex to match any line that contains the process ID
         proxy = execSync(`lsof -i -P -n -p ${pid} | grep ${pid}`)
         .toString()

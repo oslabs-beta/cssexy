@@ -9,24 +9,20 @@ const __dirname = path.dirname(__filename);
 const __envPath = path.resolve(__dirname, '../../.env')
 
 config({ path: __envPath });
-
-console.log('filename:', __filename);
-console.log('dirname:', __dirname);
-console.log('path:', __envPath);
+// console.log('filename:', __filename);
+// console.log('dirname:', __dirname);
+// console.log('path:', __envPath);
 
 // we import this so that we can call it from here, passing the client and styleSheets variables to it when we do.
 import { pupProcess } from './pupProcess.js';
 
 const puppeteerMode = process.env.PUPPETEER_MODE;
-console.log(
-  'pup.js: puppeteerMode:',
-  puppeteerMode
-);
 
 // declaring client and styleSheets here (outside of the unnamed function) so we can have access to them in the 'callPupProcess' function further down.
 let client;
 const styleSheets = {};
 
+// if puppeteerMode is set to 1, then we start Puppeteer.
 if (puppeteerMode == 1) {
 // this is the equivalent of the calling startRemoteChrome in prior, pre-puppeteer versions of our code.
 // this entire file gets called in the server, and the function below is called immediately
@@ -36,7 +32,6 @@ if (puppeteerMode == 1) {
   // console.log('pup.js', process);
   const browserPort = process.env.BROWSER_PORT;
   const cssxeUrl = `http://localhost:${browserPort}/`;
-
 
   const pupArgs = [
     // uncomment this to turn on 'app' mode, i.e. no visible address bar and dev tools opens in a separate window.
@@ -67,7 +62,7 @@ if (puppeteerMode == 1) {
 
   // if pupArgs doesn't include --app, we need to navigate the Page to the cssxeUrl
   if (!pupArgs[0].includes('--app')) {
-    console.log('pupArgs does not include --app');
+    // console.log('pupArgs does not include --app');
     await page.goto(cssxeUrl);
   }
 

@@ -31,8 +31,8 @@ const cdpProcess = async (data) => {
     // const proxy = data?.proxy;
     const nodeType = data?.nodeType;
     const textContent = data?.textContent;
-    const selector = data?.selector;
     // const attributes = data?.attributes;
+    const selector = data?.selector;
 
     // console.log('cdpProcess: proxy:', proxy);
     let cdpClient;

@@ -15,9 +15,9 @@ const __dirname = path.dirname(__filename);
 const __envPath = path.resolve(__dirname, '../.env')
 const __scripts = path.join(__dirname, '../scripts/');
 
-console.log('filename:', __filename);
-console.log('dirname:', __dirname);
-console.log('path:', __envPath);
+// console.log('filename:', __filename);
+// console.log('dirname:', __dirname);
+// console.log('path:', __envPath);
 // normally we could just use config(), as that looks for the .env file in the root directory.
 // but once this is an npm package installed in a given repo, the root directory
 // will be that repo. so instead we use config({ path: path.resolve(__dirname, '.env') })
@@ -96,7 +96,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () =>
   console.log('\n'),
   console.log('\n'),
-  console.log(`Server: environment ${environment}`),
+  // console.log(`Server: environment ${environment}`),
   console.log(`Server: listening on port ${PORT}`),
   console.log(`Server: serving proxy ${proxy} on browserPort ${browserPort}`),
 );
