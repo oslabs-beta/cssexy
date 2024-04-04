@@ -39,7 +39,7 @@ if (puppeteerMode == 1) {
     // `--app=${cssxeUrl}`,
     // this is what so far allows us to pass data from inside of the iframe to the parent window, cssxe.
     '--disable-web-security',
-    '--window-position=2000,200' // for dev mode for keith's environemnt. makes the browser open on my second screen, that way vs code isnt navigated away from
+    // '--window-position=2000,200' // for dev mode for keith's environemnt. makes the browser open on my second screen, that way vs code isnt navigated away from
   ]
 
   // puppeteer: library for controlling Chrome/Chromium over a network protocol.
