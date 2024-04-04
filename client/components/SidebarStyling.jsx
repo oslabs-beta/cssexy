@@ -11,8 +11,8 @@ function SidebarStyling(props) {
 
     // console.log('SidebarStyling: props', props);
 
-    // making a deep copy of props, so that we can then modify it.
-    const liveProps = {...props}; // using the spread operator to create a deep copy of props
+    // spread operator to make a deep copy of props, so that we can then modify it.
+    const liveProps = {...props};
 
     // console.log('liveProps', liveProps);
 
