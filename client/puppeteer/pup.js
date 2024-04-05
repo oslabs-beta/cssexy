@@ -152,13 +152,15 @@ if (puppeteerMode == 1) {
       Object.assign(styleSheets[id], { sources, absolutePaths, relativePaths });
     }
     // console.log('pup:styleSheets', styleSheets);
+    // console.log('\n\n');
+    // console.log('END OF STYLESHEETS');
+    // console.log('\n\n');
   });
-})()
+})(pupProcess);
 } else {
   console.log('pup.js: puppeteerMode set to 0. puppeteer will not be called');
 }
-
-
+// data passed from server = ...args
 const callPupProcess = async (...args) => await pupProcess(client, styleSheets, ...args);
 
 // callPupProcess is called when the the /cdp endpoint is hit.
