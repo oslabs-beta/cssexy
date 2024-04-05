@@ -5,6 +5,16 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { config } from 'dotenv';
 
+/**
+ * Retrieves the target port for the application.
+ * If the target directory is not 'cssxe', it searches for the process IDs of all open files in the target directory
+ * and retrieves the target port associated with the process ID.
+ * If the target port is found, it updates the 'VITE_TARGET_PORT' and 'TARGET_PORT' environment variables in the .env file.
+ * If the target port is not found, it throws an error.
+ * @returns {string} The target port.
+ * @throws {Error} If the target port is not found.
+ */
+
 const getTargetPort = async () => {
   try {
 
@@ -21,7 +31,7 @@ const getTargetPort = async () => {
     console.log('getTargetPort: targetDir:', targetDir);
     // console.log('targetDirBackup:', process.env.TARGET_DIR_BACKUP);
 
-    let proxy;
+    let targetPort;
 
     if (!targetDir.includes('cssxe')) {
       // getting the process IDs of all open files in the target directory
@@ -52,7 +62,7 @@ const getTargetPort = async () => {
         // -p flag: only show info for processes with the given ID
         // ${pid}: the given process ID being searched
         // grep ${pid}: regex to match any line that contains the process ID
-        proxy = execSync(`lsof -i -P -n -p ${pid} | grep ${pid}`)
+        targetPort = execSync(`lsof -i -P -n -p ${pid} | grep ${pid}`)
         .toString()
         .match(/(?<=..:)\d{4}/)
           // (?<=..:) : positive lookahead. only match if it's preceded by ..:
@@ -60,16 +70,16 @@ const getTargetPort = async () => {
           // {4} : four times
         ?.[0] // get the first match, if any
 
-        if (proxy) {
-          // if we found a proxy, we're done
-          // console.log('proxy:', proxy);
+        if (targetPort) {
+          // if we found a targetPort, we're done
+          // console.log('targetPort:', targetPort);
           break;
         }
       }
-      // if we didn't find a proxy, throw an error
-      if (!proxy) {
-        console.log('no proxy found');
-        throw new Error('proxy not found');
+      // if we didn't find a targetPort, throw an error
+      if (!targetPort) {
+        console.log('no targetPort found');
+        throw new Error('targetPort not found');
       }
     }
 
@@ -77,27 +87,27 @@ const getTargetPort = async () => {
     const envVars = fs.readFileSync(__envPath, 'utf-8').split('\n');
     // console.log('envVars:', envVars);
 
-    // setting the target port (the proxy) in the .env file if it doesn’t already exist, so that it can be used by our application.
+    // setting the target port (the targetPort) in the .env file if it doesn’t already exist, so that it can be used by our application.
     // it gets called in App.jsx.
-    // finding the line that starts with 'VITE_PROXY=', if any.
-    const envVarIndex = envVars.findIndex(line => line.startsWith('VITE_PROXY='));
+    // finding the line that starts with 'VITE_TARGET_PORT=', if any.
+    const envVarIndex = envVars.findIndex(line => line.startsWith('VITE_TARGET_PORT='));
     // if it exists
     if (envVarIndex > -1) {
       console.log('envVarIndex:', envVarIndex);
       // update it
-      envVars[envVarIndex] = `VITE_PROXY=${proxy}`;
-      envVars[envVarIndex+1] = `PROXY=${proxy}`;
+      envVars[envVarIndex] = `VITE_TARGET_PORT=${targetPort}`;
+      envVars[envVarIndex+1] = `TARGET_PORT=${targetPort}`;
     // if it doesn't exist
     } else {
       // add it
-      envVars.push(`VITE_PROXY=${proxy}`);
-      envVars.push(`PROXY=${proxy}`);
+      envVars.push(`VITE_TARGET_PORT=${targetPort}`);
+      envVars.push(`TARGET_PORT=${targetPort}`);
     }
     // write to .env
     fs.writeFileSync('.env', envVars.join('\n'));
 
-    // console.log('proxy found:', proxy);
-    return proxy;
+    // console.log('targetPort found:', targetPort);
+    return targetPort;
   } catch (err) {
     console.error(err);
   }

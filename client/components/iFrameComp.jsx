@@ -1,20 +1,26 @@
+
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import DOMPath from 'chrome-dompath';
 
+
+import { fetchElementRules } from '../fetchElementRules.js';
+
 import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, updateMidShortMap, setIsActiveFlag, updateNodeData } from '../slices/rulesSlice.js';
 
 /**
- * Renders an iframe component with event handling for click events.
+ * Renders an iframe component that loads a target URL and handles click events within the iframe.
  *
  * @param {Object} props - The component props.
- * @param {string} props.src - The source URL for the iframe.
- * @param {string} props.className - The CSS class name for the iframe.
+ * @param {number} props.targetPort - The target port for the URL.
  * @returns {JSX.Element} The rendered iframe component.
  */
 
-const iFrameComp = ({ src, proxy, className }) => {
+const iFrameComp = ({ targetPort }) => {
   const dispatch = useDispatch();
+
+  const className = "site-frame"
+  const targetUrl = `http://localhost:${targetPort}`
 
   // waiting for the iframe DOM to load before we add event listeners
   // without this, the event listeners would try to be added to an unexisting iframe
@@ -44,47 +50,17 @@ const iFrameComp = ({ src, proxy, className }) => {
           // console.log('\n\n');
 
           const data = {
-            // id: element.id,
+            id: element.id,
             // innerHTML: element.innerHTML,
-            // nodeName: element.nodeName,
-            // className: element.className,
-            // proxy: proxy,
-            // nodeType: element.nodeType,
-            // textContent: element.textContent,
+            nodeName: element.nodeName,
+            className: element.className,
+            nodeType: element.nodeType,
+            textContent: element.textContent,
             // attributes: element.attributes,
             selector
           };
 
-          // a POST request to the /cdp endpoint
-          const response = await fetch('/cdp', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-          });
-
-          // console.log('iFrameComp: response', response);
-
-          const result = await response.json();
-
-          dispatch(updateNodeData(data));
-          // console.log('iFrameComp: Result returned from /cdp');
-          // console.log('iFrameComp: Result : ', result);
-
-          // dispatching the results from the /cdp endpoint to the store
-          dispatch(updateInlineRules(result.inlineRules));
-          dispatch(updateRegularRules(result.regularRules));
-          dispatch(updateUserAgentRules(result.userAgentRules));
-          dispatch(updateStyleSheets(result.styleSheets));
-          dispatch(updateInheritedRules(result.inheritedRules));
-          // dispatch(updateKeyframeRules(result.keyframeRules));
-
-          // actions needed for style overwrite functionality
-          dispatch(updateShortLongMaps());
-          dispatch(updateMidShortMap());
-          dispatch(setIsActiveFlag());
-          dispatch(findActiveStyles());
+          fetchElementRules(data, dispatch);
         };
 
 
@@ -134,7 +110,7 @@ const iFrameComp = ({ src, proxy, className }) => {
 
   return (
     <iframe
-      src={src}
+      src={targetUrl}
       width="100%"
       height="100%"
       title="User Site"

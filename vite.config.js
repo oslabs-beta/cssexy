@@ -18,7 +18,6 @@ export default defineConfig({
     proxy: {
       '/cdp': 'http://localhost:8888',
       '/patch': 'http://localhost:8888',
-      '/read': 'http://localhost:8888',
     }
   }
 });

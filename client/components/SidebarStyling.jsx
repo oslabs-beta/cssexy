@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, setIsActiveFlag, updateNodeData, updateMidShortMap } from '../slices/rulesSlice.js';
+import { fetchElementRules } from '../fetchElementRules.js';
 
 function SidebarStyling(props) {
 
@@ -31,40 +31,6 @@ function SidebarStyling(props) {
 
     // this is the same as the fetch and reducer code in iFrameComp.jsx.
     // a good refactor would be to place this into its own reducer and fetch function, or at least in a nother file that is called by both iFrameComp and this file.
-    const callCdp = async () => {
-            if (!data) {
-              console.log('RunCdp: runCdp: data is undefined');
-              return;
-            }
-              const response = await fetch('/cdp', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-              });
-
-              const result = await response.json();
-              console.log('sidebarStyling: runCdp: result', result);
-
-            if (result) {
-                console.log('sidebarStyling: runCdp: data', data);
-                dispatch(updateNodeData(data));
-
-                dispatch(updateInlineRules(result.inlineRules));
-                dispatch(updateRegularRules(result.regularRules));
-                dispatch(updateUserAgentRules(result.userAgentRules));
-                dispatch(updateStyleSheets(result.styleSheets));
-                dispatch(updateInheritedRules(result.inheritedRules));
-
-                // actions needed for style overwrite functionality
-                dispatch(updateShortLongMaps());
-                dispatch(updateMidShortMap());
-                dispatch(setIsActiveFlag());
-                dispatch(findActiveStyles());
-
-            }
-    };
 
     const handleSubmit = async (cssProp, event) => {
         // console.log('cssProp', cssProp);
@@ -106,7 +72,7 @@ function SidebarStyling(props) {
                 await new Promise(resolve => updatedCssProp.sourcePath ? setTimeout(resolve, 500) : setTimeout(resolve, 1000));
 
                 // running CDP again to update our redux store after patching the file.
-                await callCdp();
+                await fetchElementRules(data, dispatch);
 
                 // probably around here is where we'll track undo/redo.
             }

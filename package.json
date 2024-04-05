@@ -4,10 +4,10 @@
   "description": "A tool for live editing and syncing CSS directly from the browser to your source files",
   "main": "index.jsx",
   "scripts": {
-    "start": "NODE_ENV=production PORT=8888 node server/server.js",
+    "start": "NODE_ENV=production PORT=8888 BROWSER_PORT=8888 node server/server.js",
     "build": "vite build",
     "preview": "vite preview --port 8888",
-    "vite-dev": "concurrently --kill-others-on-fail \"PORT=5555 vite\" \"NODE_ENV=development BROWSER_PORT=5555 nodemon server/server.js\"",
+    "vite-dev": "concurrently --kill-others-on-fail \"PORT=5555 vite\" \"NODE_ENV=development BROWSER_PORT=5555 PORT=8888 nodemon server/server.js\"",
     "dev": "npm run vite-dev",
     "cssxe:dev": "TARGET_DIR=$TARGET_DIR npm run getTargetPort && TARGET_DIR=$TARGET_DIR npm run vite-dev",
     "dev-cdp": "concurrently \"PORT=5555 npm run startRemoteChromeJs\" \"npm run vite-dev\"",

@@ -2,12 +2,10 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { spawn } from 'child_process';
-
 import { config } from 'dotenv';
 
 import cdpProcess from '../client/cdp/cdp0process.js';
 import { patchFile } from '../client/patchFile.js';
-
 import { callPupProcess } from '../client/puppeteer/pup.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -24,21 +22,27 @@ const __scripts = path.join(__dirname, '../scripts/');
 // to point it at cssxe's own root directory.
 config({ path: __envPath });
 
-const environment = process.env.NODE_ENV || 'development';
-const browserPort = process.env.BROWSER_PORT || process.env.BROWSER_PORT_BACKUP;
-const proxy = process.env.PROXY || process.env.PROXY_BACKUP;
+const PORT = process.env.PORT
+const environment = process.env.NODE_ENV
+const browserPort = process.env.BROWSER_PORT
+const targetPort = process.env.TARGET_PORT
+
 const targetDir = process.env.TARGET_DIR ? process.env.TARGET_DIR.toString().split('\n').slice(-1)[0] : process.env.TARGET_DIR_BACKUP;
 
 // to run CSSxe in puppeteer mode, set this to 1 in .env.
 const puppeteerMode = process.env.PUPPETEER_MODE;
 
-const PORT = 8888;
 const app = express();
 app.use(express());
 app.use(express.json());
 
+if (environment === 'production') {
+  // Serve static files (CSSxe UI) when in prod mode
+  app.use(express.static(path.join(__dirname, '../dist')));
+}
+
 !browserPort ? console.log('server: error: BROWSER_PORT is not set') && process.exit(1) : null;
-!proxy ? console.log('server: error: PROXY is not set') && process.exit(1) : null;
+!targetPort ? console.log('server: error: TARGET_PORT is not set') && process.exit(1) : null;
 !targetDir ? console.log('server: error: TARGET_DIR is not set') && process.exit(1) : null;
 
 
@@ -53,11 +57,6 @@ if (puppeteerMode == 1) {
 else {
   console.log('pup.js: puppeteerMode set to 0. puppeteer will not be called')
   spawn('node', [`${__scripts}startRemoteChrome.js`]);
-}
-
-if (environment === 'production') {
-  // Serve static files (CSSxe UI) when in prod mode
-  app.use(express.static(path.join(__dirname, '../dist')));
 }
 
 app.post('/cdp', async (req, res) => {
@@ -98,5 +97,5 @@ app.listen(PORT, () =>
   console.log('\n'),
   // console.log(`Server: environment ${environment}`),
   console.log(`Server: listening on port ${PORT}`),
-  console.log(`Server: serving proxy ${proxy} on browserPort ${browserPort}`),
+  console.log(`Server: serving targetPort ${targetPort} on browserPort ${browserPort}`),
 );

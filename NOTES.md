@@ -2,6 +2,28 @@
 
 Commit notes:
 
+  keith_2024-04-05:
+   system design / structure:
+   - have the target repo already running.
+   - from the target repo root directory, in a new terminal run 'npm run sexy'.
+   - this passes the target directory path as TARGET_DIR to cssxe.
+   - getTargetPort.js is triggered by npm run sexy, and is passed the target directory.
+    -  It uses TARGET_DIR to programatically obtain the target port.
+    -  It sets TARGET_PORT in the .env file.
+  - cssxe's server starts.
+    - the bundled cssxe files in /dist are served to PORT.
+    - at the moment, either puppeteer or remoteChrome can be used to as the browser interface.
+      - set PUPPETEER_MODE to 1 in the .env file to use puppeteer.
+    - the browser is opened to the BROWSER_PORT (which in prod mode is the same as PORT, while in dev mode is 5555).
+    - Index.jsx is the entry point for the browser.
+    - it imports App.jsx
+    - App.jsx imports SidebarComp and IframeComp, and returns them in a react fragment.
+      - it passes the TARGET_PORT to IframeComp.
+    - iFrameComp sets targetUrl to 'http://localhost:TARGET_PORT', and returns an iframe with that url.
+      - an event listener inside of the iframe triggers on any click.
+      - it passes the event object to a handler function
+
+
   keith_2024-04-04:
     target port (e.g. 8000 for Backtrack) can be obtained programatically
     after linking cssxe in a target repo and adding the 'sexy' script described below to the package.json of the target repo.
