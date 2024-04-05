@@ -65,7 +65,7 @@ app.post('/cdp', async (req, res) => {
 
   try {
     // if puppeteerMode is set to true, then call the puppeteer process, otherwise call the cdp process
-    const result = puppeteerMode == 0 ? await cdpProcess(data) : await callPupProcess(data);
+    const result = puppeteerMode == 1 ? await callPupProcess(data) : await cdpProcess(data);
 
     return res.json(result);
   } catch (error) {

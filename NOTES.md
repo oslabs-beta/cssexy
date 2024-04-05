@@ -1,6 +1,11 @@
 # COMMIT, PR, ETC. NOTES
 
 Commit notes:
+
+  keith_2024-04-04:
+    target port (e.g. 8000 for Backtrack) can be obtained programatically
+    after linking cssxe in a target repo and adding the 'sexy' script described below to the package.json of the target repo.
+    and running cssxe by running npm run sexy from the target repo (after running the target repo in its own node process as usual.)
   keith_2024-03-28_npmLink:
     npm link working.
     cssxe can now be run from inside of another repo.

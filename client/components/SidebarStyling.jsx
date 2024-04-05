@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, setIsActiveFlag, updateNodeData } from '../slices/rulesSlice.js';
+import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, setIsActiveFlag, updateNodeData, updateMidShortMap } from '../slices/rulesSlice.js';
 
 function SidebarStyling(props) {
 
@@ -44,27 +44,30 @@ function SidebarStyling(props) {
                 body: JSON.stringify(data),
               });
 
-            //   console.log('runCdp: response', response);
-
               const result = await response.json();
-              console.log('runCdp:');
+              console.log('sidebarStyling: runCdp: result', result);
 
             if (result) {
-              dispatch(updateNodeData(data));
+                console.log('sidebarStyling: runCdp: data', data);
+                dispatch(updateNodeData(data));
 
-              dispatch(updateInlineRules(result.inlineRules));
-              dispatch(updateRegularRules(result.regularRules));
-              dispatch(updateUserAgentRules(result.userAgentRules));
-              dispatch(updateStyleSheets(result.styleSheets));
-              dispatch(updateShortLongMaps());
-              dispatch(setIsActiveFlag());
-              dispatch(findActiveStyles());
+                dispatch(updateInlineRules(result.inlineRules));
+                dispatch(updateRegularRules(result.regularRules));
+                dispatch(updateUserAgentRules(result.userAgentRules));
+                dispatch(updateStyleSheets(result.styleSheets));
+                dispatch(updateInheritedRules(result.inheritedRules));
+
+                // actions needed for style overwrite functionality
+                dispatch(updateShortLongMaps());
+                dispatch(updateMidShortMap());
+                dispatch(setIsActiveFlag());
+                dispatch(findActiveStyles());
+
             }
     };
 
-
     const handleSubmit = async (cssProp, event) => {
-        console.log('cssProp', cssProp);
+        // console.log('cssProp', cssProp);
         const updatedCssProp = {...cssProp, value: values[cssProp.name]};
         updatedCssProp.valuePrev = cssProp.value;
         updatedCssProp.textPrev = updatedCssProp.text;
@@ -82,7 +85,7 @@ function SidebarStyling(props) {
         const textPrevAll = inlineRules[0].rule.style.cssText;
         updatedCssProp.textPrevAll = textPrevAll;
 
-        // console.log('data', updatedCssProp);
+        console.log('updatedCssProp', updatedCssProp);
         // console.log('TRY: /patch');
         try {
             const response = await fetch('/patch', {
@@ -94,12 +97,13 @@ function SidebarStyling(props) {
 
             });
             const result = await response.json();
+
             if (result === true) {
                 // console.log('TRY: /runCdp');
-                // console.log('\n\n\n');
 
                 // wait for .5 seconds. not doing this atm leads to a mismatch between the value in the input field and the corresponding value in the file, which then prevents further editing of that value (until the element is clicked again) because our patchFile function matches one to the other in order to replace the value with the new value.
-                await new Promise(resolve => setTimeout(resolve, 500));
+                // inline styles need a bit more time, so if theres no source path, wait 1 second.
+                await new Promise(resolve => updatedCssProp.sourcePath ? setTimeout(resolve, 500) : setTimeout(resolve, 1000));
 
                 // running CDP again to update our redux store after patching the file.
                 await callCdp();

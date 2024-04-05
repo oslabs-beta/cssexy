@@ -5,7 +5,7 @@ const patchFile = async (data, targetDir) => {
   try {
     // properties with Prev are the previous values to be searched for and replaced in the matching file.
 
-    const selector = data?.selector;
+    const selector = data.selector;
     const text = data.text;
     const textPrev = data.textPrev;
     const textPrevJs = data.textPrevJs;
@@ -13,14 +13,13 @@ const patchFile = async (data, targetDir) => {
     const value = data.value;
     const valuePrev = data.valuePrev;
     const textPrevAll = data.textPrevAll;
-    const sourcePath = data?.sourcePath;
+    const sourcePath = data.sourcePath;
 
-
+    // console.log('data', data);
     // Checking if textPrevAll has content and sourcePath is not provided.
     // if that's the case, we have an inline style.
     if (textPrevAll.length > 0 && !sourcePath) {
       console.log('No sourcePath provided, so this is an inline style');
-      // console.log('data', data);
 
       // we need to convert the strings to js format
       // helper function to convert css string format to js format
@@ -30,11 +29,13 @@ const patchFile = async (data, targetDir) => {
         .replace(new RegExp(`\;`, 'g'), `'`);
       }
 
-
       // example: old values
       // from: 'position: absolute; top: 60%; color: white;'
       //   to: "position: 'absolute', top: '60%', color: 'white'"
       const textPrevAllJs = cssToJsText(textPrevAll);
+      // console.log('textPrevAll', textPrevAll);
+
+      console.log('textPrevAllJs', textPrevAllJs);
 
       // the property and its old value to be replaced
       // from: 'color: white;',
@@ -51,6 +52,11 @@ const patchFile = async (data, targetDir) => {
       // from: "position: 'absolute', top: '60%', color: 'white'"
       //   to: "position: 'absolute', top: '60%', color: 'red'",
       const textAllJs = textPrevAllJs.replace(new RegExp(textPrevJs, 'g'), textJs);
+
+      // arrays will be helpful for string matching when there are line breaks rather than spaces
+      // between the styles in a given react component.
+      // const textPrevAllJsArr = textPrevAllJs.split(', ');
+      // const textAllJsArr = textAllJs.split(', ');
 
       // adding them to data, in case we want to console log the object to see the changes. This has no functional role beyond that.
       data.textPrevAllJs = textPrevAllJs;
@@ -122,6 +128,8 @@ const patchFile = async (data, targetDir) => {
           // If no matches found, move on to the next .jsx file
           continue;
         }
+
+        // console.log('inlineContents', inlineContents);
 
         inlineFileMatches.push(jsxFilePath);
         console.log('inlineFileMatches', inlineFileMatches);

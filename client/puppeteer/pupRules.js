@@ -1,40 +1,30 @@
 /**
- * pup2rules.js
+ * pupRules.js
  * Retrieves the CSS rules for a specified DOM node, returns the applied rules
  *
  * @param {object} client - The Puppeteer CDP client
- * @param {object} iframeNode - The iframe node object
- * @param {string} selector - The CSS selector for the node
+ * @param {object} elementNodeId - The node ID of the clicked element
  * @return {object} The applied CSS rules
  */
 
 import fs from 'fs';
 
-const pupRules = async (client, iframeNode, selector) => {
+const pupRules = async (client, elementNodeId) => {
+  console.log('pupRules: Getting inline styles for elementNodeId:', elementNodeId);
 
-  const iframeNodeId = iframeNode.nodeId;
-  // console.log('pupRules: root frame node id:', iframeNodeId);
-
-  // Get the nodeId of the node based on its CSS selector
-  const { nodeId } = await client.send('DOM.querySelector', {
-    nodeId: iframeNodeId,
-    selector: selector
-  });
-
-  // console.log('pupRules: Getting inline styles for element:', selector, ', nodeId:', nodeId);
-
-  // Get the inline styles
-  // the function is below, a
-  const inlineRules = await getInlineRules(client, nodeId, selector);
+  // Get the inline styles for the element node
+  const inlineRules = await getInlineRules(client, elementNodeId);
 
   // get all CSS rules that are applied to the node
   // => matchedCSSRules contains CSS rules that are directly applied to the node
   // => inherited contains the CSS rules that are passed down from the node's ancestors
   // => cssKeyframesRules includes all the @keyframes rules applied to the node
-  // console.log('pupRules: Getting matched styles for element:', selector, ', nodeId:', nodeId);
-  const { matchedCSSRules, inherited: inheritedRules, cssKeyframesRules: keyframeRules } = await client.send('CSS.getMatchedStylesForNode', { nodeId });
+  // console.log('pupRules: Getting matched styles for elementNodeId:', elementNodeId);
+  const { matchedCSSRules, inherited: inheritedRules, cssKeyframesRules: keyframeRules } = await client.send('CSS.getMatchedStylesForNode', { nodeId: elementNodeId });
   const regularRules = [];
   const userAgentRules = [];
+
+  // const allRules = await client.send('CSS.getMatchedStylesForNode', { elem });
 
   // console.log('pupRules: matchedCSSRules:', matchedCSSRules);
 
@@ -61,7 +51,9 @@ const pupRules = async (client, iframeNode, selector) => {
     keyframeRules
   }
 
-  // fs.writeFileSync('./data/output/allRules.json', JSON.stringify(result, null, 2));
+  // fs.writeFileSync('./data/output/allRules.json', JSON.stringify(allRules, null, 2));
+
+  // fs.writeFileSync('./data/output/result.json', JSON.stringify(result, null, 2));
   // fs.writeFileSync('./data/output/inlineRules.json', JSON.stringify(inlineRules, null, 2));
   // fs.writeFileSync('./data/output/regularRules.json', JSON.stringify(regularRules, null, 2));
   // fs.writeFileSync('./data/output/userAgentRules.json', JSON.stringify(userAgentRules, null, 2));
@@ -72,11 +64,11 @@ const pupRules = async (client, iframeNode, selector) => {
   return result;
 }
 
-const getInlineRules = async (client, nodeId, selector) => {
-  // retrieve the inline styles for the node with the provided nodeId
+const getInlineRules = async (client, elementNodeId) => {
+  // retrieve the inline styles for the node with the provided elementNodeId
   try {
 
-    const { inlineStyle } = await client.send('CSS.getInlineStylesForNode', { nodeId });
+    const { inlineStyle } = await client.send('CSS.getInlineStylesForNode', { nodeId: elementNodeId });
 
     // console.log('pupInlineRules: inlineStyle:', inlineStyle);
 
@@ -84,7 +76,7 @@ const getInlineRules = async (client, nodeId, selector) => {
 
     // check if there are any inline styles for this node
     if (inlineStyle) {
-      // console.log(`Found: inline styles for selector '${selector}' with nodeId ${nodeId}.`);
+      // console.log(`Found: inline styles for elementNodeId ${elementNodeId}.`);
       // push the inline styles to the inlineRule array
       inlineRule.push({
         "rule": {
@@ -95,7 +87,7 @@ const getInlineRules = async (client, nodeId, selector) => {
 
     } else {
       // if no inline styles are present
-      console.log(`Not Found: inline styles for selector '${selector}' with nodeId ${nodeId}.`);
+      console.log(`Not Found: inline styles for elementNodeId ${elementNodeId}.`);
     }
     return inlineRule;
 

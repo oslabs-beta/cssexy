@@ -35,12 +35,13 @@ const iFrameComp = ({ src, proxy, className }) => {
           // we get this using the DOMPath library, which is a port of the relevant piece of Chromium's Chrome Dev Tools front-end code that does the same thing. This should get us a unique, specific selector for the clicked element every time. In testing so far it has always worked. 2024-04-01_08-14-PM.
           // https://github.com/testimio/DOMPath
 
-          const selector = DOMPath.fullQualifiedSelector(element, true);
+          const selector = DOMPath.fullQualifiedSelector(element);
           // with true, we get an 'optimized' selector. doesn’t seem to matter which we choose so far. they both have worked. I'm including true now so we recall its an option. if for some reason it doesn’t work, we can switch to false (i.e. only pass one param, the selector)
           // true: #landingAndSticky > div > h1
           // false: div#landingAndSticky > div > h1
-
+          // console.log('\n\n');
           console.log('iFrameComp: selector', selector);
+          // console.log('\n\n');
 
           const data = {
             // id: element.id,
@@ -53,8 +54,6 @@ const iFrameComp = ({ src, proxy, className }) => {
             // attributes: element.attributes,
             selector
           };
-
-          // console.log('iFrameComp: data', data);
 
           // a POST request to the /cdp endpoint
           const response = await fetch('/cdp', {
@@ -69,6 +68,7 @@ const iFrameComp = ({ src, proxy, className }) => {
 
           const result = await response.json();
 
+          dispatch(updateNodeData(data));
           // console.log('iFrameComp: Result returned from /cdp');
           // console.log('iFrameComp: Result : ', result);
 
@@ -77,7 +77,6 @@ const iFrameComp = ({ src, proxy, className }) => {
           dispatch(updateRegularRules(result.regularRules));
           dispatch(updateUserAgentRules(result.userAgentRules));
           dispatch(updateStyleSheets(result.styleSheets));
-          dispatch(updateNodeData(data));
           dispatch(updateInheritedRules(result.inheritedRules));
           // dispatch(updateKeyframeRules(result.keyframeRules));
 
@@ -108,7 +107,7 @@ const iFrameComp = ({ src, proxy, className }) => {
 
             // Set focus back to the parent document
             // This allows CSSxe to receive keyboard events again after a click has taken place inside the iframe.
-            // efore doing this, CSSxe would not receive keyboard events again until we clicked inside of the sidebar
+            // before doing this, CSSxe would not receive keyboard events again until we clicked inside of the sidebar
             window.parent.focus();
           }
 
