@@ -25,7 +25,6 @@ let client;
 const styleSheets = {};
 
 // if puppeteerMode is set to 1, then we start Puppeteer.
-if (puppeteerMode == 1) {
 // this is the equivalent of the calling startRemoteChrome in prior, pre-puppeteer versions of our code.
 // this entire file gets called in the server, and the function below is called immediately
 // as we have set it up to be an IIFE (Immediately Invoked Function Expression).
@@ -157,9 +156,6 @@ if (puppeteerMode == 1) {
     // console.log('\n\n');
   });
 })(pupProcess);
-} else {
-  console.log('pup.js: puppeteerMode set to 0. puppeteer will not be called');
-}
 // data passed from server = ...args
 const callPupProcess = async (...args) => await pupProcess(client, styleSheets, ...args);
 

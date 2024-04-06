@@ -14,10 +14,7 @@
     "dev-sh": "PORT=5555 npm run startRemoteChrome && npm run vite-dev",
     "prod": "concurrently \"npm run build\" \"npm run start\"",
     "cssxe:prod": "npm run getTargetPort && TARGET_DIR=$TARGET_DIR npm run prod",
-    "prod-cdp": "concurrently --kill-others-on-fail \"npm run build\" \"PORT=8888 npm run startRemoteChromeJs\" \"npm run start\"",
     "prod-sh": "npm run build && PORT=8888 npm run startRemoteChromeJs && npm run start",
-    "startRemoteChrome": "./scripts/startRemoteChrome.sh",
-    "startRemoteChromeJs": "PORT=$PORT node ./scripts/startRemoteChrome.js",
     "postInstall": "node ./scripts/postInstall.js",
     "getTargetPort": "node ./scripts/getTargetPort.js"
   },
