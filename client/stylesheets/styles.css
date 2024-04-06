@@ -91,18 +91,46 @@ body {
   margin-bottom: 5px;
 }
 
+.property-dropdown-item:not(:last-child){
+  border-bottom: 1.5px solid #252134;
+}
+
+.property-dropdown-item{
+  color: #906bc7;
+  font-weight: 300;
+  cursor: pointer;
+  padding: 2px 0px 2px 0px;
+}
+
+.property-dropdown {
+  cursor: pointer;
+  position: absolute;
+  border: 1px solid rgba(74, 67, 139, 0.2);
+  border-radius: 4px;
+  background: rgba(0,0,0,0.8);
+  padding: 3px 8px;
+  margin-top: 5px;
+  margin-left: 5px;
+  width: 120px;
+  min-width: 100px;
+  max-width: 220px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* .style-value-form {
   /* not beign used atm */
   /* display: flex; */
   /* display: inline;
 } */
 
-.style-property-span, .style-value-span, .style-value-input-span {
+.style-property-span, .style-value-span, .style-value-input-span, .property-dropdown {
   font-size: 12px;
   padding-left: 5px;
 }
 
-.style-value-span, .style-value-input-span {
+.style-value-span, .style-value-input-span, .property-dropdown {
   padding-right: 0px;
   color: #906bc7;
   font-weight: 300;
@@ -129,7 +157,11 @@ body {
 }
 
 .style-value-input-span:focus {
-  outline: 0.5px solid #906bc7;
+  outline: 0.5px solid rgb(144, 107, 199);
+}
+
+.property-dropdown-item:hover {
+  background: rgb(144, 107, 199, 0.3);
 }
 
 .style-property-overwritten-span {
