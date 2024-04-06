@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import {cssToReact} from './cssToReact.js';
+
 const patchFile = async (data, targetDir) => {
   try {
     // properties with Prev are the previous values to be searched for and replaced in the matching file.
@@ -53,6 +55,18 @@ const patchFile = async (data, targetDir) => {
       //   to: "position: 'absolute', top: '60%', color: 'red'",
       const textAllJs = textPrevAllJs.replace(new RegExp(textPrevJs, 'g'), textJs);
 
+
+      const textPrevAllJsArr = textPrevAllJs.split(', ');
+      console.log('textPrevAllArr', textPrevAllJsArr[0]);
+
+      // const propertiesAndValues = [];
+      // for (const propertyAndValue of textPrevAllJsArr) {
+      //   const propAndValArr = propertyAndValue.split(':');
+      //   propertiesAndValues.push({
+      //     prop: propAndValArr[0].trim(),
+      //     val: propAndValArr[1].trim()
+      //   });
+      // }
       // arrays will be helpful for string matching when there are line breaks rather than spaces
       // between the styles in a given react component.
       // const textPrevAllJsArr = textPrevAllJs.split(', ');
@@ -116,6 +130,18 @@ const patchFile = async (data, targetDir) => {
         return jsxFiles;
       }
       const inlineFileMatches = []
+
+      // const textPrevAllJsArr = textPrevAllJs.split(', ');
+      // console.log('textPrevAllArr', textPrevAllJsArr[0]);
+
+      // const propertiesAndValues = [];
+      // for (const propertyAndValue of textPrevAllJsArr) {
+      //   const propAndValArr = propertyAndValue.split(':');
+      //   propertiesAndValues.push({
+      //     prop: propAndValArr[0].trim(),
+      //     val: propAndValArr[1].trim()
+      //   });
+      // }
 
       const jsxFiles = await findJsxFiles(targetDir); // Call the findJsxFiles function to get .jsx file paths
 

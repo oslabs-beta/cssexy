@@ -4,9 +4,7 @@ import { fileURLToPath } from 'url';
 import { spawn } from 'child_process';
 import { config } from 'dotenv';
 
-import cdpProcess from '../client/cdp/cdp0process.js';
-import { patchFile } from '../client/patchFile.js';
-import { callPupProcess } from '../client/puppeteer/pup.js';
+import { patchFile } from '../client/features/patchFile.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,25 +44,17 @@ if (environment === 'production') {
 !targetDir ? console.log('server: error: TARGET_DIR is not set') && process.exit(1) : null;
 
 
-// Start Puppeteer if puppeteerMode is set to 1.
-if (puppeteerMode == 1) {
   // `spawn` from the `child_process` module in Node.js is used to create new child processes.
   // These run independently, but can communicate with the parent process via IPC (Inter-Process Communication) channels.
   // So in this case, puppeteer is a child process of this server process.
   spawn('node', ['../client/puppeteer/pup.js', browserPort])
-}
-// else, start the cdp process.
-else {
-  console.log('pup.js: puppeteerMode set to 0. puppeteer will not be called')
-  spawn('node', [`${__scripts}startRemoteChrome.js`]);
-}
 
 app.post('/cdp', async (req, res) => {
   const data = req.body;
 
   try {
     // if puppeteerMode is set to true, then call the puppeteer process, otherwise call the cdp process
-    const result = puppeteerMode == 1 ? await callPupProcess(data) : await cdpProcess(data);
+    await callPupProcess(data)
 
     return res.json(result);
   } catch (error) {

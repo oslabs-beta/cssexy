@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import DOMPath from 'chrome-dompath';
 
 
-import { fetchElementRules } from '../fetchElementRules.js';
+import { fetchElementRules } from '../features/fetchElementRules.js';
 
 import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, updateMidShortMap, setIsActiveFlag, updateNodeData } from '../slices/rulesSlice.js';
 
