@@ -80,68 +80,7 @@ const patchFile = async (data, targetDir) => {
 
       // console.log('data updated', data);
 
-      // Recursive function to find .jsx files in the target directory
-      async function findJsxFiles(dir) {
-        // Creating an empty array to store the found .jsx file paths
-        let jsxFiles = [];
-        // Creating a Promise that will be resolved with an array of entries
-        const entriesPromise = new Promise(
-          (resolve, reject) => {
-            // Use fs.readdir to asynchronously read the contents of a directory.
-            fs.readdir(
-              // The 'dir' parameter is the path to the directory to read.
-              dir,
-              // 'withFileTypes' makes fs.readdir return an array of Dirent (directory entry) objects.
-              // Each Dirent entry object represents a file or directory and has methods like isFile and isDirectory to check the type.
-              { withFileTypes: true },
-              // A callback function to handle the response
-              (err, entries) => {
-                // Checking if there was an error
-                if (err) {
-                  // If there was an error, reject the Promise with it
-                  reject(err);
-                } else {
-                  // If there was no error, resolve the Promise with the array of entries
-                  resolve(entries);
-                }
-              }
-            );
-          }
-        );
-        // Waiting for the Promise to be resolved with an array of entries
-        const entries = await entriesPromise;
-
-        // Looping through the array of entries
-        for (let entry of entries) {
-          // Joining the current directory with the entry name to get the full file path
-          const fullPath = path.join(dir, entry.name);
-          if (entry.isDirectory()) { // If the entry is a directory
-            // Recursively search subdirectories by calling findJsxFiles on the full path
-            jsxFiles = jsxFiles.concat(
-              await findJsxFiles(fullPath)
-            );
-            // If the entry is a file with a .jsx extension
-          } else if (entry.isFile() && path.extname(fullPath) === '.jsx') {
-            // Add the file path to the array of .jsx file paths
-            jsxFiles.push(fullPath);
-          }
-        }
-        // Return the array of .jsx file paths
-        return jsxFiles;
-      }
       const inlineFileMatches = []
-
-      // const textPrevAllJsArr = textPrevAllJs.split(', ');
-      // console.log('textPrevAllArr', textPrevAllJsArr[0]);
-
-      // const propertiesAndValues = [];
-      // for (const propertyAndValue of textPrevAllJsArr) {
-      //   const propAndValArr = propertyAndValue.split(':');
-      //   propertiesAndValues.push({
-      //     prop: propAndValArr[0].trim(),
-      //     val: propAndValArr[1].trim()
-      //   });
-      // }
 
       const jsxFiles = await findJsxFiles(targetDir); // Call the findJsxFiles function to get .jsx file paths
 

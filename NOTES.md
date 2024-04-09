@@ -19,7 +19,7 @@ Commit notes:
     - it imports App.jsx
     - App.jsx imports SidebarComp and IframeComp, and returns them in a react fragment.
       - it passes the TARGET_PORT to IframeComp.
-    - iFrameComp sets targetUrl to 'http://localhost:TARGET_PORT', and returns an iframe with that url.
+    - iframeComp sets targetUrl to 'http://localhost:TARGET_PORT', and returns an iframe with that url.
       - an event listener inside of the iframe triggers on any click.
       - it passes the event object to a handler function
 

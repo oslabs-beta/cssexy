@@ -4,6 +4,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
 
+// we import this so that we can call it from here, passing the client and styleSheets variables to it when we do.
+import { pupProcess } from './pupProcess.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const __envPath = path.resolve(__dirname, '../../.env')
@@ -13,19 +16,12 @@ config({ path: __envPath });
 // console.log('dirname:', __dirname);
 // console.log('path:', __envPath);
 
-// we import this so that we can call it from here, passing the client and styleSheets variables to it when we do.
-import { pupProcess } from './pupProcess.js';
-
-const puppeteerMode = process.env.PUPPETEER_MODE;
-
 const coder = process.env.CODER;
 
 // declaring client and styleSheets here (outside of the unnamed function) so we can have access to them in the 'callPupProcess' function further down.
 let client;
 const styleSheets = {};
 
-// if puppeteerMode is set to 1, then we start Puppeteer.
-// this is the equivalent of the calling startRemoteChrome in prior, pre-puppeteer versions of our code.
 // this entire file gets called in the server, and the function below is called immediately
 // as we have set it up to be an IIFE (Immediately Invoked Function Expression).
 (async () => {
@@ -98,7 +94,6 @@ const styleSheets = {};
     // console.log('styleSheetAdded');
     const id = param.header.styleSheetId;
 
-    // passing these values now, so we have them in the store. none of them have yet been or are being used as of 2024-04-02.
     styleSheets[id] = {
       frameId: param.header.frameId,
       // the url from importing fonts and the like, ala 'https://fonts.googleapis.com/...'
@@ -115,8 +110,8 @@ const styleSheets = {};
       length: param.header.length,
       endLine: param.header.endLine,
       endColumn: param.header.endColumn,
-
     }
+
     // if the sourceMapURL is present, add those paths to the styleSheets object.
     // this gets us the paths to the regular styles source files, i.e. .css, .scss.
     if (param.header.sourceMapURL) {
@@ -160,36 +155,5 @@ const styleSheets = {};
 const callPupProcess = async (...args) => await pupProcess(client, styleSheets, ...args);
 
 // callPupProcess is called when the the /cdp endpoint is hit.
-// // -> /cdp is hit by iFrameComp when a click event occurs inside of the iFrame.
+// // -> /cdp is hit by iframeComp when a click event occurs inside of the iframe.
 export { callPupProcess };
-
-
-
-
-
-// rob's initial puppeteer code, which shows how to get the styles for a specific node.
-// const doc = await session.send('DOM.getDocument');
-
-// //Query the nodes on the page by selector type use * to get all nodes on the page
-// const nodes = await session.send('DOM.querySelectorAll', {
-//     nodeId: doc.root.nodeId,
-//     selector: 'loadingText'
-// });
-
-// const stylesForNodes = []
-
-// for (const id of nodes.nodeIds) {
-//   stylesForNodes.push(await session.send('CSS.getMatchedRulesForNode', {nodeId: id}));
-// }
-// //See all the Nodes Requested
-// console.log("Rules for Nodes Array ===>", stylesForNodes)
-
-// //Get Rules for single Node Id
-// const styleForSingleNode = await session.send('CSS.getMatchedRulesForNode', {nodeId: 4});
-// console.log("Single Node Id: 4 ===>", styleForSingleNode)
-
-
-//Get Specificity
-// console.log("Specificity of specific Node ===> ", stylesForNodes[0].matchedCSSRules[0].rule.selectorList.selectors[0].specificity)
-
-// leave the browser open so we can inspect it

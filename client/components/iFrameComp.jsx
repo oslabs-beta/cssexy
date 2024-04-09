@@ -6,7 +6,7 @@ import DOMPath from 'chrome-dompath';
 
 import { fetchElementRules } from '../features/fetchElementRules.js';
 
-import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, updateMidShortMap, setIsActiveFlag, updateNodeData } from '../slices/rulesSlice.js';
+import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, updateMidShortMap, setIsActiveFlag } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component that loads a target URL and handles click events within the iframe.
@@ -16,7 +16,7 @@ import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInhe
  * @returns {JSX.Element} The rendered iframe component.
  */
 
-const iFrameComp = ({ targetPort }) => {
+const iframeComp = ({ targetPort }) => {
   const dispatch = useDispatch();
 
   const className = "site-frame"
@@ -27,26 +27,26 @@ const iFrameComp = ({ targetPort }) => {
   useEffect(() => {
     // getting our iframe
     const iframe = document.querySelector(`.${className}`);
-    // console.log('iFrameComp: iframe', iframe);
+    // console.log('iframeComp: iframe', iframe);
 
     const handleLoad = () => {
       try {
         const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        // console.log('iFrameComp: iframeDoc', iframeDoc);
+        // console.log('iframeComp: iframeDoc', iframeDoc);
 
         const handleClick = async (element) => {
-          console.log('iFrameComp: element', element);
+          console.log('iframeComp: element', element);
 
           // getting the 'selector' of the element, i.e. the same thing that one would get by inspecting the element with dev tools, then right clicking in the dom tree and selecting copy selector.
           // we get this using the DOMPath library, which is a port of the relevant piece of Chromium's Chrome Dev Tools front-end code that does the same thing. This should get us a unique, specific selector for the clicked element every time. In testing so far it has always worked. 2024-04-01_08-14-PM.
           // https://github.com/testimio/DOMPath
 
-          const selector = DOMPath.fullQualifiedSelector(element);
+          const selector = DOMPath.fullQualifiedSelector(element, true);
           // with true, we get an 'optimized' selector. doesn’t seem to matter which we choose so far. they both have worked. I'm including true now so we recall its an option. if for some reason it doesn’t work, we can switch to false (i.e. only pass one param, the selector)
           // true: #landingAndSticky > div > h1
           // false: div#landingAndSticky > div > h1
           // console.log('\n\n');
-          console.log('iFrameComp: selector', selector);
+          console.log('iframeComp: selector', selector);
           // console.log('\n\n');
 
           const data = {
@@ -60,7 +60,14 @@ const iFrameComp = ({ targetPort }) => {
             selector
           };
 
-          fetchElementRules(data, dispatch);
+          try {
+            fetchElementRules(data, dispatch);
+
+          }
+          catch (error) {
+            console.log('iframeComp: error', error);
+          }
+
         };
 
 
@@ -119,4 +126,4 @@ const iFrameComp = ({ targetPort }) => {
   );
 };
 
-export default iFrameComp;
+export default iframeComp;

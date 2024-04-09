@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchElementRules } from '../features/fetchElementRules.js';
-
-import { cssPropertyList } from '../cssPropertyList.js';
+import { getCssValueOptions } from '../features/getCssValueOptions.js';
 
 function SidebarStyling(props) {
 
 
     const dispatch = useDispatch();
 
-    const data = useSelector(state => state.nodeData.data);
+
     const inlineRules = useSelector(state => state.rules.inlineRules);
+    const { targetSourceInline, targetSourceInlineLineNumber } = useSelector(state => state.target);
 
     // console.log('SidebarStyling: props', props);
 
@@ -50,6 +50,8 @@ function SidebarStyling(props) {
         updatedCssProp.selector = liveProps.selector;
         updatedCssProp.sourcePath = liveProps.sourcePath;
         updatedCssProp.textPrevAll = inlineRules[0].rule.style.cssText;
+        updatedCssProp.targetSourceInline = targetSourceInline;
+        updatedCssProp.targetSourceInlineLineNumber = targetSourceInlineLineNumber;
 
         // console.log('\n');
         // console.log(cssProp.name);
@@ -80,8 +82,6 @@ function SidebarStyling(props) {
 
                 // running CDP again to update our redux store after patching the file.
                 await fetchElementRules(data, dispatch);
-                // setSelectedItem('');
-                setNewValue('');
                 setValues({});
 
 
@@ -95,7 +95,7 @@ function SidebarStyling(props) {
 
 
     const handleClickField = (cssProp) => {
-        const possibleValues = getPossibleValues(cssProp);
+        const possibleValues = getCssValueOptions(cssProp);
         setDropdownItems(possibleValues);
         setShowDropdown(true);
         setClickedPropertyField(cssProp.name);
@@ -210,19 +210,5 @@ function SidebarStyling(props) {
     )
 };
 
-const getPossibleValues = (cssProp) => {
-    let arr = [];
-    if (cssPropertyList[cssProp.name] && cssPropertyList[cssProp.name].values) {
-        console.log('cssPropertyList[cssProp.name].values', cssPropertyList[cssProp.name].values);
-
-        cssPropertyList[cssProp.name].values.forEach((value) => {
-            if (!value.includes('[')){
-                arr.push(value);
-            }
-        })
-        return arr
-    }
-
-}
 
 export default SidebarStyling;

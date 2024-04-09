@@ -1,11 +1,22 @@
+import { useSelector } from 'react-redux';
 import { writeFileSync, mkdir } from 'node:fs';
 
 import { pupRules } from './pupRules.js';
 
 const pupProcess = async (client, styleSheets, data) => {
-    const proxy = process.env.VITE_PROXY;
-    const targetUrl = `http://localhost:${proxy}/`;
-    // console.log('pupEnable: proxy:', proxy);
+    // const { targetPort } = useSelector((state) => state.target);
+    const targetPort = process.env.VITE_TARGET_PORT;
+    // const targetDir = process.env.VITE_TARGET_DIR;
+
+    // console.log('pupProcess: targetUrl:', targetUrl);
+    // const targetPort = useSelector((state) => state.target.targetPort);
+    // const targetDir = useSelector((state) => state.target.targetDir);
+    const targetUrl = `http://localhost:${targetPort}/`;
+
+    // console.log('pupProcess: targetPort:', targetPort);
+    // console.log('pupProcess: targetDir:', targetDir);
+    // console.log('pupProcess: targetUrl:', targetUrl);
+
 
     const selector = data.selector;
 

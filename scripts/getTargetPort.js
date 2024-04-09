@@ -82,31 +82,9 @@ const getTargetPort = async () => {
         throw new Error('targetPort not found');
       }
     }
+    // return the targetPort
+    // updateEnv('TARGET_PORT', targetPort);
 
-    // getting the cssxe environment variables
-    const envVars = fs.readFileSync(__envPath, 'utf-8').split('\n');
-    // console.log('envVars:', envVars);
-
-    // setting the target port (the targetPort) in the .env file if it doesn’t already exist, so that it can be used by our application.
-    // it gets called in App.jsx.
-    // finding the line that starts with 'VITE_TARGET_PORT=', if any.
-    const envVarIndex = envVars.findIndex(line => line.startsWith('VITE_TARGET_PORT='));
-    // if it exists
-    if (envVarIndex > -1) {
-      console.log('envVarIndex:', envVarIndex);
-      // update it
-      envVars[envVarIndex] = `VITE_TARGET_PORT=${targetPort}`;
-      envVars[envVarIndex+1] = `TARGET_PORT=${targetPort}`;
-    // if it doesn't exist
-    } else {
-      // add it
-      envVars.push(`VITE_TARGET_PORT=${targetPort}`);
-      envVars.push(`TARGET_PORT=${targetPort}`);
-    }
-    // write to .env
-    fs.writeFileSync('.env', envVars.join('\n'));
-
-    // console.log('targetPort found:', targetPort);
     return targetPort;
   } catch (err) {
     console.error(err);
