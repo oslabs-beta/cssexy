@@ -37,9 +37,8 @@ const targetDir = process.env.TARGET_DIR ? process.env.TARGET_DIR.toString().spl
 const puppeteerMode = process.env.PUPPETEER_MODE;
 
 // updating the environment variables in the .env file
-// updateEnv('TARGET_DIR', targetDir);
-// updateEnv('TARGET_PORT', targetPort);
-// updateEnv('BROWSER_PORT', browserPort);
+updateEnv('TARGET_DIR', targetDir);
+updateEnv('BROWSER_PORT', browserPort);
 
 const app = express();
 app.use(express());

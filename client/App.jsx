@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import SidebarComp from './components/SidebarComp.jsx';
 import IframeComp from './components/iframeComp.jsx';
 
-import { updateTarget} from './slices/targetSlice.js';
+import { updateTarget } from './slices/targetSlice.js';
 
 /**
  * The main App component.

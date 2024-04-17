@@ -5,6 +5,9 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { config } from 'dotenv';
 
+import { updateEnv } from './updateEnv.js';
+
+
 /**
  * Retrieves the target port for the application.
  * If the target directory is not 'cssxe', it searches for the process IDs of all open files in the target directory
@@ -34,6 +37,7 @@ const getTargetPort = async () => {
     let targetPort;
 
     if (!targetDir.includes('cssxe')) {
+      console.log('getTargetPort: targetDir is not cssxe. Searching for open files in targetDir...');
       // getting the process IDs of all open files in the target directory
       // `lsof` (list open files)
       // +D flag: search in directories, instead of files
@@ -52,7 +56,7 @@ const getTargetPort = async () => {
         .trim() // remove leading and trailing whitespace
         .split('\n'); // split the string into an array of lines
 
-      // console.log('pids:', pids);
+      console.log('pids:', pids);
 
       for (const pid of pids) {
         // `lsof` (list open files)
@@ -72,7 +76,7 @@ const getTargetPort = async () => {
 
         if (targetPort) {
           // if we found a targetPort, we're done
-          // console.log('targetPort:', targetPort);
+          console.log('targetPort found. break condition:', targetPort);
           break;
         }
       }
@@ -82,9 +86,14 @@ const getTargetPort = async () => {
         throw new Error('targetPort not found');
       }
     }
+    else {
+      console.log('\n\n');
+      console.log('targetDir is cssxe');
+      console.log('\n');
+    }
     // return the targetPort
-    // updateEnv('TARGET_PORT', targetPort);
-
+    updateEnv('TARGET_PORT', targetPort);
+    console.log('getTargetPort: targetPort:', targetPort);
     return targetPort;
   } catch (err) {
     console.error(err);
