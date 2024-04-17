@@ -48,7 +48,7 @@ const rulesSlice = createSlice({
       // console.log('rulesSlice: state.styleSheets: updated', action.payload);
       state.styleSheets = action.payload;
     },
-    // iterates over shorthandEntries arr on all types of styles, builds: 
+    // iterates over shorthandEntries arr on all types of styles, builds:
     // 1) mapping of each shorthand property to corresponding longhand properties and saves to shortToLongMap state;
     // 2) reverse mapping of each longhand property to its corresponding shorthand property and saves to longToShortMap state
     updateShortLongMaps: (state) => {
@@ -90,7 +90,7 @@ const rulesSlice = createSlice({
           };
 
           for (let cssProperty of each.rule.style.cssProperties) {
-            if (each.rule.origin === 'regular' && 
+            if (each.rule.origin === 'regular' &&
                 cssProperty.text &&
                 !state.shortToLongMap[cssProperty.name]) {
               getLonghandStyles(dummy, cssProperty.name, cssProperty.value, state.shortToLongMap, state.longToShortMap);
@@ -106,7 +106,7 @@ const rulesSlice = createSlice({
         // If array has more than 1 element, that would mean that this is a complex hierarchy (high-mid-low) => need to add to midToShortMap
         let minChars = Infinity;
         let parent;
-        
+
         // find high level parent
         parentCandidates.forEach(candidate => {
           if (candidate.length < minChars) {
@@ -144,11 +144,11 @@ const rulesSlice = createSlice({
           for (let cssProperty of each.rule.style.cssProperties) {
             // for user-agent styles, only longhand properties which do not have corresponding shorthand properties get rendered. If property is in longToShortMap it means it was already added as a shorthand property
             if ((each.rule.origin === 'user-agent' && cssProperty.value && !state.longToShortMap[cssProperty.name]) ||
-                // for regular and inline styles, add isActive only to user-defined properties (which have text property on them)
-                (each.rule.origin === 'regular' && cssProperty.text) ||
-                (each.rule.origin === 'inline' && cssProperty.text)) {
-                  cssProperty.isActive = true;
-                }
+              // for regular and inline styles, add isActive only to user-defined properties (which have text property on them)
+              (each.rule.origin === 'regular' && cssProperty.text) ||
+              (each.rule.origin === 'inline' && cssProperty.text)) {
+              cssProperty.isActive = true;
+            }
           }
         })
       });
@@ -193,8 +193,8 @@ const rulesSlice = createSlice({
                     });
                   }
                   // checks if cur property is a longhand property which has a shorthand parent)
-                  // e.g. if 'background-image' has a parent and it does ('background'), push it to property 'background' of isActiveCache  
-                  else if ((origin === 'user-agent' && state.longToShortMap[prop.name]) || 
+                  // e.g. if 'background-image' has a parent and it does ('background'), push it to property 'background' of isActiveCache
+                  else if ((origin === 'user-agent' && state.longToShortMap[prop.name]) ||
                           ((origin === 'regular' || origin === 'inline') && !prop.longhandProperties && state.longToShortMap[prop.name])) {
                     const highLevelProp = state.longToShortMap[prop.name].highestParent;
                     if (!cache[highLevelProp]) cache[highLevelProp] = [];
@@ -261,8 +261,33 @@ const rulesSlice = createSlice({
 
       state.isActiveCache = cache;
     },
+    updateStyleSheets: (state, action) => {
+      // console.log('rulesSlice: state.styleSheets: updated', action.payload);
+      state.styleSheets = action.payload;
+    },
   },
 });
+
+const initialNodeDataState = {
+  data: {},
+  error: null, // if we want to track errors
+};
+
+const nodeDataSlice = createSlice({
+  name: 'nodeData',
+  // createSlice expects the initial state to be passed as 'initialState'.
+  // so we pass initialNodeDataState as the value of 'initialState'.
+  initialState: initialNodeDataState,
+  reducers: {
+    // every time user selects a DOM element, inline, regular, and user-agent rules are dispatched by the iFrameComp, updating the store via the reducers below.
+    updateNodeData: (state, action) => {
+      // console.log('nodeDataSlice: state.nodeData: updated', action.payload);
+      // console.log('\n\n\n');
+      state.data = action.payload;
+    },
+  },
+});
+
 
 export const {
   updateInlineRules,
@@ -271,10 +296,15 @@ export const {
   updateInheritedRules,
   updateKeyframeRules,
   updateStyleSheets,
-  findActiveStyles, 
+  findActiveStyles,
   updateShortLongMaps,
   updateMidShortMap,
-  setIsActiveFlag 
+  setIsActiveFlag
 } = rulesSlice.actions;
 
-export default rulesSlice.reducer;
+export const {
+  updateNodeData
+} = nodeDataSlice.actions;
+
+export const rulesReducer = rulesSlice.reducer;
+export const nodeDataReducer = nodeDataSlice.reducer;

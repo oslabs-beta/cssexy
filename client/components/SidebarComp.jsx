@@ -11,13 +11,13 @@ function SidebarComp() {
       if (event.metaKey && event.key === 'Enter') {
         console.log('Shift + Enter pressed. Toggling sidebar visibility.');
 
-    // The `setIsCollapsed` function is used to update the state.
-    // The `prevCollapsed` parameter is the previous value of `isCollapsed`.
-    // The `!prevCollapsed` - the negation of the prior value of this state variable - is the new value of `isCollapsed`.
-    // In other words, this function toggles the value of `isCollapsed`.
-    // 'functional update' of state:
-    // This pattern in React and ensures that the state is always updated correctly, even when multiple calls are made in quick succession.
-    setIsCollapsed((prevCollapsed) => !prevCollapsed);
+        // The `setIsCollapsed` function is used to update the state.
+        // The `prevCollapsed` parameter is the previous value of `isCollapsed`.
+        // The `!prevCollapsed` - the negation of the prior value of this state variable - is the new value of `isCollapsed`.
+        // In other words, this function toggles the value of `isCollapsed`.
+        // 'functional update' of state:
+        // This pattern in React and ensures that the state is always updated correctly, even when multiple calls are made in quick succession.
+        setIsCollapsed((prevCollapsed) => !prevCollapsed);
       }
     };
 
@@ -39,7 +39,7 @@ function SidebarComp() {
     // if isCollapsed is true, the sidebar-container and the sidebar will be collapsed
     <div className={`sidebar-container ${isCollapsed ? 'collapsed' : ''}`}>
       <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-        <h2 style={{ textAlign: 'center'}}>Styles</h2>
+        <h3 style={{ textAlign: 'center' }}>styles</h3>
         <RulesAllComp />
       </div>
       <button className="collapse-button" onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -48,7 +48,6 @@ function SidebarComp() {
         {isCollapsed ? '>' : '<'}
       </button>
     </div>
-
   );
 }
 
