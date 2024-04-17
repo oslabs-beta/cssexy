@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import SidebarComp from './components/SidebarComp.jsx';
 import IframeComp from './components/iframeComp.jsx';
 
 import { updateTarget} from './slices/targetSlice.js';
-import { fetchTargetData } from './slices/targetSlice.js';
 
 /**
  * The main App component.
@@ -24,32 +23,6 @@ const App = () => {
 
   dispatch(updateTarget({targetPort}));
   dispatch(updateTarget({targetDir}));
-
-  // const updateStore = async () => {
-  //   const response = await fetch('/target', {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     }
-  //   });
-  //   console.log('App: fetch: response', response);
-  //   // const result = await response.json();
-  //   // console.log('App: fetch: result', result);
-
-  // // await dispatch(fetchTargetData());
-  // // console.log('App: useEffect: dispatch(fetchTargetData)');
-  // // console.log('App: targetPort', targetPort);
-  // // console.log('App: targetDir', targetDir);
-  // }
-
-  // updateStore();
-
-  // useEffect(() => {
-  //   dispatch(fetchTargetData());
-  //   console.log('App: useEffect: dispatch(fetchTargetData)');
-  //   console.log('App: targetPort', targetPort);
-  //   console.log('App: targetDir', targetDir);
-  // }, [dispatch]);
 
   return (
     <div className="app-container">
