@@ -10,9 +10,9 @@ export default defineConfig({
     outDir: path.join(__dirname, 'dist'),
     sourcemap: true,
   },
-  // css: {
-  //   devSourcemap: true
-  // },
+  css: {
+    devSourcemap: true
+  },
   server: {
     proxy: {
       '/cdp': 'http://localhost:8888',
