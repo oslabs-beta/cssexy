@@ -5,38 +5,48 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 export const router = express.Router()
 
 
-import webpackConfig from '../webpack.config.js';
+import webpackConfig from '../../shopster/shopster/webpack.config.js';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 
+webpackConfig.output.path = path.resolve(import.meta.dirname, 'build');
+webpackConfig.entry = path.join(import.meta.dirname,'../../shopster/shopster/client/index.js');
 
+webpackConfig.output.publicPath = path.resolve('/build/');
+// console.log(webpackConfig)
 
+// webpackConfig.mode = 'development';
+for(const ob of webpackConfig.plugins){
+  if(ob.userOptions?.template){
+ob.userOptions.template = path.join(import.meta.dirname,'../../shopster/shopster/client/index.html');
+ob.options.template = path.join(import.meta.dirname,'../../shopster/shopster/client/index.html')
+  }
+  console.log(ob)
+}
 
+// console.log(webpackConfig)
 const compiler = webpack(webpackConfig);
+// console.log(compiler)
+
+// for(let ob in compiler.outputFileSystem){
+// console.log('Compiler======>', ob)
+// }
 
 
 
-const watching = compiler.watch(
-    {
-      // Example
-      aggregateTimeout: 300,
-      poll: undefined,
-    },
-    (err, stats) => {
-      // Print watch/build result here...
-    //   console.log(stats);
-    }
-  );
+
 
 
 router.use('/', async (req, res, next)=>{
    console.log("Line 32 Route hit")
     const fs = compiler.outputFileSystem;
+  //  console.log("FS====>", compiler.outputFileSystem)
    
     const filePath = path.join(compiler.outputPath, req.path);
-
+    
     console.log("Compiler OutputFilesystem =====>",filePath)
     // console.log("Compiler =====>",compiler)
-    const fi = fs.readFileSync(path.join(filePath,'index.html'))
+    console.log(filePath + 'index.html')
+   
     const fig = Buffer.from(fi).toString();
     
     res.locals.fig = fig;
@@ -44,3 +54,15 @@ router.use('/', async (req, res, next)=>{
 
 })
 
+// router.get('*', (req, res) => {
+//   const fs = compiler.outputFileSystem;
+//   const filePath = path.join(compiler.outputPath, 'index.html'); // Ensure 'index.html' is at this path
+
+//   try {
+//     const fileContents = fs.readFileSync(filePath, 'utf-8');
+//     res.send(fileContents);
+//   } catch (error) {
+//     console.log(error)
+//     res.status(404).send('Page not found');
+//   }
+// });

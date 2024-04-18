@@ -4,7 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 export default  {
   mode: 'development',
-  entry: '../vite-react-test/src/main.jsx',
+  entry: '../shopster/shopster/client/index.js',
   output: {
     path: path.resolve('./build'),
     filename: 'bundle.js',
