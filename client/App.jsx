@@ -14,9 +14,8 @@ const App = () => {
   return (
     <div className="app-container">
       <SidebarComp />
-      <IframeComp
-        src={targetUrl}
-        proxy={proxy}
+      <iframe
+        src='/app'
         className="site-frame"
       />
     </div>

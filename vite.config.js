@@ -8,17 +8,17 @@ export default defineConfig({
   root: path.join(__dirname, '/'),
   build: {
     outDir: path.join(__dirname, 'dist'),
-    // sourcemap: true,
+    sourcemap: true,
   },
   // css: {
   //   devSourcemap: true
   // },
   server: {
-    port: 5555,
     proxy: {
       '/cdp': 'http://localhost:8888',
       '/patch': 'http://localhost:8888',
       '/read': 'http://localhost:8888',
+      '/app': 'http://localhost:8888'
     }
   }
 });
