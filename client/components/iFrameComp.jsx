@@ -1,32 +1,35 @@
-
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DOMPath from 'chrome-dompath';
-
 
 import { fetchElementRules } from '../features/fetchElementRules.js';
 
-import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, updateMidShortMap, setIsActiveFlag } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component that loads a target URL and handles click events within the iframe.
  *
- * @param {Object} props - The component props.
  * @param {number} props.targetPort - The target port for the URL.
  * @returns {JSX.Element} The rendered iframe component.
  */
 
-const iframeComp = ({ targetPort }) => {
+const iframeComp = () => {
   const dispatch = useDispatch();
+  const rules = useSelector(state => state.rules)
+  const target = useSelector(state => state.target)
+  const storeVar = {rules, target}
 
-  const className = "site-frame"
+
+  const targetPort = useSelector(state => state.target.targetPort);
+
+  const targetFrameClassName = "target-site-iframe"
+
   const targetUrl = `http://localhost:${targetPort}`
 
   // waiting for the iframe DOM to load before we add event listeners
   // without this, the event listeners would try to be added to an unexisting iframe
   useEffect(() => {
     // getting our iframe
-    const iframe = document.querySelector(`.${className}`);
+    const iframe = document.querySelector(`.${targetFrameClassName}`);
     // console.log('iframeComp: iframe', iframe);
 
     const handleLoad = () => {
@@ -35,19 +38,22 @@ const iframeComp = ({ targetPort }) => {
         // console.log('iframeComp: iframeDoc', iframeDoc);
 
         const handleClick = async (element) => {
-          console.log('iframeComp: element', element);
+          // console.log('iframeComp: element', element);
 
           // getting the 'selector' of the element, i.e. the same thing that one would get by inspecting the element with dev tools, then right clicking in the dom tree and selecting copy selector.
           // we get this using the DOMPath library, which is a port of the relevant piece of Chromium's Chrome Dev Tools front-end code that does the same thing. This should get us a unique, specific selector for the clicked element every time. In testing so far it has always worked. 2024-04-01_08-14-PM.
           // https://github.com/testimio/DOMPath
 
-          const selector = DOMPath.fullQualifiedSelector(element, true);
+          const fullQualifiedSelector = DOMPath.fullQualifiedSelector(element, true);
           // with true, we get an 'optimized' selector. doesn’t seem to matter which we choose so far. they both have worked. I'm including true now so we recall its an option. if for some reason it doesn’t work, we can switch to false (i.e. only pass one param, the selector)
           // true: #landingAndSticky > div > h1
           // false: div#landingAndSticky > div > h1
           // console.log('\n\n');
-          console.log('iframeComp: selector', selector);
+          console.log('iframeComp: fullQualifiedSelector', fullQualifiedSelector);
           // console.log('\n\n');
+
+          const selector = fullQualifiedSelector.match(/^([^\s]*)/).pop();
+
 
           const data = {
             id: element.id,
@@ -57,11 +63,12 @@ const iframeComp = ({ targetPort }) => {
             nodeType: element.nodeType,
             textContent: element.textContent,
             // attributes: element.attributes,
+            fullQualifiedSelector,
             selector
           };
 
           try {
-            fetchElementRules(data, dispatch);
+            fetchElementRules(data, dispatch, storeVar);
 
           }
           catch (error) {
@@ -69,7 +76,6 @@ const iframeComp = ({ targetPort }) => {
           }
 
         };
-
 
         // This event listener needs to be added to the iframe's contentDocument because
         // we're listening for clicks inside the iframe, and those clicks won't be
@@ -121,7 +127,7 @@ const iframeComp = ({ targetPort }) => {
       width="100%"
       height="100%"
       title="User Site"
-      className={className}
+      className={targetFrameClassName}
     />
   );
 };

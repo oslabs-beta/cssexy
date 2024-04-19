@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import RulesAllComp from "./RulesAllComp.jsx";
+import { useStore } from 'react-redux';
+
+import { logState } from '../store.js';
 
 function SidebarComp() {
+  const store = useStore();
+
   // local state variable for toggling the sidebar
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -18,6 +23,12 @@ function SidebarComp() {
         // 'functional update' of state:
         // This pattern in React and ensures that the state is always updated correctly, even when multiple calls are made in quick succession.
         setIsCollapsed((prevCollapsed) => !prevCollapsed);
+      }
+      if (event.altKey && event.key === 'Enter') {
+        logState(store, 'target');
+      }
+      if (event.ctrlKey && event.key === 'Enter') {
+        logState(store, 'rules');
       }
     };
 

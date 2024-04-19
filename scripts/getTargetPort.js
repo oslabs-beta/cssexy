@@ -30,8 +30,8 @@ const getTargetPort = async () => {
     // passed in from the npm run sexy script in the target package.json
     const targetDir = process.env.TARGET_DIR ? process.env.TARGET_DIR : process.env.TARGET_DIR_BACKUP
 
-    console.log('getTargetPort: invoked');
-    console.log('getTargetPort: targetDir:', targetDir);
+    // console.log('getTargetPort: invoked');
+    // console.log('getTargetPort: targetDir:', targetDir);
     // console.log('targetDirBackup:', process.env.TARGET_DIR_BACKUP);
 
     let targetPort;
@@ -56,7 +56,7 @@ const getTargetPort = async () => {
         .trim() // remove leading and trailing whitespace
         .split('\n'); // split the string into an array of lines
 
-      console.log('pids:', pids);
+      // console.log('pids:', pids);
 
       for (const pid of pids) {
         // `lsof` (list open files)
@@ -87,13 +87,13 @@ const getTargetPort = async () => {
       }
     }
     else {
-      console.log('\n\n');
-      console.log('targetDir is cssxe');
-      console.log('\n');
+      // console.log('\n\n');
+      // console.log('targetDir is cssxe');
+      // console.log('\n');
     }
     // return the targetPort
     updateEnv('TARGET_PORT', targetPort);
-    console.log('getTargetPort: targetPort:', targetPort);
+    // console.log('getTargetPort: targetPort:', targetPort);
     return targetPort;
   } catch (err) {
     console.error(err);

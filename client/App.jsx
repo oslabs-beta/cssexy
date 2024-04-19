@@ -28,7 +28,6 @@ const App = () => {
     <div className="app-container">
       <SidebarComp />
       <IframeComp
-        targetPort={targetPort}
       />
     </div>
   )

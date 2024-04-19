@@ -5,6 +5,10 @@ import { cssToReact } from './cssToReact.js';
 
 const findSourceInline = async (inlineRules, data, targetDir) => {
 
+  // console.log('findSourceInline: inlineRules', inlineRules);
+  // console.log('findSourceInline: data', data);
+  // console.log('findSourceInline: targetDir', targetDir);
+
   const cssText = inlineRules.cssText;
 
   const selector = data.selector;
@@ -53,6 +57,8 @@ const findSourceInline = async (inlineRules, data, targetDir) => {
 
       ignoredPaths.push(...templateIgnoredPaths);
 
+
+  // console.log('findSourceInline: cssText', cssText);
   if (!cssText) {return null};
 
       // we need to convert the strings to js format
@@ -170,9 +176,9 @@ const findSourceInline = async (inlineRules, data, targetDir) => {
 
         // Return data about the match
         const matchData = {
-          targetSourceInline: jsxFilePath.replace(targetDir + path.sep, '/'),
-          targetSourceInlineLineNumber: fileData.substring(0, inlineContents.index).split('\n').length,
-          targetMatchText: inlineContents[0],
+          path: jsxFilePath.replace(targetDir + path.sep, '/'),
+          line: fileData.substring(0, inlineContents.index).split('\n').length,
+          textMatch: inlineContents[0],
         };
 
         inlineFileMatches.push(matchData);
@@ -187,7 +193,7 @@ const findSourceInline = async (inlineRules, data, targetDir) => {
       }
 
       if (inlineFileMatches.length > 0) {
-        // console.log(`findSourceInline: : inlineSyle: matches for cssTextJsArr ${cssTextJsArr} found in the following files : ${inlineFileMatches.join(', ')}`);
+        console.log(`findSourceInline: : inlineSyle: matches for cssTextJsArr ${cssTextJsArr} found in the following files : ${inlineFileMatches.join(', ')}`);
 
       }
 

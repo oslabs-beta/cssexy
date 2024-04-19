@@ -8,9 +8,9 @@ import { config } from 'dotenv';
 const updateEnv = async (property, value) => {
   try {
 
-    console.log('updateEnv: invoked');
-    console.log('updateEnv: property:', property);
-    console.log('updateEnv: value:', value);
+    // console.log('updateEnv: invoked');
+    // console.log('updateEnv: property:', property);
+    // console.log('updateEnv: value:', value);
 
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);

@@ -8,57 +8,72 @@ const fetchTargetData = createAsyncThunk('target/fetchTargetData', async () => {
   return data;
 });
 
+const initialState = {
+    targetDir: '',
+    targetPort: '',
+    targetSelector: '',
+    targetSourceInline: {
+      path: '',
+      allPaths: [],
+      name: '',
+      line: ''
+    },
+    targetSourceRegular: {
+      path: '',
+      absolutePaths: [],
+      relativePaths: [],
+      name: ''
+    },
+    targetData: {},
+    error: null, // if we want to track errors
+}
+
 const targetSlice = createSlice({
   name: 'target',
   // createSlice expects the initial state to be passed as 'initialState'.
   // so we pass initialTargetState as the value of 'initialState'.
-  initialState: {
-    targetDir: '',
-    targetPort: '',
-    targetSelector: '',
-    targetSourceInline: '',
-    targetSourceInlineAll: [],
-    targetSourceInlineName: '',
-    targetSourceInlineLineNumber: '',
-    targetSourceRegular: '',
-    targetSourceRegularName: '',
-    targetSourceRegularAll: [],
-    targetData: {},
-    error: null, // if we want to track errors
-  },
+  initialState,
   reducers: {
     updateTargetSourceRegular: (state, action) => {
-      // console.log('targetSlice: state.targetSourceRegular: updated', action.payload);
-      state.targetSourceRegular = action.payload;
-      const splitPaths = (state.targetSourceRegular)?.split('/');
-      // console.log('targetSlice: state.targetSourceRegularName: splitPaths', splitPaths);
-      state.targetSourceRegularName = splitPaths.length > 0 ? `/${splitPaths[splitPaths.length - 1]}` : ''
-      console.warn('targetSlice: state.targetSourceRegularName: updated', state.targetSourceRegularName);
-    },
-    updateTargetSourceRegularAll: (state, action) => {
-      // console.log('targetSlice: state.targetSourceRegularAll: updated', action.payload);
-      state.targetSourceRegularAll = action.payload
+      if (!action.payload) {
+        // console.log('state.targetSourceRegular before clearing:', state.targetSourceRegular);
+        state.targetSourceRegular = initialState.targetSourceRegular
+        return
+        // console.log('state.targetSourceRegular after clearing:', state.targetSourceRegular);
+      }
+      console.warn('targetSlice: state.targetSourceRegular: action.payload', action.payload);
+      const absolutePaths = action.payload?.absolutePaths
+      const relativePaths = action.payload?.relativePaths
+
+      state.targetSourceRegular.absolutePaths = absolutePaths;
+      state.targetSourceRegular.relativePaths = relativePaths;
+      const path = absolutePaths[0] || relativePaths[0];
+      state.targetSourceRegular.path = path;
+      const pathSplit = (path)?.split('/');
+      // console.log('targetSlice: state.targetSourceRegularName: pathSplit', pathSplit);
+      state.targetSourceRegular.name = pathSplit.length > 0 ? `/${pathSplit[pathSplit.length - 1]}` : ''
+      // console.warn('targetSlice: state.targetSourceRegularName: updated', state.targetSourceRegularName);
     },
     updateTargetSourceInline: (state, action) => {
-      // console.log('targetSlice: state.targetSourceInline: updated', action.payload);
-      state.targetSourceInline = action.payload;
-      const splitPaths = (state.targetSourceInline).split('/');
+      if (!action.payload) {
+        console.log('targetSlice: updateTargetSourceInline: action.payload is empty. Clearing state.targetSourceInline');
+        // console.log('state.targetSourceRegular before clearing:', state.targetSourceRegular);
+        state.targetSourceInline = initialState.targetSourceInline
+        // console.log('state.targetSourceRegular after clearing:', state.targetSourceRegular);
+        return
+      }
+      if (action.payload.length > 1) {
+        console.warn('targetSlice: updateTargetSourceInline: MORE THAN 1 MATCHING inline style FILE.', action.payload);
+        state.targetSourceInline.allPaths = action.payload;
+        return
+      }
+      // console.warn('targetSlice: updateTargetSourceInline: action.payload', action.payload);
 
-      console.log('\n\n');
-      console.log('TARGETSLICE: STATE.TARGETSOURCEINLINENAME: SPLITPATHS', splitPaths);
-      console.log('TARGETSLICE: STATE.TARGETSOURCEINLINENAME: SPLITPATHS', `/${splitPaths[splitPaths.length - 1]}`);
-      state.targetSourceInlineName = `/${splitPaths[splitPaths.length - 1]}`
-      console.log('\n\n');
-      console.warn('TARGETSLICE: STATE.TARGETSOURCEINLINENAME: UPDATED', state.targetSourceInlineName);
-      console.log('\n\n');
-    },
-    updateTargetSourceInlineAll: (state, action) => {
-      // console.log('targetSlice: state.targetSourceInline: updated', action.payload);
-      state.targetSourceInline = action.payload;
-    },
-    updateTargetSourceInlineLineNumber: (state, action) => {
-      // console.log('targetSlice: state.targetSourceInlineLineNumber: updated', action.payload);
-      state.targetSourceInlineLineNumber = action.payload;
+      state.targetSourceInline.path = action.payload[0].path;
+
+      state.targetSourceInline.line = action.payload[0].line;
+      const splitPaths = (state.targetSourceInline.path).split('/');
+      state.targetSourceInline.name = `/${splitPaths[splitPaths.length - 1]}`
     },
     updateTargetDir: (state, action) => {
       // console.log('targetSlice: state.targetDir: updated', action.payload);
@@ -77,7 +92,7 @@ const targetSlice = createSlice({
       state.targetData = action.payload;
     },
     updateTarget: (state, action) => {
-      console.log('\n\n');
+      // console.log('\n\n');
       let key = Object.keys(action.payload)[0];
       // console.log('targetSlice: state.target: UPDATE TARGET', action.payload);
       if (typeof action.payload !== 'object') {
@@ -111,10 +126,7 @@ export const {
   updateTargetPort,
   updateTargetSelector,
   updateTargetSourceInline,
-  updateTargetSourceInlineAll,
-  updateTargetSourceInlineLineNumber,
   updateTargetSourceRegular,
-  updateTargetSourceRegularAll,
   updateTarget
 } = targetSlice.actions;
 

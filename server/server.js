@@ -99,6 +99,7 @@ app.post('/findSource', async (req, res) => {
 });
 
 app.post('/openSourceFile', async (req, res) => {
+  console.log('\n\n');
   console.log('server: get /openSourceFile');
   const { file, lineNum } = req.body;
 

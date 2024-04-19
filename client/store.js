@@ -9,4 +9,16 @@ const store = configureStore({
   }
 });
 
+
+const logState = (store, key) => {
+  if (key === 'target') {
+    // useful when the store is small
+    console.log(`State: ${key}`, JSON.stringify(store.getState()[key], null, 2));
+  }
+  else {
+    console.log(`store: ${key}`, store.getState()[key]);
+  }
+}
+
 export default store;
+export { logState };
