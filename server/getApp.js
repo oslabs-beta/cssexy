@@ -5,13 +5,14 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 export const router = express.Router()
 
 
-import webpackConfig from '../../shopster/shopster/webpack.config.js';
+// import webpackConfig from '../../shopster/shopster/webpack.config.js';
+import webpackConfig from '../webpack.config.js';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 
-webpackConfig.output.path = path.resolve(import.meta.dirname, 'build');
-webpackConfig.entry = path.join(import.meta.dirname,'../../shopster/shopster/client/index.js');
+// webpackConfig.output.path = path.resolve(import.meta.dirname, 'build');
+// webpackConfig.entry = path.join(import.meta.dirname,'../../shopster/shopster/client/index.js');
 
-webpackConfig.output.publicPath = path.resolve('/build/');
+// webpackConfig.output.publicPath = path.resolve('/build/');
 // console.log(webpackConfig)
 
 // webpackConfig.mode = 'development';
@@ -45,10 +46,11 @@ router.use('/', async (req, res, next)=>{
     
     console.log("Compiler OutputFilesystem =====>",filePath)
     // console.log("Compiler =====>",compiler)
-    console.log(filePath + 'index.html')
-   
-    const fig = Buffer.from(fi).toString();
     
+   const fi = fs.readFile(filePath, 'index.html');
+   console.log(fi)
+    const fig = Buffer.from(fi).toString();
+    console.log(fig)
     res.locals.fig = fig;
   return next()
 
