@@ -189,7 +189,8 @@ const rulesSlice = createSlice({
                     if (!cache[highLevelProp]) cache[highLevelProp] = [];
                     cache[highLevelProp].push({
                       specificity,
-                      source: prop
+                      source: prop,
+                      origin
                     });
                   }
                   // checks if cur property is a longhand property which has a shorthand parent)
@@ -200,7 +201,8 @@ const rulesSlice = createSlice({
                     if (!cache[highLevelProp]) cache[highLevelProp] = [];
                     cache[highLevelProp].push({
                       specificity,
-                      source: prop
+                      source: prop,
+                      origin
                     });
                   }
                   // checks if cur property is high level property (e.g.'border') or standalone property with no corresponding shorthand/longhand
@@ -208,7 +210,8 @@ const rulesSlice = createSlice({
                     if (!cache[prop.name]) cache[prop.name] = [];
                     cache[prop.name].push({
                       specificity,
-                      source: prop
+                      source: prop,
+                      origin
                     });
                   };
                 };
@@ -220,47 +223,89 @@ const rulesSlice = createSlice({
         });
       });
 
-      const compareSpecificity = (specificity1, specificity2) => {
-        if (specificity1.a !== specificity2.a) {
-          return specificity1.a > specificity2.a ? 1 : -1;
+      const compareSpecificity = (obj1, obj2) => {
+        if (obj1.specificity.a !== obj2.specificity.a) {
+          return obj1.specificity.a > obj2.specificity.a ? 1 : -1;
         }
         // If 'a' values are equal, compare the 'b' values
-        if (specificity1.b !== specificity2.b) {
-          return specificity1.b > specificity2.b ? 1 : -1;
+        else if (obj1.specificity.b !== obj2.specificity.b) {
+          return obj1.specificity.b > obj2.specificity.b ? 1 : -1;
         }
         // If 'b' values are equal, compare the 'c' values
-        if (specificity1.c !== specificity2.c) {
-          return specificity1.c > specificity2.c ? 1 : -1;
+        else if (obj1.specificity.c !== obj2.specificity.c) {
+          return obj1.specificity.c > obj2.specificity.c ? 1 : -1;
         }
-        // If all values are equal, the specificities are equal
-        return 0;
-      };
+        else return 0;
+      }
+      const compareOriginsAndNames = (obj1, obj2) => {
+        const score = {
+          ['user-agent']: 0,
+          regular: 10,
+          inline: 20 
+        };
 
-      // go through cache and update isActive flag to false when needed
+        if (score[obj1.origin] !== score[obj2.origin]) {
+          return score[obj1.origin] > score[obj2.origin] ? 1 : -1;
+        }
+        // If specificity and origins are the same but property names are different, we want to keep both as active
+        else if (score[obj1.origin] === score[obj2.origin] && obj1.source.name !== obj2.source.name) return 1;
+        // if specificities, origins and property names are all the same, keep the latter one reflecting cascading nature of css rules
+        else if (score[obj1.origin] === score[obj2.origin] && obj1.source.name === obj2.source.name) return -1;
+        // IF YOU'RE GETTING THE ERROR BELOW, COMMENT THE ELSE BLOCK OUT AND TELL ELENA TO INVESTIGATE
+        else {
+          throw new Error(`Error in rulesSlice.js: findActiveStyles reducer: compare func \n\nStyle-1: ${JSON.stringify(obj1)} \n\nStyle-2: ${JSON.stringify(obj2)}`);
+        }
+      }
+
       for (let key in cache) {
-        // if only 1 prop in array, it means there're no similar styles => no need to update isActive
         if (cache[key].length > 1) {
-          // find the max specificity for all related properties
-          let maxSpecificity = cache[key][0].specificity;
+          // Step 1: find max specificity and count how many objs have max specificity
+          let bestObj = cache[key][0];
+          const countCache = {};
 
-          for (let i = 1; i < cache[key].length; i++) {
-            const item = cache[key][i];
-            const result = compareSpecificity(maxSpecificity, item.specificity);
-            if (result === -1) maxSpecificity = item.specificity;
-          };
+          cache[key].forEach(curObj => {
+            const curSpecificity = `${curObj.specificity.a}${curObj.specificity.b}${curObj.specificity.c}`;
+            if (!countCache[curSpecificity]) countCache[curSpecificity] = 0;
+            countCache[curSpecificity]++;
 
-          // turn isActive to true for styles matching max specificity and to false for styles with lower specificity
-          for (let i = 0; i < cache[key].length; i++) {
-            const item = cache[key][i];
-            const result = compareSpecificity(maxSpecificity, item.specificity);
-            if (result === 1) item.source.isActive = false;
-            else if (result === 0) item.source.isActive = true;
+            if (compareSpecificity(bestObj, curObj) === -1) {
+              bestObj.source.isActive = false;
+              bestObj = curObj;
+            }            
+          })
+
+          // Step 2: turn off isActive for everything that is less than max specificity
+          cache[key].forEach(obj => {
+            if (compareSpecificity(bestObj, obj) === 1) obj.source.isActive = false;
+          });
+
+          // Step 3: If there're more than 1 active max specificities, compare them by other parameters
+          // this comparison accounts for cases: 1) when specificities are same but origins are different, and 
+          // 2) when all specificities, origins and property names are the same - applying rule of cascading styles (latter overwrites previous)
+          const maxSpecificity = `${bestObj.specificity.a}${bestObj.specificity.b}${bestObj.specificity.c}`;
+          if (countCache[maxSpecificity] > 1) {
+            const bestObjs = cache[key].filter(obj => obj.source.isActive === true);
+          
+            let bestObj = bestObjs[0];
+            for (let i = 1; i < bestObjs.length; i++) {
+              const curObj = bestObjs[i];
+              if (compareOriginsAndNames(bestObj, curObj) === -1) {
+                bestObj.source.isActive = false;
+                bestObj = curObj;
+              }
+            }
           }
         }
-      };
+      }
 
       state.isActiveCache = cache;
     },
+    resetCache: (state) => {
+      state.shortToLongMap = {};
+      state.longToShortMap = {};
+      state.midToShortMap = {};
+      state.isActiveCache = {};
+    }
   },
 });
 
@@ -274,7 +319,8 @@ export const {
   findActiveStyles, 
   updateShortLongMaps,
   updateMidShortMap,
-  setIsActiveFlag 
+  setIsActiveFlag,
+  resetCache
 } = rulesSlice.actions;
 
 export default rulesSlice.reducer;
