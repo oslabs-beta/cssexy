@@ -42,12 +42,12 @@ router.use('/', async (req, res, next)=>{
     const fs = compiler.outputFileSystem;
   //  console.log("FS====>", compiler.outputFileSystem)
    
-    const filePath = path.join(compiler.outputPath, req.path);
+    const filePath = path.join(compiler.outputPath, 'index.html');
     
     console.log("Compiler OutputFilesystem =====>",filePath)
     // console.log("Compiler =====>",compiler)
     
-   const fi = fs.readFile(filePath, 'index.html');
+   const fi = fs.readFileSync(filePath);
    console.log(fi)
     const fig = Buffer.from(fi).toString();
     console.log(fig)
@@ -55,6 +55,24 @@ router.use('/', async (req, res, next)=>{
   return next()
 
 })
+
+
+
+// router.use('/', async (req, res, next)=>{
+//   console.log("Line 32 Route hit")
+//    const fs = compiler.outputFileSystem;
+  
+//    const filePath = path.join(compiler.outputPath, req.path);
+
+//    console.log("Compiler OutputFilesystem =====>",filePath)
+//    console.log("Compiler =====>",compiler)
+//    const fi = fs.readFileSync(path.join(filePath,'index.html'))
+//    const fig = Buffer.from(fi).toString();
+   
+//    res.locals.fig = fig;
+//  return next()
+
+// })
 
 // router.get('*', (req, res) => {
 //   const fs = compiler.outputFileSystem;
