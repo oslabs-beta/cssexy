@@ -19,9 +19,9 @@ const IframeComp = () => {
   const storeVar = {rules, target}
 
 
-  const targetPort = useSelector(state => state.target.targetPort);
+  const targetPort = target.targetPort;
 
-  const targetFrameClassName = "target-site-iframe"
+  const className = "site-frame"
 
   const targetUrl = `http://localhost:${targetPort}`
 
@@ -29,7 +29,7 @@ const IframeComp = () => {
   // without this, the event listeners would try to be added to an unexisting iframe
   useEffect(() => {
     // getting our iframe
-    const iframe = document.querySelector(`.${targetFrameClassName}`);
+    const iframe = document.querySelector(`.${className}`);
     // console.log('iframeComp: iframe', iframe);
 
     const handleLoad = () => {
@@ -44,16 +44,10 @@ const IframeComp = () => {
           // we get this using the DOMPath library, which is a port of the relevant piece of Chromium's Chrome Dev Tools front-end code that does the same thing. This should get us a unique, specific selector for the clicked element every time. In testing so far it has always worked. 2024-04-01_08-14-PM.
           // https://github.com/testimio/DOMPath
 
-          const fullQualifiedSelector = DOMPath.fullQualifiedSelector(element, true);
+          const selector = DOMPath.fullQualifiedSelector(element, true);
           // with true, we get an 'optimized' selector. doesn’t seem to matter which we choose so far. they both have worked. I'm including true now so we recall its an option. if for some reason it doesn’t work, we can switch to false (i.e. only pass one param, the selector)
           // true: #landingAndSticky > div > h1
           // false: div#landingAndSticky > div > h1
-          // console.log('\n\n');
-          console.log('iframeComp: fullQualifiedSelector', fullQualifiedSelector);
-          // console.log('\n\n');
-
-          const selector = fullQualifiedSelector.match(/^([^\s]*)/).pop();
-
 
           const data = {
             id: element.id,
@@ -63,7 +57,6 @@ const IframeComp = () => {
             nodeType: element.nodeType,
             textContent: element.textContent,
             // attributes: element.attributes,
-            fullQualifiedSelector,
             selector
           };
 
@@ -127,7 +120,7 @@ const IframeComp = () => {
       width="100%"
       height="100%"
       title="User Site"
-      className={targetFrameClassName}
+      className={className}
     />
   );
 };
