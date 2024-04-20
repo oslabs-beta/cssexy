@@ -9,23 +9,23 @@ const fetchTargetData = createAsyncThunk('target/fetchTargetData', async () => {
 });
 
 const initialState = {
-    targetDir: '',
-    targetPort: '',
-    targetSelector: '',
-    targetSourceInline: {
-      path: '',
-      allPaths: [],
-      name: '',
-      line: ''
-    },
-    targetSourceRegular: {
-      path: '',
-      absolutePaths: [],
-      relativePaths: [],
-      name: ''
-    },
-    targetData: {},
-    error: null, // if we want to track errors
+  targetDir: '',
+  targetPort: '',
+  targetSelector: '',
+  targetSourceInline: {
+    path: '',
+    allPaths: [],
+    name: '',
+    line: ''
+  },
+  targetSourceRegular: {
+    path: '',
+    absolutePaths: [],
+    relativePaths: [],
+    name: ''
+  },
+  targetData: {},
+  error: null, // if we want to track errors
 }
 
 const targetSlice = createSlice({

@@ -38,11 +38,13 @@ const styleSheets = {};
     '--disable-web-security',
   ]
 
+
   // for keith's environemnt. opens the browser on second screen
   coder == 'KEITH' ? pupArgs.push('--window-position=2000,200') : null;
 
-  // puppeteer: library for controlling Chrome/Chromium over a network protocol.
-  const browser = await puppeteer.launch({
+  const coderProfile = coder ? path.resolve(__dirname, `../../data/Chrome/Profiles/${coder}/`) : null
+
+  const pupOptions = {
     // open browser window
     headless: false,
     // don't set a default viewport size. without this, i get a funky view where cssxe and the target site only take up a third of the browser window.
@@ -50,8 +52,14 @@ const styleSheets = {};
     // open devtools. good for cssxe development mode. prob should be false for prod.
     devtools: true,
     // array of command-line args we define above to pass to Chrome
-    args: pupArgs
-  });
+    args: pupArgs,
+    // for us to specify a chrome profile, which allows us to maintain history between puppeteer sessions.
+    // could be something we want to offer as a feature for users too. NOTE 2024-04-20_12-59-AM.
+    userDataDir: coderProfile
+  }
+
+  // puppeteer: library for controlling Chrome/Chromium over a network protocol.
+  const browser = await puppeteer.launch(pupOptions);
 
   // grab a reference to the single page that Puppeteer just opened up
   // the 'pages' method returns an array of all the pages that Puppeteer knows about, and we only want the one that it just created

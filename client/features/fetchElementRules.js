@@ -3,8 +3,9 @@ import { updateTargetSelector, updateTargetSourceInline, updateTargetSourceRegul
 
 const fetchElementRules = async (data, dispatch, storeVar) => {
 
+  console.log('fetchElementRules: storeVar', storeVar);
   const targetPort = storeVar.target.targetPort;
-  const targetDir = storeVar.target.targetDir;;
+  const targetDir = storeVar.target.targetDir;
   const selector = data.selector;
 
 
@@ -78,7 +79,8 @@ const fetchElementRules = async (data, dispatch, storeVar) => {
 
         dispatch(updateTargetSourceRegular({ absolutePaths, relativePaths }));
 
-        // need to build out the regularRUle logic in findSourceRegular for the below to work.
+        // KEITH TO-DO 2024-04-20_01-00-AM: need to build out the regularRule logic in findSourceRegular for the below to work.
+
         // const targetSourceRegularFirstPath =
         // regularRules?.absolutePaths[0] ?
         // regularRules.absolutePaths[0] :

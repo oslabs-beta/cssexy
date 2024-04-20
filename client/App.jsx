@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import SidebarComp from './components/SidebarComp.jsx';
-import IframeComp from './components/iframeComp.jsx';
+import IframeComp from './components/IframeComp.jsx';
 
 import { updateTarget } from './slices/targetSlice.js';
 

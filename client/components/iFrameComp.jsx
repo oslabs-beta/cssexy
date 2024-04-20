@@ -12,7 +12,7 @@ import { fetchElementRules } from '../features/fetchElementRules.js';
  * @returns {JSX.Element} The rendered iframe component.
  */
 
-const iframeComp = () => {
+const IframeComp = () => {
   const dispatch = useDispatch();
   const rules = useSelector(state => state.rules)
   const target = useSelector(state => state.target)
@@ -132,4 +132,4 @@ const iframeComp = () => {
   );
 };
 
-export default iframeComp;
+export default IframeComp;

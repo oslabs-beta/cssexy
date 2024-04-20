@@ -11,6 +11,9 @@ function SidebarStyling(props) {
 
     const inlineRules = useSelector(state => state.rules.inlineRules);
     const { targetSourceInline, targetSourceInlineLineNumber } = useSelector(state => state.target);
+    const rules = useSelector(state => state.rules)
+    const target = useSelector(state => state.target)
+    const storeVar = {rules, target}
 
     // console.log('SidebarStyling: props', props);
 
@@ -81,7 +84,7 @@ function SidebarStyling(props) {
                 await new Promise(resolve => updatedCssProp.sourcePath ? setTimeout(resolve, 500) : setTimeout(resolve, 1000));
 
                 // running CDP again to update our redux store after patching the file.
-                await fetchElementRules(data, dispatch);
+                await fetchElementRules(data, dispatch, storeVar);
                 setValues({});
 
 
