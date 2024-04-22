@@ -36,13 +36,15 @@ const styleSheets = {};
     // `--app=${cssxeUrl}`,
     // this is what so far allows us to pass data from inside of the iframe to the parent window, cssxe.
     '--disable-web-security',
+    // makes the empty browser window dark mode. no more white killing my eyes during development. turn this off in prod mode.
+    '--enable-features=WebContentsForceDark'
   ]
 
 
   // for keith's environemnt. opens the browser on second screen
   coder == 'KEITH' ? pupArgs.push('--window-position=2000,200') : null;
 
-  const coderProfile = coder ? path.resolve(__dirname, `../../data/Chrome/Profiles/${coder}/`) : null
+  const coderProfile = !coder ? path.resolve(__dirname, `../../data/Chrome/Profiles/${coder}/`) : null
 
   const pupOptions = {
     // open browser window
