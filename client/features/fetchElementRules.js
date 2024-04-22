@@ -93,7 +93,7 @@ const fetchElementRules = async (data, dispatch, storeVar) => {
         //   headers: {
         //     'Content-Type': 'application/json',
         //   },
-        //   body: JSON.stringify({ regularRules, data }),
+        //   body: JSON.stringify({ regularRules, data, targetDir }),
         // });
 
         // const resultRegular = await responseRegular.json();
@@ -127,17 +127,17 @@ const fetchElementRules = async (data, dispatch, storeVar) => {
     // if the inline rules has cssProperties, we try to find the source
     if (inlineRules?.cssProperties.length > 0) {
       try {
-        // console.warn('fetchElementRules: inlineRules is TRUE', inlineRules);
+        console.warn('fetchElementRules: inlineRules is TRUE', inlineRules);
         const responseInline = await fetch('/findSource', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ inlineRules, data }),
+          body: JSON.stringify({ inlineRules, data, targetDir }),
         });
 
         const targetSourceInline = await responseInline.json();
-        // console.warn('fetchElementRules: targetSourceInline', targetSourceInline);
+        console.warn('fetchElementRules: targetSourceInline', targetSourceInline);
         dispatch(updateTargetSourceInline(targetSourceInline));
 
       }

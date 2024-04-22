@@ -26,6 +26,13 @@ function expandShorthandProperty(property, value) {
 
   switch (property) {
     case 'inset':
+      case 'padding':
+        const [topInset, rightInset = topInset, bottomInset = topInset, leftInset = rightInset] = values;
+        expandedProps[`top`] = convertValue(topInset);
+        expandedProps[`right`] = convertValue(rightInset);
+        expandedProps[`bottom`] = convertValue(bottomInset);
+        expandedProps[`left`] = convertValue(leftInset);
+        break;
     case 'margin':
     case 'padding':
       const [top, right = top, bottom = top, left = right] = values;

@@ -35,11 +35,17 @@ const targetSlice = createSlice({
   initialState,
   reducers: {
     updateTargetSourceRegular: (state, action) => {
-      if (!action.payload) {
+      if (!action.payload ) {
         // console.log('state.targetSourceRegular before clearing:', state.targetSourceRegular);
         state.targetSourceRegular = initialState.targetSourceRegular
         return
         // console.log('state.targetSourceRegular after clearing:', state.targetSourceRegular);
+      }
+      if (action.payload.length === 0) {
+        console.log('\n\n');
+        console.warn('targetSlice: updateTargetSourceRegular: action.payloads length is 0.', action.payload);
+        console.log('\n\n');
+        return
       }
       console.warn('targetSlice: state.targetSourceRegular: action.payload', action.payload);
       const absolutePaths = action.payload?.absolutePaths
@@ -55,7 +61,7 @@ const targetSlice = createSlice({
       // console.warn('targetSlice: state.targetSourceRegularName: updated', state.targetSourceRegularName);
     },
     updateTargetSourceInline: (state, action) => {
-      if (!action.payload) {
+      if (!action.payload || action.payload.length === 0) {
         console.log('targetSlice: updateTargetSourceInline: action.payload is empty. Clearing state.targetSourceInline');
         // console.log('state.targetSourceRegular before clearing:', state.targetSourceRegular);
         state.targetSourceInline = initialState.targetSourceInline
@@ -67,7 +73,7 @@ const targetSlice = createSlice({
         state.targetSourceInline.allPaths = action.payload;
         return
       }
-      // console.warn('targetSlice: updateTargetSourceInline: action.payload', action.payload);
+      console.warn('targetSlice: updateTargetSourceInline: action.payload', action.payload);
 
       state.targetSourceInline.path = action.payload[0].path;
 

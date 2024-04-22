@@ -4,18 +4,15 @@ import { fetchElementRules } from '../features/fetchElementRules.js';
 import { getCssValueOptions } from '../features/getCssValueOptions.js';
 
 function SidebarStyling(props) {
-
-
+    // console.log('SidebarStyling: props', props);
     const dispatch = useDispatch();
 
-
-    const inlineRules = useSelector(state => state.rules.inlineRules);
-    const { targetSourceInline, targetSourceInlineLineNumber } = useSelector(state => state.target);
     const rules = useSelector(state => state.rules)
     const target = useSelector(state => state.target)
     const storeVar = {rules, target}
 
-    // console.log('SidebarStyling: props', props);
+    const inlineRules = rules.inlineRules;
+    const { targetSourceInline, targetSourceInlineLineNumber } = target;
 
     // spread operator to make a deep copy of props, so that we can then modify it.
     const liveProps = { ...props };

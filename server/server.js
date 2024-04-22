@@ -55,9 +55,8 @@ if (environment === 'production') {
 // `spawn` from the `child_process` module in Node.js is used to create new child processes.
 // These run independently, but can communicate with the parent process via IPC (Inter-Process Communication) channels.
 // So in this case, puppeteer is a child process of this server process.
-if (puppeteerMode === 1) {
-  spawn('node', ['../client/puppeteer/pup.js', browserPort])
-}
+
+spawn('node', ['../client/puppeteer/pup.js', browserPort]);
 
 app.post('/cdp', async (req, res) => {
   const data = req.body;
@@ -86,11 +85,11 @@ app.post('/patch', async (req, res) => {
 });
 
 app.post('/findSource', async (req, res) => {
-  // console.log('server: post /inline data', data);
-  // console.log('server: post /inline rules', inlineRules);
+  // console.log('server: post /findSource', req.body);
+
   try {
-    const result = req.body.inlineRules ? await findSourceInline(req.body.inlineRules, req.body.data, targetDir) : await findSourceRegular(req.body.regularRules, req.body.data, targetDir)
-    console.log('server: findSource: result', result);
+    const result = req.body.inlineRules ? await findSourceInline(req.body) : await findSourceRegular(req.body);
+    // console.log('server: findSource: result', result);
     return res.json(result);
   } catch (error) {
     console.error('Error processing data:', error);
@@ -105,8 +104,8 @@ app.post('/openSourceFile', async (req, res) => {
 
   console.log('server: targetDir + file', path.join(targetDir, file));
   try {
-    console.log('server: openSourceFile: file', file);
-    console.log('server: openSourceFile: line', lineNum);
+    // console.log('server: openSourceFile: file', file);
+    // console.log('server: openSourceFile: line', lineNum);
     exec(`code -r -g ${path.join(targetDir, file)}:${lineNum}`);
     return res.send({ success: 'File opened in VS Code' });
   } catch (error) {

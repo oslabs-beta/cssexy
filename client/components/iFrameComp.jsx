@@ -49,6 +49,11 @@ const IframeComp = () => {
           // true: #landingAndSticky > div > h1
           // false: div#landingAndSticky > div > h1
 
+          const selectorStart = selector.match(/^([^\s]*)/).pop();
+
+          console.warn('iframeComp: selector', selector);
+          console.warn('iframeComp: selectorStart', selectorStart);
+
           const data = {
             id: element.id,
             // innerHTML: element.innerHTML,
@@ -57,7 +62,8 @@ const IframeComp = () => {
             nodeType: element.nodeType,
             textContent: element.textContent,
             // attributes: element.attributes,
-            selector
+            selector,
+            selectorStart
           };
 
           try {
