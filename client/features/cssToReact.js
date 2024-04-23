@@ -1,20 +1,18 @@
 // cssToReact.js
 
 function cssToReact(cssText) {
-  const rules = cssText.split(';').filter(rule => rule.trim() !== '');
   const styleObj = {};
 
-  for (let rule of rules) {
-    const [property, value] = rule.split(':').map(part => part.trim());
-    if (property && value) {
-      const camelCaseProperty = camelize(property);
-      if (shorthandProperties[camelCaseProperty]) {
-        const expandedProps = expandShorthandProperty(camelCaseProperty, value);
-        Object.assign(styleObj, expandedProps);
-      } else {
-        styleObj[camelCaseProperty] = convertValue(value);
-      }
+  const [property, value] = cssText.split(':').map(part => part.trim());
+  if (property && value) {
+    const camelCaseProperty = camelize(property);
+    if (shorthandProperties[camelCaseProperty]) {
+      const expandedProps = expandShorthandProperty(camelCaseProperty, value);
+      Object.assign(styleObj, expandedProps);
+    } else {
+      styleObj[camelCaseProperty] = convertValue(value);
     }
+
   }
 
   return Object.entries(styleObj).map(([key, value]) => `${key}: '${value}'`).join(', ');
@@ -26,14 +24,17 @@ function expandShorthandProperty(property, value) {
 
   switch (property) {
     case 'inset':
-      case 'padding':
-        const [topInset, rightInset = topInset, bottomInset = topInset, leftInset = rightInset] = values;
-        expandedProps[`top`] = convertValue(topInset);
-        expandedProps[`right`] = convertValue(rightInset);
-        expandedProps[`bottom`] = convertValue(bottomInset);
-        expandedProps[`left`] = convertValue(leftInset);
-        break;
+      const [topInset, rightInset = topInset, bottomInset = topInset, leftInset = rightInset] = values;
+      expandedProps[`top`] = convertValue(topInset);
+      expandedProps[`right`] = convertValue(rightInset);
+      expandedProps[`bottom`] = convertValue(bottomInset);
+      expandedProps[`left`] = convertValue(leftInset);
+      break;
     case 'margin':
+      if (values.length === 1) {
+        expandedProps.margin = convertValue(values[0]);
+        break;
+      }
     case 'padding':
       const [top, right = top, bottom = top, left = right] = values;
       expandedProps[`${property}Top`] = convertValue(top);
@@ -54,9 +55,9 @@ function expandShorthandProperty(property, value) {
       expandedProps.flexDirection = flexDirection;
       expandedProps.flexWrap = flexWrap;
       break;
-// more shorthand properties...
+    // more shorthand properties...
     // default:
-      // break;
+    // break;
   }
 
   return expandedProps;

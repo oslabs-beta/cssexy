@@ -28,10 +28,25 @@ function RulesRegularComp() {
 
   return (
     <div>
-       <h4>regular</h4>
-       {/* not working to make it white */}
-       {targetSourceRegularPath ? <h5 style={{color: 'white'}}><a href="#" onClick={() => openSourceFile(targetSourceRegularPath)}>{targetSourceRegularName}</a></h5>: null}
-      <>{regularElements.length ? regularElements : <br />}</>
+      <h4>regular</h4>
+      {/* <a> 'a' for anchor. used as a hyperlink tag */}
+      {/* href stands for 'hypertext reference' */}
+      {/* if targetSourceInlinePath is not null, open the source file */}
+      {/* otherwise do nothing */}
+      {/* added e and preventDefault in order to name the href and prevent clicking then navigating the site to that endpoint, which would reload the page. */}
+      {/* even preventing default while maintaining the href would allow us to prevent the page from navigating to /#, which, while it doesn’t reload the page, simply isnt as clean of a user experience. */}
+      {
+        targetSourceRegularPath ?
+          <h5 ><a href="targetSourcePath" className="target-source-path" onClick={(e) => { e.preventDefault(); (targetSourceRegularPath) }}>{targetSourceRegularName}</a></h5>
+          :
+          null
+      }
+      {/* if there are inline styles, display them, otherwise display blank line */}
+      <>{
+        regularElements.length ?
+          regularElements
+          :
+          <br />}</>
     </div>
   )
 };

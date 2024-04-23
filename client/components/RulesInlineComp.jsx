@@ -10,7 +10,7 @@ const RulesInlineComp = () => {
     // contains all of the regular styles (styles specified in .css files)
     // const styleSheets = useSelector(state => state.rules.styleSheets);
 
-    const { path: targetSourceInlinePath, name: targetSourceInlineName, line: targetSourceInlineLineNumber} = useSelector(state => state.target.targetSourceInline);
+    const { path: targetSourceInlinePath, name: targetSourceInlineName, line: targetSourceInlineLineNumber } = useSelector(state => state.target.targetSourceInline);
 
     const inlineElements = inlineRules.map((each, idx) => {
         return (
@@ -19,17 +19,32 @@ const RulesInlineComp = () => {
                 selector={each.rule.selectorList?.selectors[0].text}
                 cssProperties={each.rule.style.cssProperties}
                 origin={each.rule.origin}
-                // sourcePath={firstSourcePath}
+            // sourcePath={firstSourcePath}
             />
         )
     });
 
     return (
         <div>
-         {/* <h4>{inlineSource ? inlineSource : 'inline'}</h4> */}
-         <h4>inline</h4>
-         {targetSourceInlinePath ? <h5 style={{color: 'white'}}><a href="#" onClick={() => openSourceFile(targetSourceInlinePath, targetSourceInlineLineNumber)}>{targetSourceInlineName}: {targetSourceInlineLineNumber}</a></h5>: null}
-            {inlineElements.length ? inlineElements : <br/>}
+            {/* <h4>{inlineSource ? inlineSource : 'inline'}</h4> */}
+            <h4>inline</h4>
+            {/* <a> 'a' for anchor. used as a hyperlink tag */}
+            {/* href stands for 'hypertext reference' */}
+            {/* if targetSourceInlinePath is not null, open the source file */}
+            {/* otherwise do nothing */}
+            {/* added e and preventDefault in order to name the href and prevent clicking then navigating the site to that endpoint, which would reload the page. */}
+            {/* even preventing default while maintaining the href would allow us to prevent the page from navigating to /#, which, while it doesn’t reload the page, simply isnt as clean of a user experience. */}
+            {targetSourceInlinePath ?
+                <h5 ><a href="targetSourcePath" className="target-source-path" onClick={(e) => {e.preventDefault();openSourceFile(targetSourceInlinePath, targetSourceInlineLineNumber)}}>{targetSourceInlineName}: {targetSourceInlineLineNumber}</a></h5>
+                :
+                null
+            }
+            {/* if there are inline styles, display them, otherwise display blank line */}
+            {inlineElements.length ?
+                inlineElements
+                :
+                <br />
+            }
         </div>
     );
 };

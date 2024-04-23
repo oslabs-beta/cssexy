@@ -167,3 +167,12 @@ body {
 .style-property-overwritten-span {
   text-decoration: line-through white;
 }
+
+
+a[href="targetSourcePath"] {
+  color: #D0ADF0
+}
+
+/* .target-source-path {
+  color: #D0ADF0
+} */

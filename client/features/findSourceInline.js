@@ -69,23 +69,44 @@ const findSourceInline = async ({ inlineRules, data, targetDir }) => {
   // example: old values
   // from: 'position: absolute; top: 60%; color: white;'
   //   to: "position: 'absolute', top: '60%', color: 'white'"
-  // const cssTextJsArr = cssToReact(cssText).split(', ');
-  const cssTextJsArr = cssToReact(cssText).split(', ').map(part => part.replaceAll("'", ''));
 
-  // these are available in the inlineRules, cssProperties array itself. each cssProperty is an object with name and value.
+  const callCssToReact = (string) => {
+    let arr = []
+    const rules = string.split(';').filter(rule => rule.trim() !== '');
+
+    // console.log('findSourceInline: rules', rules);
+
+    for (let rule of rules) {
+      const res = cssToReact(rule);
+      const count = res.split(":").length - 1;
+
+      // console.log('findSourceInline: res', res);
+      // console.log('count', count);
+      if (count > 1) {
+        arr.push(...res.split(", "));
+      }
+      else {
+        arr.push(res);
+      }
+    }
+    return arr.map(part => part.replaceAll("'", ''));
+  }
+
+
+  const cssJsArr = callCssToReact(cssText);
+  // console.log('\n\n');
+  console.log('cssArr', cssJsArr);
+  // console.log('\n\n');
+
 
   const cssJsDx = {}
 
-  for (const keyValue of cssTextJsArr) {
+  for (const keyValue of cssJsArr) {
     const kvSplit = keyValue.split(':');
     cssJsDx[kvSplit[0].trim()] = kvSplit[1].trim()
   }
 
-  console.log('findSourceInline: cssJsDx', cssJsDx);
-  console.log('\n');
-  // arrays will be helpful for string matching when there are line breaks rather than spaces
-  // between the styles in a given react component.
-
+  console.log('cssJsDx', cssJsDx);
 
   // Recursive function to find .jsx files in the target directory
   async function findJsxFiles(dir) {
@@ -156,62 +177,67 @@ const findSourceInline = async ({ inlineRules, data, targetDir }) => {
 
   // console.log('findSourceInline: jsxFiles', jsxFiles);
 
-  // const escapeRegExp = async (string) => {
-  //   return await string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  // };
+  const escapeRegExp = async (string) => {
+    return await string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  };
 
 
-  // const matchFunc = async (jsxFilePath, dataContext) => {
+  const matchFunc = async (jsxFilePath, dataContext) => {
 
-  //   const fileData = await fs.promises.readFile(jsxFilePath, 'utf8'); // Read the content of each .jsx file
+    const fileData = await fs.promises.readFile(jsxFilePath, 'utf8'); // Read the content of each .jsx file
 
-  //   const allLines = fileData.split('\n');
+    const allLines = fileData.split('\n');
 
-  //   const { key, value, textContent } = dataContext;
+    const { key, value } = dataContext;
 
-  //   const string = (key === 'id' || key === 'className') ? `${key}\\W*=\\W*${value}` : textContent;
+    // !value ? console.log('/findSourceInline: no value') : null;
 
-  //   const escapedString = await escapeRegExp(string);
+    // const string = value && (key === 'id' || key === 'className') ? `${key}\\W*=\\W*${value}` : value;
 
-  //   const matchString = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${escapedString}(?:\\W)`, 'gm');
+    // const escapedString = await escapeRegExp(string);
 
-  //   // if (key === 'id' || key === 'className') {
-  //   //   matchString = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${key}\\W*=\\W*${value}(?:\\W)`, 'gm');
-  //   // }
-  //   //   else {
-  //   //     matchString = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${value}(?:\\W)`, 'gm');
-  //   //   }
-  //   let match;
-  //   while ((match = matchString.exec(fileData)) !== null) {
-  //     let line = fileData.substring(0, match.index).split('\n').length;
-  //     let lineText = allLines[line - 1].trim();
-  //     if (!lineText.includes(value)) {
-  //       line = fileData.substring(0, match.index).split('\n').length + 1;
-  //       lineText = allLines[line - 1].trim();
+    // let matchString = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${escapedString}(?:\\W)`, 'gm');
 
-  //     }
+    let matchString;
 
-  //     const matchData = {
-  //       key,
-  //       value,
-  //       line,
-  //       path: jsxFilePath.replace(targetDir + path.sep, '/'),
-  //       lineText,
-  //     };
+    if (value && (key === 'id' || key === 'className')) {
+      matchString = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${key}\\W*=\\W*${value}(?:\\W)`, 'gm');
+    }
+    else if (value) {
+      matchString = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${value}(?:\\W)`, 'gm');
+    }
+    let match;
 
-  //     fileMatches.push(matchData);
-  //   }
-  // }
+    while ((match = matchString.exec(fileData)) !== null) {
+      let line = fileData.substring(0, match.index).split('\n').length;
+      let lineText = allLines[line - 1].trim();
+      if (!lineText.includes(value)) {
+        line = fileData.substring(0, match.index).split('\n').length + 1;
+        lineText = allLines[line - 1].trim();
+
+      }
+
+      const matchData = {
+        key,
+        value,
+        line,
+        path: jsxFilePath.replace(targetDir + path.sep, '/'),
+        lineText,
+      };
+
+      fileMatches.push(matchData);
+    }
+  }
 
   for (const jsxFilePath of jsxFiles) {
     // console.log('findSourceInline: jsxFilePath', jsxFilePath);
 
     const dataContext = {
-      selector,
-      selectorStart,
       id,
       className,
       textContent,
+      // selector,
+      // selectorStart,
     };
     const fileData = await fs.promises.readFile(jsxFilePath, 'utf8'); // Read the content of each .jsx file
 
@@ -226,7 +252,7 @@ const findSourceInline = async ({ inlineRules, data, targetDir }) => {
       if (fileMatches.length > 0) {
         break;
       }
-      // matchFunc(jsxFilePath, dataContext);
+      //  await matchFunc(jsxFilePath, dataContext);
 
       if (value && (key === 'id' || key === 'className')) {
         //   // const matchKeyValue = new RegExp(`^(?!.*(?://|{/\\*)).*\\s*${key}\\s*=\\s*['"]${value}['"](?!\\w)`, 'gm');
@@ -258,7 +284,6 @@ const findSourceInline = async ({ inlineRules, data, targetDir }) => {
           if (!lineText.includes(value)) {
             line = fileData.substring(0, match.index).split('\n').length + 1;
             lineText = allLines[line - 1].trim();
-
           }
 
           const matchData = {
