@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
 // import { spawn } from 'child_process';
 
 // import { config } from 'dotenv';
@@ -36,7 +37,10 @@ import { fileURLToPath } from 'url';
 
 const PORT = 8888;
 const app = express();
-app.use(express());
+app.use(express(), (req, res, next)=>{
+  console.log("Server.js Line 40====>", req.path);
+  next()
+});
 app.use(express.json());
 
 // !browserPort ? console.log('server: error: BROWSER_PORT is not set') && process.exit(1) : null;
@@ -46,6 +50,7 @@ app.use(express.json());
 /***** Setup for Server Rendered Main Application */
 import {router} from './getApp.js'
 app.use('/app', router, async (req, res)=>{
+  
   const {fig} = res.locals
   console.log(fig)
     res.status(200).send(fig)

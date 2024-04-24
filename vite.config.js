@@ -18,7 +18,7 @@ export default defineConfig({
       '/cdp': 'http://localhost:8888',
       '/patch': 'http://localhost:8888',
       '/read': 'http://localhost:8888',
-      '/app': 'http://localhost:8888'
+      '/app': 'http://localhost:8888/app'
     }
   }
 });
