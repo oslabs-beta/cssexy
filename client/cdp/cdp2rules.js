@@ -15,7 +15,10 @@
 import fs from 'fs';
 const cdpInlineRules = async (CSS, nodeId, selector) => {
   // retrieve the inline styles for the node with the provided nodeId
-  const { inlineStyle } = await CSS.getInlineStylesForNode({ nodeId });
+  try {
+
+    const { inlineStyle } = await CSS.getInlineStylesForNode({ nodeId });
+
   const inlineRule = [];
 
   // console.log('cdpInlineRules: inlineRule:', inlineRule);
@@ -37,9 +40,15 @@ const cdpInlineRules = async (CSS, nodeId, selector) => {
     console.log(`Not Found: inline styles for selector '${selector}' with nodeId ${nodeId}.`);
   }
   return inlineRule;
+
+  } catch (error) {
+    console.log('cdpInlineRules: error:', error);
+  }
 }
 
-const cdpRules = async (DOM, CSS, Network, Page, iframeNode, selector, styleSheets) => {
+const cdpRules = async (cdpClient, DOM, CSS, Network, Page, Overlay, iframeNode, selector, styleSheets) => {
+
+
 
   const iframeNodeId = iframeNode.nodeId;
   // console.log('cdpRules: root frame node id:', iframeNodeId);
@@ -63,6 +72,7 @@ const cdpRules = async (DOM, CSS, Network, Page, iframeNode, selector, styleShee
   // => matchedCSSRules contains CSS rules that are directly applied to the node
   // => inherited contains the CSS rules that are passed down from the node's ancestors
   // => cssKeyframesRules includes all the @keyframes rules applied to the node
+
   const { matchedCSSRules, inherited: inheritedRules, cssKeyframesRules: keyframeRules } = await CSS.getMatchedStylesForNode({ nodeId });
   const regularRules = [];
   const userAgentRules = [];
@@ -89,7 +99,7 @@ const cdpRules = async (DOM, CSS, Network, Page, iframeNode, selector, styleShee
     regularRules,
     userAgentRules,
     styleSheets,
-    // inheritedRules,
+    inheritedRules,
     // keyframeRules
   }
 
