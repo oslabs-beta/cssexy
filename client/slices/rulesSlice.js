@@ -164,7 +164,7 @@ const rulesSlice = createSlice({
         array.forEach(each => {
           let specificity;
           if (each.rule.origin === 'inline') {
-            // temporarily hardcoded until researched how to set specificity for inline styles (CDP returns inline styles without specificity and per Chat GPT 'inline styles have inherently highest specificity')
+            // inline styles have the highest specificity' => hard coding at 999 should ensure inline styles have the highest specificity among other styles
             specificity = {
               "a": 9,
               "b": 9,
@@ -236,7 +236,8 @@ const rulesSlice = createSlice({
           return obj1.specificity.c > obj2.specificity.c ? 1 : -1;
         }
         else return 0;
-      }
+      };
+
       const compareOriginsAndNames = (obj1, obj2) => {
         const score = {
           ['user-agent']: 0,
@@ -255,7 +256,7 @@ const rulesSlice = createSlice({
         else {
           throw new Error(`Error in rulesSlice.js: findActiveStyles reducer: compare func \n\nStyle-1: ${JSON.stringify(obj1)} \n\nStyle-2: ${JSON.stringify(obj2)}`);
         }
-      }
+      };
 
       for (let key in cache) {
         if (cache[key].length > 1) {
@@ -264,6 +265,14 @@ const rulesSlice = createSlice({
           const countCache = {};
 
           cache[key].forEach(curObj => {
+            // styles with !important tag have property 'important' set to true
+            // by adding 10 to their specificity we make their specificity higher than inline styles (which have specificity 999). But we want to maintain 'actual specificity + 10' for cases when there're multiple !important styles. In this case, !important styles will be higher than any other styles, but we want to compare among !important styles themselves and choose the prevailing one, that's why we keep their original specificity but increasing it by 10. 
+            if (curObj.source.important) {
+              curObj.specificity.a += 10;
+              curObj.specificity.b += 10;
+              curObj.specificity.c += 10;
+            }
+
             const curSpecificity = `${curObj.specificity.a}${curObj.specificity.b}${curObj.specificity.c}`;
             if (!countCache[curSpecificity]) countCache[curSpecificity] = 0;
             countCache[curSpecificity]++;
