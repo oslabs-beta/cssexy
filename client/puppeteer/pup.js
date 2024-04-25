@@ -33,18 +33,17 @@ const styleSheets = {};
   const pupArgs = [
     // uncomment this to turn on 'app' mode, i.e. no visible address bar and dev tools opens in a separate window.
     // probably do this for prod.
-    // `--app=${cssxeUrl}`,
+    `--app=${cssxeUrl}`,
     // this is what so far allows us to pass data from inside of the iframe to the parent window, cssxe.
     '--disable-web-security',
     // makes the empty browser window dark mode. no more white killing my eyes during development. turn this off in prod mode.
     // '--enable-features=WebContentsForceDark'
   ]
 
-
   // for keith's environemnt. opens the browser on second screen
   coder == 'KEITH' ? pupArgs.push('--window-position=2000,200') : null;
 
-  const coderProfile = coder ? path.resolve(__dirname, `../../data/Chrome/Profiles/${coder}/`) : null
+  const coderProfile = !coder ? path.resolve(__dirname, `../../data/Chrome/Profiles/${coder}/`) : null
 
   const pupOptions = {
     // open browser window
@@ -52,7 +51,7 @@ const styleSheets = {};
     // don't set a default viewport size. without this, i get a funky view where cssxe and the target site only take up a third of the browser window.
     defaultViewport: null,
     // open devtools. good for cssxe development mode. prob should be false for prod.
-    devtools: true,
+    devtools: false,
     // array of command-line args we define above to pass to Chrome
     args: pupArgs,
     // for us to specify a chrome profile, which allows us to maintain history between puppeteer sessions.

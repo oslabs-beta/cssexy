@@ -74,7 +74,13 @@ const patchFile = async ({data, target}) => {
 
       // console.log('data updated', data);
 
-      const filePath = sourcePath
+      console.log('sourcePath', sourcePath);
+
+      const filePath = sourcePath.includes(targetDir) ? sourcePath : `${targetDir}${sourcePath}`
+
+
+      console.warn('filePath', filePath);
+
       const fileData = await fs.promises.readFile(filePath, 'utf8'); // Read the content of each .jsx file
 
       // Use regex to find matches of textPrevAllJs in the file content

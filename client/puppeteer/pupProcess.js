@@ -15,7 +15,7 @@ const pupProcess = async (client, styleSheets, data) => {
     // console.log('pupProcess: targetDir:', targetDir);
     // console.log('pupProcess: targetUrl:', targetUrl);
 
-    console.log('pupProcess: data', data);
+    // console.log('pupProcess: data', data);
     const selector = data.selector;
 
     try {

@@ -14,7 +14,7 @@ const RulesInlineComp = () => {
 
     // console.warn('RulesInlineComp: targetSourceInline', targetSourceInline);
 
-    const { path, name, line, lineText, type, typeValue } = targetSourceInline;
+    const { path, pathFull, name, line, lineText, type, typeValue } = targetSourceInline;
 
 
     const inlineElements = inlineRules.map((each, idx) => {
@@ -24,7 +24,7 @@ const RulesInlineComp = () => {
                 selector={each.rule.selectorList?.selectors[0].text}
                 cssProperties={each.rule.style.cssProperties}
                 origin={each.rule.origin}
-                path={path}
+                path={pathFull}
                 line={line}
                 lineText={lineText}
                 type={type}
