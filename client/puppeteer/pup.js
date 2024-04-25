@@ -37,7 +37,7 @@ const styleSheets = {};
     // this is what so far allows us to pass data from inside of the iframe to the parent window, cssxe.
     '--disable-web-security',
     // makes the empty browser window dark mode. no more white killing my eyes during development. turn this off in prod mode.
-    '--enable-features=WebContentsForceDark'
+    // '--enable-features=WebContentsForceDark'
   ]
 
 

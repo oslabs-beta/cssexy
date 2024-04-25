@@ -16,7 +16,11 @@ const findSourceInline = async ({ inlineRules, data, targetDir }) => {
   const id = data?.id;
   const textContent = data?.textContent;
 
-
+  const dataContext = {
+    id,
+    className,
+    textContent,
+  };
 
   const gitignorePath = path.join(targetDir, '.gitignore');
   const gitignore = fs.readFileSync(gitignorePath, 'utf-8');
@@ -92,17 +96,16 @@ const findSourceInline = async ({ inlineRules, data, targetDir }) => {
     return arr.map(part => part.replaceAll("'", ''));
   }
 
-
   const cssJsArr = callCssToReact(cssText);
   // console.log('\n\n');
-  console.log('cssArr', cssJsArr);
+  // console.log('cssArr', cssJsArr);
   // console.log('\n\n');
 
 
   const cssJsDx = {}
 
-  for (const keyValue of cssJsArr) {
-    const kvSplit = keyValue.split(':');
+  for (const typeValue of cssJsArr) {
+    const kvSplit = typeValue.split(':');
     cssJsDx[kvSplit[0].trim()] = kvSplit[1].trim()
   }
 
@@ -177,51 +180,92 @@ const findSourceInline = async ({ inlineRules, data, targetDir }) => {
 
   // console.log('findSourceInline: jsxFiles', jsxFiles);
 
-  const escapeRegExp = async (string) => {
-    return await string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  };
+  const matchFunc = async ({ jsxFilePath, type, value }) => {
+    // Read the content of each .jsx file into memory
+    const fileData = await fs.promises.readFile(jsxFilePath, 'utf8');
 
-
-  const matchFunc = async (jsxFilePath, dataContext) => {
-
-    const fileData = await fs.promises.readFile(jsxFilePath, 'utf8'); // Read the content of each .jsx file
-
+    // Split the file content into an array of lines
     const allLines = fileData.split('\n');
 
-    const { key, value } = dataContext;
+    // console.log('matchFunc type', type);
+    // console.log('matchFunc value', value);
 
-    // !value ? console.log('/findSourceInline: no value') : null;
+    // the piece of our regex that differs whether id/classname or textContent
+    const targetString = (type === 'id' || type === 'className') ? `${type}\\W*=\\W*${value}` : value;
+    // ${type} : the type we are looking for
+    // \\W* : whitespace or symbols (i.e. non-alpha-numeric characters). 0 || more times
+    // = : equals sign
+    // \\W* : ""
+    // ${value} : the value we are looking for
 
-    // const string = value && (key === 'id' || key === 'className') ? `${key}\\W*=\\W*${value}` : value;
+    // the regex including the
+    let targetRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${targetString}(?:\\W)`, 'gm');
+    //   // const targetRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\s*${type}\\s*=\\s*['"]${value}['"](?!\\w)`, 'gm');
+    // const targetRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${string}(?:\\W)`, 'gm');
+    // ^ : beginning of string
+    // (?!...) : a negative lookahead assertion, i.e. anything that doesn't match the included string
+    // .* : any number of any characters (including newlines)
+    // (?:...) : a positive lookahead assertion, i.e. anything that matches the included string
+    // //|{/\\* : a string that matches either // OR {/*, i.e. commented out code
+    // so what we have done is a positive lookahead inside of a negative lookahead, i.e. do not include any x that includes y.
+    // .* : look for the lookaheads anywhere up to this point in the string
+    // \\W* : whitespace or symbols (i.e. non-alpha-numeric characters). 0 || more times
+    // targetString : the string we are looking for
+    // \\W* : ""
+    // (?:...) : ""
+    // \\W : ""
+    // gm : global and multiline
 
-    // const escapedString = await escapeRegExp(string);
-
-    // let matchString = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${escapedString}(?:\\W)`, 'gm');
-
-    let matchString;
-
-    if (value && (key === 'id' || key === 'className')) {
-      matchString = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${key}\\W*=\\W*${value}(?:\\W)`, 'gm');
-    }
-    else if (value) {
-      matchString = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${value}(?:\\W)`, 'gm');
-    }
     let match;
 
-    while ((match = matchString.exec(fileData)) !== null) {
+    while ((match = targetRegex.exec(fileData)) !== null) {
+      // fileData : the contents of the current .jsx file we are searching
+      // substring(start, end) : extract a substring from the fileData starting at index start and ending at index end (not inclusive)
+      // match.index : the index at which the RegExp found a match
+      // split('\n') : split the fileData into an array of lines
+      // length : the total number of lines in the file (i.e. 1-indexed)
+
       let line = fileData.substring(0, match.index).split('\n').length;
+      // let line = allLines.slice(0, match.index).findIndex(line => line.match(match)) + 1;
+      // allLines : the contents of the current .jsx file, split into an array of lines
+      // trim() : remove whitespace from the start and end of the line
       let lineText = allLines[line - 1].trim();
+      let lineContext = allLines.slice(line - 2, line + 2).join('\n');
+
+
+      // [line - 1] : the line of code that the RegExp found a match on
+      // includes() : return true if the given string is contained within the calling string.
       if (!lineText.includes(value)) {
-        line = fileData.substring(0, match.index).split('\n').length + 1;
+        // console.log('\n\n');
+        // console.log('line does not contain value. adding 1 to line');
+        // console.log('\n\n');
+        line += 1;
+        // if the previous line does not contain the value, we have a multi-line match
+        // so we increment the line count by 1
         lineText = allLines[line - 1].trim();
+        lineContext = allLines.slice(line - 2, line + 2).join('\n');
 
       }
+      // console.log('\n\n');
+      // console.log('lineContext', lineContext);
+      try {
+        const lineContextRegex = new RegExp({lineContext}, 'gm');
+        const lineContextMatch = lineContextRegex.exec(fileData);
+        if (lineContextMatch) {
+          // console.log('lineContextMatch.index', lineContextMatch.index);
+          // console.log('lineContextMatch.input', lineContextMatch.input);
+          // console.log('actual line number', fileData.substring(0, lineContextMatch.index).split('\n').length);
+        }
+      } catch (e) {
+        console.log('Error processing data:', e.name, e.message);
+      }
+
 
       const matchData = {
-        key,
-        value,
+        type,
+        typeValue: value,
         line,
-        path: jsxFilePath.replace(targetDir + path.sep, '/'),
+        path: jsxFilePath,
         lineText,
       };
 
@@ -230,112 +274,32 @@ const findSourceInline = async ({ inlineRules, data, targetDir }) => {
   }
 
   for (const jsxFilePath of jsxFiles) {
-    // console.log('findSourceInline: jsxFilePath', jsxFilePath);
-
-    const dataContext = {
-      id,
-      className,
-      textContent,
-      // selector,
-      // selectorStart,
-    };
-    const fileData = await fs.promises.readFile(jsxFilePath, 'utf8'); // Read the content of each .jsx file
-
-    const allLines = fileData.split('\n');
-
-    // for (let [key, value] of Object.entries(cssJsDx)) {
-    //   console.log('key', key);
-    //   console.log('value', value);
-    // }
-
-    for (let [key, value] of Object.entries(dataContext)) {
+    for (let [type, value] of Object.entries(dataContext)) {
       if (fileMatches.length > 0) {
         break;
       }
-      //  await matchFunc(jsxFilePath, dataContext);
-
-      if (value && (key === 'id' || key === 'className')) {
-        //   // const matchKeyValue = new RegExp(`^(?!.*(?://|{/\\*)).*\\s*${key}\\s*=\\s*['"]${value}['"](?!\\w)`, 'gm');
-        const matchKeyValue = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${key}\\W*=\\W*${value}(?:\\W)`, 'gm');
-        // ^ : beginning of string
-        // (?!...) : a negative lookahead assertion, i.e. anything that doesn't match the included string
-        // .* : any number of any characters (including newlines)
-        // (?:...) : a positive lookahead assertion, i.e. anything that matches the included string
-        // //|{/\\* : a string that matches either // OR {/*, i.e. commented out code
-        // so what we have done is a positive lookahead inside of a negative lookahead, i.e. do not include any x that includes y.
-        // .* : look for the lookaheads anywhere up to this point in the string
-        // \\W* : whitespace or symbols (i.e. non-alpha-numeric characters). 0 || more times
-        // ${key} : the key we are looking for
-        // \\W* : ""
-        // = : equals sign
-        // \\W* : ""
-        // ${value} : the value we are looking for
-        // \\W* : ""
-        // (?:...) : ""
-        // \\W : ""
-        // gm : global and multiline
-
-
-        let match;
-
-        while ((match = matchKeyValue.exec(fileData)) !== null) {
-          let line = fileData.substring(0, match.index).split('\n').length;
-          let lineText = allLines[line - 1].trim();
-          if (!lineText.includes(value)) {
-            line = fileData.substring(0, match.index).split('\n').length + 1;
-            lineText = allLines[line - 1].trim();
-          }
-
-          const matchData = {
-            key,
-            value,
-            line,
-            path: jsxFilePath.replace(targetDir + path.sep, '/'),
-            lineText,
-          };
-
-          fileMatches.push(matchData);
-        }
+      if (!value) {
+        continue;
       }
-      else if (value && fileMatches.length === 0 && key === 'textContent') {
-        // const matchKeyValue = new RegExp(`^(?!.*(?://|{/\\*)).*\\s*${key}\\s*=\\s*['"]${value}['"](?!\\w)`, 'gm');
-        const matchTextContent = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${textContent}(?:\\W)`, 'gm');
-        let match;
-        while ((match = matchTextContent.exec(fileData)) !== null) {
-          let line = fileData.substring(0, match.index).split('\n').length;
-          let lineText = allLines[line - 1].trim();
-          if (!lineText.includes(value)) {
-            line = fileData.substring(0, match.index).split('\n').length + 1;
-            lineText = allLines[line - 1].trim();
-
-          }
-
-          const matchData = {
-            key,
-            value,
-            line,
-            path: jsxFilePath.replace(targetDir + path.sep, '/'),
-            lineText,
-          };
-
-          fileMatches.push(matchData);
-        }
-      }
+      await matchFunc({ jsxFilePath, type, value });
     }
+    // for (let [type, value] of Object.entries(cssJsDx)) {
+    //   console.log('type', type);
+    //   console.log('value', value);
+    // }
   }
-
 
   if (fileMatches.length > 0) {
 
     const filePaths = fileMatches.map(match => match.path).join(', ');
     console.log('\n\n');
-    console.log(`findSourceInline: : inlineSyle: matches for ${selector} found in the following files : ${filePaths}`);
-    console.log('fileMatches', fileMatches);
+    // console.log(`findSourceInline: : inlineSyle: matches for ${selector} found in the following files : ${filePaths}`);
+    // console.log('fileMatches', fileMatches);
 
   }
 
   else {
-    console.warn(`findSourceInline: : inlineSyle: No files matching ${cssTextJsArr} were found in ${targetDir} for selector ${selector}`);
+    console.warn(`findSourceInline: : inlineSyle: No files matching ${cssJsArr} were found in ${targetDir} for selector ${selector}`);
     console.warn('findSourceInline: : inlineSyle: fileMatches', fileMatches);
   }
   return fileMatches;

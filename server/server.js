@@ -59,11 +59,12 @@ if (environment === 'production') {
 spawn('node', ['../client/puppeteer/pup.js', browserPort]);
 
 app.post('/cdp', async (req, res) => {
-  const data = req.body;
+  console.log('server: post /cdp, req.body', req.body);
 
   try {
     // if puppeteerMode is set to true, then call the puppeteer process, otherwise call the cdp process
-    const result = await callPupProcess(data)
+    const result = await callPupProcess(req.body);
+    // console.log('server: cdp: result', result);
 
     return res.json(result);
   } catch (error) {
@@ -73,10 +74,11 @@ app.post('/cdp', async (req, res) => {
 });
 
 app.post('/patch', async (req, res) => {
-  const data = req.body;
+  console.log('server: post /patch, req.body', req.body);
 
   try {
-    const result = await patchFile(data, targetDir);
+    const result = await patchFile(req.body);
+    console.log('server: patch: result', result);
     return res.json(result);
   } catch (error) {
     console.error('Error processing data:', error);

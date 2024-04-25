@@ -51,8 +51,8 @@ const IframeComp = () => {
 
           const selectorStart = selector.match(/^([^\s]*)/).pop();
 
-          console.warn('iframeComp: selector', selector);
-          console.warn('iframeComp: selectorStart', selectorStart);
+          // console.warn('iframeComp: selector', selector);
+          // console.warn('iframeComp: selectorStart', selectorStart);
 
           const data = {
             id: element.id,
@@ -67,7 +67,7 @@ const IframeComp = () => {
           };
 
           try {
-            fetchElementRules(data, dispatch, storeVar);
+            fetchElementRules({data, dispatch, storeVar});
 
           }
           catch (error) {

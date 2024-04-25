@@ -1,6 +1,4 @@
-import { useSelector } from 'react-redux';
-import { writeFileSync, mkdir } from 'node:fs';
-
+// client/puppeteer/pupProcess.js
 import { pupRules } from './pupRules.js';
 
 const pupProcess = async (client, styleSheets, data) => {
@@ -17,7 +15,7 @@ const pupProcess = async (client, styleSheets, data) => {
     // console.log('pupProcess: targetDir:', targetDir);
     // console.log('pupProcess: targetUrl:', targetUrl);
 
-
+    console.log('pupProcess: data', data);
     const selector = data.selector;
 
     try {

@@ -21,8 +21,16 @@ const App = () => {
   const targetPort = import.meta.env.VITE_TARGET_PORT;
   const targetDir = import.meta.env.VITE_TARGET_DIR;
 
-  dispatch(updateTarget({targetPort}));
-  dispatch(updateTarget({targetDir}));
+  if (!targetPort) {
+    console.error('App: error: TARGET_PORT is not set');
+    process.exit(1);
+  }
+  if (!targetDir) {
+    console.error('App: error: TARGET_DIR is not set');
+    process.exit(1);
+  }
+  dispatch(updateTarget({ targetPort }));
+  dispatch(updateTarget({ targetDir }));
 
   return (
     <div className="app-container">

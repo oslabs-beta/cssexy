@@ -1,23 +1,22 @@
 import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, setIsActiveFlag, updateMidShortMap } from '../slices/rulesSlice.js';
 import { updateTargetSelector, updateTargetSourceInline, updateTargetSourceRegular, updateTarget } from '../slices/targetSlice.js';
 
-const fetchElementRules = async (data, dispatch, storeVar) => {
+const fetchElementRules = async ({ data, dispatch, storeVar }) => {
 
-  console.log('fetchElementRules: storeVar', storeVar);
+  // console.log('fetchElementRules: storeVar', storeVar);
   const targetPort = storeVar.target.targetPort;
   const targetDir = storeVar.target.targetDir;
   const selector = data.selector;
 
-
-  console.log('fetchElementRules: targetPort', targetPort);
-  console.log('fetchElementRules: targetDir', targetDir);
+  // console.log('fetchElementRules: targetPort', targetPort);
+  // console.log('fetchElementRules: targetDir', targetDir);
 
   if (!data) {
     console.log('data is undefined');
     return;
   }
   try {
-    // console.log('fetchElementRules: data', data);
+    console.log('fetchElementRules: data', data);
     const response = await fetch('/cdp', {
       method: 'POST',
       headers: {
@@ -51,7 +50,7 @@ const fetchElementRules = async (data, dispatch, storeVar) => {
     dispatch(setIsActiveFlag());
     dispatch(findActiveStyles());
 
-
+    // REGULAR RULES
     if (result.regularRules.length > 0) {
       try {
         const regularRulesAll = result.regularRules[0].rule;
@@ -68,16 +67,22 @@ const fetchElementRules = async (data, dispatch, storeVar) => {
         const regularRules = { ...styleSheets[styleSheetId], origin, scopes, ruleTypes, selectorList, style, selector };
 
         // console.log('\n\n');
-        console.warn('fetchElementRules: regularRules', regularRules);
+        // console.warn('fetchElementRules: regularRules', regularRules);
         // console.log('\n\n');
 
         const absolutePaths = [...regularRules?.absolutePaths];
         const relativePaths = [...regularRules?.relativePaths];
 
-        console.warn('fetchElementRules: absolutePaths', absolutePaths);
-        console.warn('fetchElementRules: relativePaths', relativePaths);
+        // console.warn('fetchElementRules: absolutePaths', absolutePaths);
+        // console.warn('fetchElementRules: relativePaths', relativePaths);
 
-        dispatch(updateTargetSourceRegular({ absolutePaths, relativePaths }));
+        const pathTemp = absolutePaths[0] || relativePaths[0];
+        const path = pathTemp.startsWith(targetDir) ? pathTemp : `${targetDir}${pathTemp.slice(1)}`;
+
+        // console.warn('pathTemp', pathTemp);
+        console.warn('path', path);
+
+        dispatch(updateTargetSourceRegular({ absolutePaths, relativePaths, path }));
 
         // KEITH TO-DO 2024-04-20_01-00-AM: need to build out the regularRule logic in findSourceRegular for the below to work.
 
@@ -110,24 +115,27 @@ const fetchElementRules = async (data, dispatch, storeVar) => {
     }
     // otherwise, there are no regular rules for the clicked element, so we set targetSourceRegular in our store to null
     else {
+      console.log('fetchElementRules: targetSourceRegular is empty. clearing targetSourceRegular');
       dispatch(updateTargetSourceRegular());
       // dispatch(updateTargetSourceRegularAll());
     }
 
+    // INLINE RULES
     const inlineRulesAll = result?.inlineRules
 
     // in the off-chance that there are multiple inlineRules, which is an edge case we have not yet come across, warn us.
     if (inlineRulesAll?.length > 1) {
-      console.log('\n\n');
+      // console.log('\n\n');
       console.warn('fetchElementRules: inlineRulesAll: more than 1 inlineRules match', inlineRulesAll);
-      console.log('\n\n');
+      // console.log('\n\n');
     }
     const inlineRules = inlineRulesAll[0] ? inlineRulesAll[0].rule.style : null;
 
     // if the inline rules has cssProperties, we try to find the source
     if (inlineRules?.cssProperties.length > 0) {
+
+      console.warn('fetchElementRules: inlineRules is TRUE', inlineRules);
       try {
-        console.warn('fetchElementRules: inlineRules is TRUE', inlineRules);
         const responseInline = await fetch('/findSource', {
           method: 'POST',
           headers: {
@@ -137,7 +145,9 @@ const fetchElementRules = async (data, dispatch, storeVar) => {
         });
 
         const targetSourceInline = await responseInline.json();
+        console.log('\n\n');
         console.warn('fetchElementRules: targetSourceInline', targetSourceInline);
+        console.log('\n\n');
         dispatch(updateTargetSourceInline(targetSourceInline));
 
       }
@@ -149,10 +159,12 @@ const fetchElementRules = async (data, dispatch, storeVar) => {
     else {
       dispatch(updateTargetSourceInline());
     }
+    return true
 
   }
   catch (error) {
     console.log('fetchElementRules: error', error);
+    return false
   }
 };
 

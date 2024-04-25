@@ -9,15 +9,12 @@ function SidebarStyling(props) {
 
     const rules = useSelector(state => state.rules)
     const target = useSelector(state => state.target)
-    const storeVar = {rules, target}
+    const storeVar = { rules, target }
 
     const inlineRules = rules.inlineRules;
-    const { targetSourceInline, targetSourceInlineLineNumber } = target;
 
     // spread operator to make a deep copy of props, so that we can then modify it.
     const liveProps = { ...props };
-
-    // console.log('liveProps', liveProps);
 
     const [values, setValues] = useState({});
     const [clickedPropertyField, setClickedPropertyField] = useState('');
@@ -42,24 +39,25 @@ function SidebarStyling(props) {
         // console.log('newValue', newValue);
 
         // console.log('cssProp', cssProp);
-        const updatedCssProp = { ...cssProp}
-        updatedCssProp.value = newValue;
-        updatedCssProp.valuePrev = cssProp.value;
-        updatedCssProp.textPrev = updatedCssProp.text;
-        updatedCssProp.text = `${cssProp.name}: ${newValue};`;
-        updatedCssProp.selector = liveProps.selector;
-        updatedCssProp.sourcePath = liveProps.sourcePath;
-        updatedCssProp.textPrevAll = inlineRules[0].rule.style.cssText;
-        updatedCssProp.targetSourceInline = targetSourceInline;
-        updatedCssProp.targetSourceInlineLineNumber = targetSourceInlineLineNumber;
+        const data = { ...cssProp }
+        data.value = newValue;
+        data.valuePrev = cssProp.value;
+        data.textPrev = cssProp.text;
+        data.text = `${cssProp.name}: ${newValue};`;
+        data.path = cssProp.path;
+        data.textPrevAll = inlineRules[0].rule.style.cssText;
+        data.line = liveProps?.line;
+        data.lineText = liveProps?.lineText;
+        data.type = liveProps?.type;
+        data.typeValue = liveProps?.typeValue;
+        data.selector = target.targetSelector;
 
-        // console.log('\n');
         // console.log(cssProp.name);
         // console.log(cssProp.value);
         // console.log('->');
-        // console.log(updatedCssProp.value);
+        // console.log(data.value);
         // console.log('\n');
-        // console.log('updatedCssProp', updatedCssProp);
+        // console.log('data', data);
         // console.log('\n\n');
         // console.log('TRY: /patch');
         try {
@@ -68,20 +66,21 @@ function SidebarStyling(props) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(updatedCssProp),
+                body: JSON.stringify({data, target}),
 
             });
             const result = await response.json();
 
             if (result === true) {
+                console.log('result, true', result);
                 // console.log('TRY: /runCdp');
 
                 // wait for .5 seconds. not doing this atm leads to a mismatch between the value in the input field and the corresponding value in the file, which then prevents further editing of that value (until the element is clicked again) because our patchFile function matches one to the other in order to replace the value with the new value.
                 // inline styles need a bit more time, so if theres no source path, wait 1 second.
-                await new Promise(resolve => updatedCssProp.sourcePath ? setTimeout(resolve, 500) : setTimeout(resolve, 1000));
+                await new Promise(resolve => data.type ? setTimeout(resolve, 1000) : setTimeout(resolve, 500));
 
                 // running CDP again to update our redux store after patching the file.
-                await fetchElementRules(data, dispatch, storeVar);
+                await fetchElementRules({data, dispatch, storeVar});
                 setValues({});
 
 
@@ -105,16 +104,16 @@ function SidebarStyling(props) {
 
     useEffect(() => {
         const handleClickOutside = (event) => {
-          if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            setShowDropdown(false);
-          }
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowDropdown(false);
+            }
         };
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
-          document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside);
         };
-      }, []);
+    }, []);
 
     const styleParagraphs = liveProps.cssProperties.map((cssProp, idx) => {
         if ((liveProps.origin === 'user-agent')) {
@@ -130,7 +129,7 @@ function SidebarStyling(props) {
             )
         }
         // if not user agent style, then it's a regular or inline style (at the moment 2024-04-03), which we make editable below.
-        else if ((liveProps.origin && cssProp.text)) {
+        else if (liveProps.origin && cssProp.text) {
             // cssProperties arr includes both user defined 'shorthand' styles and css 'longhand' styles. We want to render only user defined styles => style is user defined if it has .text property
             // shorthand example: 'border-bottom: 3px solid blueviolet'
             // longhand example: border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: blueviolet
@@ -161,8 +160,8 @@ function SidebarStyling(props) {
                     </p>
                     {showDropdown && clickedPropertyField === cssProp.name && (
                         <div className='property-dropdown'
-                        ref={dropdownRef}
-                        style={{ left: `${cssProp.name.length * 8 + 5}px` }}>
+                            ref={dropdownRef}
+                            style={{ left: `${cssProp.name.length * 8 + 5}px` }}>
                             {dropdownItems.map((item, index) => (
                                 <div
                                     className='property-dropdown-item'

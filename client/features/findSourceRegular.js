@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-console.log('sourcePath provided, so this is a regular style');
 
-const findSourceRegular = async (regularRules, data, targetDir) => {
+const findSourceRegular = async ({regularRules, data, targetDir}) => {
   try {
     // console.log('\n\n');
     // console.log('findSourceRegular');
