@@ -16,6 +16,8 @@ function RulesRegularComp() {
 
   const { path, name } = targetSourceRegular;
 
+  const line = 0;
+
 
   // map() to create an array of SidebarStyling components
   const regularElements = regularRules.map((each, idx) => {
@@ -42,7 +44,7 @@ function RulesRegularComp() {
       {/* even preventing default while maintaining the href would allow us to prevent the page from navigating to /#, which, while it doesn’t reload the page, simply isnt as clean of a user experience. */}
       {
         path ?
-          <h5 ><a href="targetSourcePath" className="target-source-path" onClick={(e) => { e.preventDefault(); (path) }}>{name}</a></h5>
+          <h5 ><a href="targetSourcePath" className="target-source-path" onClick={(e) => { e.preventDefault(); openSourceFile(path, line) }}>{name}</a></h5>
           :
           null
       }

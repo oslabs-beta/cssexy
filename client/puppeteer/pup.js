@@ -44,7 +44,7 @@ const styleSheets = {};
   // for keith's environemnt. opens the browser on second screen
   coder == 'KEITH' ? pupArgs.push('--window-position=2000,200') : null;
 
-  const coderProfile = !coder ? path.resolve(__dirname, `../../data/Chrome/Profiles/${coder}/`) : null
+  const coderProfile = coder ? path.resolve(__dirname, `../../data/Chrome/Profiles/${coder}/`) : null
 
   const pupOptions = {
     // open browser window

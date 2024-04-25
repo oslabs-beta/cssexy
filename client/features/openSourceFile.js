@@ -1,6 +1,9 @@
 
 const openSourceFile = async (file, line) => {
   const lineNum = line !== undefined ? line : 1;
+
+  console.log('openSourceFile: file', file);
+  console.log('openSourceFile: line', lineNum);
   try {
   const fetchSourceFile = await fetch('/openSourceFile', {
     method: 'POST',

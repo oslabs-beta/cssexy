@@ -265,7 +265,8 @@ const findSourceInline = async ({ inlineRules, data, targetDir }) => {
         type,
         typeValue: value,
         line,
-        path: jsxFilePath,
+        path: jsxFilePath.replace(targetDir + path.sep, '/'),
+        pathFull: jsxFilePath,
         lineText,
       };
 

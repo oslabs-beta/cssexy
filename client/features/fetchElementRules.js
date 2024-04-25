@@ -76,13 +76,13 @@ const fetchElementRules = async ({ data, dispatch, storeVar }) => {
         // console.warn('fetchElementRules: absolutePaths', absolutePaths);
         // console.warn('fetchElementRules: relativePaths', relativePaths);
 
-        const pathTemp = absolutePaths[0] || relativePaths[0];
-        const path = pathTemp.startsWith(targetDir) ? pathTemp : `${targetDir}${pathTemp.slice(1)}`;
+        const path = absolutePaths[0] || relativePaths[0];
+        const pathFull = path.startsWith(targetDir) ? path : `${targetDir}${path.slice(1)}`;
 
-        // console.warn('pathTemp', pathTemp);
+        // console.warn('path', path);
         console.warn('path', path);
 
-        dispatch(updateTargetSourceRegular({ absolutePaths, relativePaths, path }));
+        dispatch(updateTargetSourceRegular({ absolutePaths, relativePaths, path, pathFull }));
 
         // KEITH TO-DO 2024-04-20_01-00-AM: need to build out the regularRule logic in findSourceRegular for the below to work.
 

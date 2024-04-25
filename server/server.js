@@ -106,8 +106,8 @@ app.post('/openSourceFile', async (req, res) => {
 
   console.log('server: targetDir + file', path.join(targetDir, file));
   try {
-    // console.log('server: openSourceFile: file', file);
-    // console.log('server: openSourceFile: line', lineNum);
+    console.log('server: openSourceFile: file', file);
+    console.log('server: openSourceFile: line', lineNum);
     exec(`code -r -g ${path.join(targetDir, file)}:${lineNum}`);
     return res.send({ success: 'File opened in VS Code' });
   } catch (error) {
