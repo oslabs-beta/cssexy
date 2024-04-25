@@ -15,7 +15,7 @@ const App = () => {
     <div className="app-container">
       <SidebarComp />
       <iframe
-        src='/app'
+        src='http://localhost:8888'
         className="site-frame"
       />
     </div>

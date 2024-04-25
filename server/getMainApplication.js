@@ -1,21 +1,117 @@
+//Added only because of Issue with Stylex Webpack Plugin Issues could update this to automatically search for packages
+import StylexPlugin from '@stylexjs/webpack-plugin';
+/****************************************************** */
 import express from 'express';
-import webpack from 'webpack';
-
-import path from 'node:path'
-import fs from 'node:fs';
-import middleware from 'webpack-dev-middleware'
-import history from 'connect-history-api-fallback';
-// import HtmlWebpackPlugin from 'html-webpack-plugin';
-// import StylexPlugin from '@stylexjs/webpack-plugin'
 export const router = express.Router();
-// const configModule = await import(path.resolve(import.meta.dirname, '../../shopster/shopster/webpack.config.js')); 
-import configModule from '../webpack.config.js';
-// import configModule from '../../shopster/shopster/webpack.config.js'
-// const webpackConfig = configModule.default || configModule;
+import path from 'node:path'
+import middleware from 'webpack-dev-middleware'
+
+
+/** Import Comiler  from CreateWebpackApp */
+import {compiler, options} from './createWebpackApp.js'
+
+/**** Run Webpack-dev-Middleware */
+router.use(middleware(compiler, options));
+
+
+router.get('*', (req, res, next) => {
+ 
+  let fileName;
+  let parsedUrl = req._parsedUrl.path;
+  if(req._parsedUrl.path === '/'){
+    fileName =  'index.html'; // Adjust if your output file is named differently
+  }else{
+    parsedUrl = parsedUrl.split('?')[0];
+    fileName = parsedUrl.replace('/app', '');
+  }
+  const fullPath = path.join(compiler.outputPath, fileName);
+  compiler.outputFileSystem.readFile(fullPath, (err, result) => {
+    if (err) {
+      return next(err); // Pass to error handler or 404
+    }
+    const contentType = determineContentType(fullPath);
+    res.set('Content-Type', contentType);
+    res.send(result);
+    res.end();
+  });
+});
+
+/*     Used for Setting Type of file being returned */
+function determineContentType(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  switch (ext) {
+    case '.html': return 'text/html';
+    case '.js': return 'application/javascript';
+    case '.css': return 'text/css';
+    case '.png': return 'image/png';
+    case '.jpg': case '.jpeg': return 'image/jpeg';
+    case '.gif': return 'image/gif';
+    default: return 'application/octet-stream'; // Default or binary files
+  }
+}
+
+
+
+
+/*********************  Trial Code Saving incase *************/
+
+//Serves any file that is not index.html and found in the outputFileSystem
+// router.use('/*', (req, res, next) => {
+// const parsedUrl = req._parsedUrl.path.split('?')[0];
+
+//   console.log("Path =====> in router", parsedUrl)
+//   // let filename =   parsedUrl === '/' ? path.join(compiler.outputPath, 'index.html') : path.join(compiler.outputPath, parsedUrl);
+//   console.log("Parsed URL",req._parsedUrl)
+//   const fileName = parsedUrl.replace('/app', '');
+//   const fullPath = path.join(compiler.outputPath, fileName);
+//   compiler.outputFileSystem.readFile(fullPath, (err, result) => {
+//     if (err) {
+//       console.error('Failed to read the file:', err);
+//       return next(err);
+//     }
+//     const contentType = determineContentType(fullPath);
+//     res.set('Content-Type', contentType);
+//     res.send(result);
+//     res.end();
+//   });
+// });
+// router.use(history({
+//   index: '/app/',
+// }));
+
+
+// router.get('/', (req, res, next) => {
+//   console.log(path.basename(req.path))
+//   let filename =path.join(compiler.outputPath, 'index.html')
+//   // if(!path.basename(req.path)){
+//   // filename =  path.join(compiler.outputPath, 'index.html')
+//   // }else{
+//   //   filename = path.join(compiler.outputPath, path.basename(req.path))
+//   // }
+//   console.log("Load hit")
+
+//   // Use the file system provided by the compiler (memory-fs used by webpack-dev-middleware)
+//   compiler.outputFileSystem.readFile(filename, (err, result) => {
+//     if (err) {
+//       return next(err);
+//     }
+//     // res.set('content-type', 'text/html');
+//     // res.send(result);
+//     // res.end();
+
+//     let html = result.toString();
+//     html = html.replace('<head>', '<head><base href="/app/">'); // Inject base tag dynamically
+//     res.set('content-type', 'text/html');
+//     res.send(html);
+//     res.end();
+//   });
+// });
+
+
 // webpackConfig.mode = 'development';
-// webpackConfig.entry = path.resolve(webpackConfig.context, webpackConfig.entry);
-// webpackConfig.output.path = path.resolve('./build');
-// webpackConfig.output.publicPath = 'build';
+// configModule.entry = path.resolve(webpackConfig.context, webpackConfig.entry);
+// configModule.output.path = path.resolve(import.meta.dirname,'./build')
+// configModule.output.publicPath = 'app';
 // webpackConfig.plugins.push(new HtmlWebpackPlugin())
 
 
@@ -55,64 +151,6 @@ import configModule from '../webpack.config.js';
 //   console.log(ob)
 // }
 
-console.log("getApp Line 57")
-
-// console.log(webpackConfig)
-const compiler = webpack(configModule);
-
-router.use(history({
-  index: '/app/',
-}));
-
-router.use((req, res, next)=> {
-  console.log(req.path);
-  next()
-},
-  middleware(compiler, {
-    // webpack-dev-middleware options
-    publicPath: configModule.output.publicPath
-  })
-);
-
-router.use('*', (req, res, next) => {
-  const filename = path.join(compiler.outputPath, 'index.html');
-  compiler.outputFileSystem.readFile(filename, (err, result) => {
-    if (err) {
-      console.error('Failed to read the index.html file:', err);
-      return next(err);
-    }
-    res.set('content-type', 'text/html');
-    res.send(result);
-    res.end();
-  });
-});
-
-router.get('/', (req, res, next) => {
-  console.log(path.basename(req.path))
-  let filename =path.join(compiler.outputPath, 'index.html')
-  // if(!path.basename(req.path)){
-  // filename =  path.join(compiler.outputPath, 'index.html')
-  // }else{
-  //   filename = path.join(compiler.outputPath, path.basename(req.path))
-  // }
-  console.log("Load hit")
-
-  // Use the file system provided by the compiler (memory-fs used by webpack-dev-middleware)
-  compiler.outputFileSystem.readFile(filename, (err, result) => {
-    if (err) {
-      return next(err);
-    }
-    // res.set('content-type', 'text/html');
-    // res.send(result);
-    // res.end();
-
-    let html = result.toString();
-    html = html.replace('<head>', '<head><base href="/app/">'); // Inject base tag dynamically
-    res.set('content-type', 'text/html');
-    res.send(html);
-    res.end();
-  });
-});
 
 
 // router.get('*',(req, res, next)=>{
