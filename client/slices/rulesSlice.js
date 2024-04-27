@@ -158,6 +158,21 @@ const rulesSlice = createSlice({
 
       const allStyles = [state.userAgentRules, state.regularRules, state.inlineRules];
 
+      const compareSpecificity = (obj1, obj2) => {
+        if (obj1.specificity.a !== obj2.specificity.a) {
+          return obj1.specificity.a > obj2.specificity.a ? 1 : -1;
+        }
+        // If 'a' values are equal, compare the 'b' values
+        else if (obj1.specificity.b !== obj2.specificity.b) {
+          return obj1.specificity.b > obj2.specificity.b ? 1 : -1;
+        }
+        // If 'b' values are equal, compare the 'c' values
+        else if (obj1.specificity.c !== obj2.specificity.c) {
+          return obj1.specificity.c > obj2.specificity.c ? 1 : -1;
+        }
+        else return 0;
+      };
+
       // for all types for styles, add the styles which have isActive property to cache
       // if parent and children properties are present (e.g. 'border', 'border-style', 'border-top-style'), they should be all added into an array corresponding to highest level property (border: [border obj, border-style obj, border-top-style obj])
       allStyles.forEach(array => {
@@ -170,7 +185,24 @@ const rulesSlice = createSlice({
               "b": 9,
               "c": 9
             }
-          } else specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
+            // origin is regular/ user-agent
+          } else {
+            // matchingSelectors array contains indices of selectors matching css rules. In most cases there's only 1 selectors
+            if (each.matchingSelectors.length === 1) {
+              specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
+              // example of cases with multiple selectors:
+              // react: <button className='btn' id='active'></button>
+              // css file: .btn, #active { background: pink};
+              // in case above, matchingSelectors will point to 2 selectors inside selectorList.selectors array, and specificity for this rule set has to be set at highest specificity among the 2.
+            } else {
+              const targetSelectors = each.matchingSelectors.map(selectorIdx => each.rule.selectorList.selectors[selectorIdx]);
+              let bestSelector = targetSelectors[0];
+              targetSelectors.forEach(curSelector => {
+                if (compareSpecificity(bestSelector, curSelector) === -1) bestSelector = curSelector;
+              });
+              specificity = bestSelector.specificity;
+            }
+          }
 
           let properties;
           if (each.rule.origin === 'user-agent') properties = [each.rule.style.shorthandEntries, each.rule.style.cssProperties];
@@ -223,21 +255,6 @@ const rulesSlice = createSlice({
         });
       });
 
-      const compareSpecificity = (obj1, obj2) => {
-        if (obj1.specificity.a !== obj2.specificity.a) {
-          return obj1.specificity.a > obj2.specificity.a ? 1 : -1;
-        }
-        // If 'a' values are equal, compare the 'b' values
-        else if (obj1.specificity.b !== obj2.specificity.b) {
-          return obj1.specificity.b > obj2.specificity.b ? 1 : -1;
-        }
-        // If 'b' values are equal, compare the 'c' values
-        else if (obj1.specificity.c !== obj2.specificity.c) {
-          return obj1.specificity.c > obj2.specificity.c ? 1 : -1;
-        }
-        else return 0;
-      };
-
       const compareOriginsAndNames = (obj1, obj2) => {
         const score = {
           ['user-agent']: 0,
@@ -260,7 +277,7 @@ const rulesSlice = createSlice({
 
       for (let key in cache) {
         if (cache[key].length > 1) {
-          // Step 1: find max specificity and count how many objs have max specificity
+          // Step 1: find max specificity and count how many objs have max specificity. Also handles !important tags
           let bestObj = cache[key][0];
           const countCache = {};
 
@@ -273,6 +290,7 @@ const rulesSlice = createSlice({
               curObj.specificity.c += 10;
             }
 
+            // find max specificity and count how many objs have max specificity
             const curSpecificity = `${curObj.specificity.a}${curObj.specificity.b}${curObj.specificity.c}`;
             if (!countCache[curSpecificity]) countCache[curSpecificity] = 0;
             countCache[curSpecificity]++;

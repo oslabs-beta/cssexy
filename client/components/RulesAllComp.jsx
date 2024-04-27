@@ -43,7 +43,7 @@ function RulesAllComp() {
         return (
             <SidebarStyling
                 key={`inline-style-${idx}`}
-                selector={each.rule.selectorList?.selectors[0].text}
+                selector={each.rule.selectorList?.text}
                 cssProperties={each.rule.style.cssProperties}
                 origin={each.rule.origin}
             />
@@ -54,7 +54,7 @@ function RulesAllComp() {
         return (
             <SidebarStyling
                 key={`regular-style-${idx}`}
-                selector={each.rule.selectorList?.selectors[0].text}
+                selector={each.rule.selectorList?.text}
                 cssProperties={each.rule.style.cssProperties}
                 origin={each.rule.origin}
                 sourcePath={firstSourcePath}
