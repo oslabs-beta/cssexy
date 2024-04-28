@@ -1,34 +1,43 @@
-//Added only because of Issue with Stylex Webpack Plugin Issues could update this to automatically search for packages
-import StylexPlugin from '@stylexjs/webpack-plugin';
-/****************************************************** */
+const path = require('path');
+/** We can set this to a Environment Variable to get the main applicaiton dynamically **/
+const MAIN_APPLICATION_LOCATION = '../../shopster/shopster/'; 
+
+/***  This is EXTREMELY IMPORTANT for loading the same version of Webpack that is in the Main Application *****/
+const webpack = require(path.resolve(__dirname,MAIN_APPLICATION_LOCATION,'node_modules','webpack'));
+
+const webpackConfig = path.join(__dirname, MAIN_APPLICATION_LOCATION + 'webpack.config.js');
+
+const configType = webpackConfig.default || webpackConfig;
 
 
-import express from 'express';
-import webpack from 'webpack';
-import path from 'node:path'
-import middleware from 'webpack-dev-middleware'
+
+// Setting Webpack for development mode and setting the context
+
+const webPackConfigRender = require(configType);
+let configModule;
+if( typeof webPackConfigRender === 'function'){
+   configModule = webPackConfigRender("",{mode:'development'})
+}else{
+    configModule = webPackConfigRender;
+    configModule.mode = 'development';
+}
+// 
 
 
-export const router = express.Router();
-const MAIN_APPLICATION_LOCATION = '../../shopster/shopster/';
-const webpackConfig = path.resolve(import.meta.dirname, MAIN_APPLICATION_LOCATION + 'webpack.config.js');
-const webpackFolder = path.resolve(import.meta.dirname, MAIN_APPLICATION_LOCATION);
-const config = await import(webpackConfig);
+configModule.context = path.resolve(__dirname, MAIN_APPLICATION_LOCATION);
+configModule.output.path = path.resolve(__dirname,'build');
 
-// import webpackConfig from  '../../shopster/shopster/webpack.config.js';
-const configModule = config.default || config;
-
-/******* Set Webpack Config Keys */
-//Set Context
-configModule.context = webpackFolder;
-//Set Entry File
-configModule.entry = path.resolve(configModule.context, configModule.entry);
-
-configModule.output.publicPath = '/';
-configModule.output.path = path.resolve(import.meta.dirname, 'build');
-configModule.plugins.push(new StylexPlugin());
+const compiler = webpack(configModule);
 
 
-/** Create Comiler and Compile Webpack wth Config */
-export const compiler = webpack(configModule);
-export const options ={ publicPath: configModule.output.publicPath}
+module.exports = {
+    compiler,
+    // devServerOptions
+}
+
+
+
+
+
+
+// const devServerOptions = { ...webpackConfig.devServer,port:8888};

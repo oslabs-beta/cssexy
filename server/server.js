@@ -1,4 +1,5 @@
-import express from 'express';
+// import express from 'express';
+const express = require('express');
 const PORT = 8888;
 const app = express();
 
@@ -6,7 +7,9 @@ app.use(express.json());
 
 /***** Setup for Server Rendered Main Application */
 
-import {router} from './getMainApplication.js'
+// import {router} from './getMainApplication.js'
+const router = require('./getMainApplication');
+
 app.use('/', router)
 
 
@@ -37,31 +40,31 @@ app.listen(PORT, () =>
 
 /******** Not Needed? */
 
-app.post('/cdp', async (req, res) => {
-  const data = req.body;
+// app.post('/cdp', async (req, res) => {
+//   const data = req.body;
 
-  try {
-    // if puppeteerMode is set to true, then call the puppeteer process, otherwise call the cdp process
-    const result = puppeteerMode == 1 ? await callPupProcess(data) : await cdpProcess(data);
+//   try {
+//     // if puppeteerMode is set to true, then call the puppeteer process, otherwise call the cdp process
+//     const result = puppeteerMode == 1 ? await callPupProcess(data) : await cdpProcess(data);
 
-    return res.json(result);
-  } catch (error) {
-    console.error('Error processing data:', error);
-    return res.status(500).json({ error: 'Failed to process data' });
-  }
-});
+//     return res.json(result);
+//   } catch (error) {
+//     console.error('Error processing data:', error);
+//     return res.status(500).json({ error: 'Failed to process data' });
+//   }
+// });
 
-app.post('/patch', async (req, res) => {
-  const data = req.body;
+// app.post('/patch', async (req, res) => {
+//   const data = req.body;
 
-  try {
-    const result = await patchFile(data, targetDir);
-    return res.json(result);
-  } catch (error) {
-    console.error('Error processing data:', error);
-    return res.status(500).json({ error: 'Failed to patch data' });
-  }
-});
+//   try {
+//     const result = await patchFile(data, targetDir);
+//     return res.json(result);
+//   } catch (error) {
+//     console.error('Error processing data:', error);
+//     return res.status(500).json({ error: 'Failed to patch data' });
+//   }
+// });
 
 
 // app.use('/app*')
