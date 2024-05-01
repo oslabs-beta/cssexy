@@ -51,10 +51,21 @@ function RulesAllComp() {
     });
 
     const RulesRegularComp = regularRules.map((each, idx) => {
+        let regularSelector = '';
+        if (each.matchingSelectors.length === 1) regularSelector = each.rule.selectorList.selectors[each.matchingSelectors[0]].text;
+        // combine selectors where there're multiple selectors in matchingSelectors array, e.g. '.btn, #active'
+        else if (each.matchingSelectors.length > 1) {
+            for (let i = 0; i < each.matchingSelectors.length; i++) {
+                const idx = each.matchingSelectors[i];
+                regularSelector += each.rule.selectorList.selectors[idx].text;
+                if (i !== each.matchingSelectors.length - 1) regularSelector += ', ';
+            }
+        };
         return (
             <SidebarStyling
                 key={`regular-style-${idx}`}
-                selector={each.rule.selectorList?.text}
+                // selector={each.rule.selectorList?.text}
+                selector={regularSelector}
                 cssProperties={each.rule.style.cssProperties}
                 origin={each.rule.origin}
                 sourcePath={firstSourcePath}
