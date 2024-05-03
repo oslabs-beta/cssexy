@@ -153,6 +153,61 @@ const rulesSlice = createSlice({
         })
       });
     },
+    // finds highest specificity among all selectors based on matchingSelectors array and sets it as a new property 'calculatedSpecificity' on each rule
+    setSpecificity: state => {
+      const allStyles = [state.userAgentRules, state.regularRules, state.inlineRules];
+
+      const compareSpecificity = (obj1, obj2) => {
+        if (obj1.specificity.a !== obj2.specificity.a) {
+          return obj1.specificity.a > obj2.specificity.a ? 1 : -1;
+        }
+        // If 'a' values are equal, compare the 'b' values
+        else if (obj1.specificity.b !== obj2.specificity.b) {
+          return obj1.specificity.b > obj2.specificity.b ? 1 : -1;
+        }
+        // If 'b' values are equal, compare the 'c' values
+        else if (obj1.specificity.c !== obj2.specificity.c) {
+          return obj1.specificity.c > obj2.specificity.c ? 1 : -1;
+        }
+        else return 0;
+      };
+
+      allStyles.forEach(array => {
+        array.forEach(each => {
+          let specificity;
+          if (each.rule.origin === 'inline') {
+            // inline styles have the highest specificity' => hard coding at 999 should ensure inline styles have the highest specificity among other styles
+            specificity = {
+              'a': 9,
+              'b': 9,
+              'c': 9
+            }
+          }
+          // origin is regular/ user-agent
+          else {
+            // matchingSelectors array contains indices of selectors matching css rules. In most cases there's only 1 selector
+            if (each.matchingSelectors.length === 1) {
+              specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
+            }
+            else {
+              // example of cases with multiple selectors:
+              // react: <button className='btn' id='active'></button>
+              // css file: .btn, #active { background: pink};
+              // in case above, matchingSelectors will point to 2 selectors inside selectorList.selectors array, and specificity for this rule set has to be set at highest specificity among the 2
+              let bestSelector = each.rule.selectorList.selectors[each.matchingSelectors[0]];
+              for (let selectorIdx of each.matchingSelectors) {
+                const curSelector = each.rule.selectorList.selectors[selectorIdx];
+                if (compareSpecificity(bestSelector, curSelector) === -1) bestSelector = curSelector;
+              };
+              specificity = bestSelector.specificity;
+            }
+          };
+
+          each.calculatedSpecificity = specificity;
+        });
+      });
+
+    },
     findActiveStyles: (state) => {
       const cache = {};
 
@@ -177,33 +232,7 @@ const rulesSlice = createSlice({
       // if parent and children properties are present (e.g. 'border', 'border-style', 'border-top-style'), they should be all added into an array corresponding to highest level property (border: [border obj, border-style obj, border-top-style obj])
       allStyles.forEach(array => {
         array.forEach(each => {
-          let specificity;
-          if (each.rule.origin === 'inline') {
-            // inline styles have the highest specificity' => hard coding at 999 should ensure inline styles have the highest specificity among other styles
-            specificity = {
-              "a": 9,
-              "b": 9,
-              "c": 9
-            }
-            // origin is regular/ user-agent
-          } else {
-            // matchingSelectors array contains indices of selectors matching css rules. In most cases there's only 1 selectors
-            if (each.matchingSelectors.length === 1) {
-              specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
-              // example of cases with multiple selectors:
-              // react: <button className='btn' id='active'></button>
-              // css file: .btn, #active { background: pink};
-              // in case above, matchingSelectors will point to 2 selectors inside selectorList.selectors array, and specificity for this rule set has to be set at highest specificity among the 2.
-            } else {
-              const targetSelectors = each.matchingSelectors.map(selectorIdx => each.rule.selectorList.selectors[selectorIdx]);
-              let bestSelector = targetSelectors[0];
-              targetSelectors.forEach(curSelector => {
-                if (compareSpecificity(bestSelector, curSelector) === -1) bestSelector = curSelector;
-              });
-              specificity = bestSelector.specificity;
-            }
-          }
-
+          let specificity = each.calculatedSpecificity;
           let properties;
           if (each.rule.origin === 'user-agent') properties = [each.rule.style.shorthandEntries, each.rule.style.cssProperties];
           else properties = [each.rule.style.cssProperties];
@@ -372,6 +401,7 @@ export const {
   updateShortLongMaps,
   updateMidShortMap,
   setIsActiveFlag,
+  setSpecificity,
   resetCache
 } = rulesSlice.actions;
 
