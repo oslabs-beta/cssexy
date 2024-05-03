@@ -17,19 +17,19 @@ const { compiler } = require('./createWebpackApp.js');
 compiler.outputFileSystem = fs;
 
 compiler.watch({},(err, status)=>{
-  console.log(status);
+  // console.log(status);
 })
 
 
 
 
-// router.use((req, res, next)=>{
+router.use((req, res, next)=>{
 
-//   const filePath = path.join(compiler.outputPath, req.path);
+  const filePath = path.join(compiler.outputPath, req.path);
   
 
-//   res.send("Hello World")
-// })
+  res.send("Hello World")
+})
 
 
 
