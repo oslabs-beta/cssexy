@@ -27,12 +27,14 @@ if( typeof webPackConfigRender === 'function'){
 configModule.context = path.resolve(__dirname, MAIN_APPLICATION_LOCATION);
 configModule.output.path = path.resolve(__dirname,'build');
 
+
+
 const compiler = webpack(configModule);
 
 
 module.exports = {
     compiler,
-    // devServerOptions
+  
 }
 
 
@@ -40,4 +42,3 @@ module.exports = {
 
 
 
-// const devServerOptions = { ...webpackConfig.devServer,port:8888};

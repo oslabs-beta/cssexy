@@ -14,11 +14,11 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const { compiler } = require('./createWebpackApp.js');
 
-// compiler.outputFileSystem = fs;
+compiler.outputFileSystem = fs;
 
-// compiler.watch({},(err, status)=>{
-//   console.log(status)
-// })
+compiler.watch({},(err, status)=>{
+  console.log(status);
+})
 
 
 
@@ -41,7 +41,7 @@ const { compiler } = require('./createWebpackApp.js');
 
 
 /**** Run Webpack-dev-Middleware */
-router.use(middleware(compiler));
+// router.use(middleware(compiler));
 // router.use(webpackHotMiddleware(compiler));
 
 // const runServer = async () => {
