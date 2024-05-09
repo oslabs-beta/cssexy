@@ -7,9 +7,7 @@ import SidebarStyling from './SidebarStyling.jsx';
 
 function RulesUserAgentComp() {
     const userAgentRulesData = useSelector(state => state.rules.userAgentRules);
-    const shortToLongMap = useSelector(state => state.rules.shortToLongMap);
-
-    let userAgentSelector;
+    const shortToLongMap = useSelector(state => state.rules.shortToLongMap);    
     // userAgentRules stores data by selector, so that we can display <SidebarStyling/> by selector
     const userAgentRules = {};
 
@@ -25,12 +23,36 @@ function RulesUserAgentComp() {
         return arr;
     };
 
+    const compareSpecificityDescending = (obj1, obj2) => {
+        if (obj1.specificity.a !== obj2.specificity.a) {
+          return obj1.specificity.a < obj2.specificity.a ? 1 : -1;
+        }
+        // If 'a' values are equal, compare the 'b' values
+        else if (obj1.specificity.b !== obj2.specificity.b) {
+          return obj1.specificity.b < obj2.specificity.b ? 1 : -1;
+        }
+        // If 'b' values are equal, compare the 'c' values
+        else if (obj1.specificity.c !== obj2.specificity.c) {
+          return obj1.specificity.c < obj2.specificity.c ? 1 : -1;
+        }
+        else return 0;
+    };
+
     userAgentRulesData.forEach(style => {
+        let userAgentSelector;
         // user-agent styles typically have only 1 matching selector
         if (style.matchingSelectors.length === 1) {
             userAgentSelector = style.rule.selectorList.selectors[style.matchingSelectors[0]].text;
+            const specificity = style.calculatedSpecificity;
             // we are only showing valid selectors which have styles attached to them
-            if (style.rule.style.cssProperties.length && !userAgentRules[userAgentSelector]) userAgentRules[userAgentSelector] = {};
+            if (style.rule.style.cssProperties.length) {
+                if (!userAgentRules[userAgentSelector]) {
+                    userAgentRules[userAgentSelector] = {
+                        properties: {},
+                        specificity
+                    };
+                };
+            };
         }
         // if you encounter the error below, add the logic that iterates through all matching selectors and finds the one with highest specificity
         else throw new Error('MULTIPLE MATCHING SELECTORS ARE FOUND IN "matchingSelectors" ARRAY!');
@@ -38,7 +60,7 @@ function RulesUserAgentComp() {
         // add all longhand properties
         for (let cssProperty of style.rule.style.cssProperties) {
             if (cssProperty.value) {
-                userAgentRules[userAgentSelector][cssProperty.name] = {
+                userAgentRules[userAgentSelector]['properties'][cssProperty.name] = {
                     val: cssProperty.value,
                     isActive: cssProperty.isActive
                 }
@@ -49,7 +71,7 @@ function RulesUserAgentComp() {
             for (let shortStyle of shorthandStyles) {
                 // add all shorthand properties
                 if (shortStyle.value) {
-                    userAgentRules[userAgentSelector][shortStyle.name] = {
+                    userAgentRules[userAgentSelector]['properties'][shortStyle.name] = {
                         val: shortStyle.value,
                         isActive: shortStyle.isActive
                     };
@@ -57,25 +79,36 @@ function RulesUserAgentComp() {
                     // get and remove longhand properties corresponding to each shorthand
                     const longhands = shortToLongMap[shortStyle.name];
                     longhands.forEach(lh => {
-                        if (userAgentRules[userAgentSelector][lh]) delete userAgentRules[userAgentSelector][lh];
+                        if (userAgentRules[userAgentSelector]['properties'][lh]) delete userAgentRules[userAgentSelector]['properties'][lh];
                     })
                 }
             }
         }
     });
 
-    const sidebarStylingComponents = [];
+    // convert userAgentRules object into array, sort it by specificity in descending order and generate jsx components to render
+    const userAgentRulesAr = [];
     for (let selector in userAgentRules) {
-        sidebarStylingComponents.push(
+        userAgentRulesAr.push({
+            selector: selector,
+            properties: userAgentRules[selector].properties,
+            specificity: userAgentRules[selector].specificity
+        });
+    };
+
+    userAgentRulesAr.sort(compareSpecificityDescending);
+    
+    const sidebarStylingComponents = userAgentRulesAr.map(each => {
+        return (
             <SidebarStyling
                 key={nanoid()}
-                selector={selector}
-                cssProperties={ObjToArr(userAgentRules[selector])}
+                selector={each.selector}
+                cssProperties={ObjToArr(each.properties)}
                 origin='user-agent'
             />
         )
-    }
-
+    });
+   
     return (
         <div>
             <h4>user agent</h4>
