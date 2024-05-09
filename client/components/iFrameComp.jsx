@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, updateMidShortMap, setIsActiveFlag, setSpecificity, resetCache, updateNodeData } from '../slices/rulesSlice.js';
 import DOMPath from 'chrome-dompath';
-
-import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, updateMidShortMap, setIsActiveFlag, updateNodeData } from '../slices/rulesSlice.js';
 
 /**
  * Renders an iframe component with event handling for click events.
@@ -14,6 +13,15 @@ import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInhe
  */
 
 const iFrameComp = ({ src, proxy, className }) => {
+  // const inlineRules = useSelector(state => state.rules.inlineRules);
+  // console.log('INLINE RULES:   ', inlineRules);
+  // const regularRules = useSelector(state => state.rules.regularRules);
+  // console.log('REGULAR RULES:   ', regularRules);
+  // const userAgentRules = useSelector(state => state.rules.userAgentRules);
+  // console.log('USER AGENT RULES:   ', userAgentRules);
+  // const isActiveCache = useSelector(state => state.rules.isActiveCache);
+  // console.log('IS ACTIVE CACHE:   ', isActiveCache);
+
   const dispatch = useDispatch();
 
   // waiting for the iframe DOM to load before we add event listeners
@@ -81,9 +89,11 @@ const iFrameComp = ({ src, proxy, className }) => {
           // dispatch(updateKeyframeRules(result.keyframeRules));
 
           // actions needed for style overwrite functionality
+          dispatch(resetCache());
           dispatch(updateShortLongMaps());
           dispatch(updateMidShortMap());
           dispatch(setIsActiveFlag());
+          dispatch(setSpecificity());
           dispatch(findActiveStyles());
         };
 
