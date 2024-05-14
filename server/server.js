@@ -57,14 +57,10 @@ if (environment === 'production') {
 // These run independently, but can communicate with the parent process via IPC (Inter-Process Communication) channels.
 // So in this case, puppeteer is a child process of this server process.
 
-// app.use('/target', createProxyMiddleware({ target: `http://localhost:${targetPort}`, changeOrigin: true }));
-
 spawn('node', ['../client/puppeteer/pup.js', browserPort]);
-// spawn('node', ['../client/puppeteer/pup.js', `${browserPort}/target`]);
-
 
 app.post('/cdp', async (req, res) => {
-  console.log('server: post /cdp, req.body', req.body);
+  // console.log('server: post /cdp, req.body', req.body);
 
   try {
     // if puppeteerMode is set to true, then call the puppeteer process, otherwise call the cdp process
@@ -80,22 +76,10 @@ app.post('/cdp', async (req, res) => {
   }
 });
 
-app.post('/patch', async (req, res) => {
-  console.log('server: post /patch, req.body', req.body);
 
-  try {
-    const result = await patchFile(req.body);
-    console.log('server: patch: result', result);
-    return res.json(result);
-  } catch (error) {
-    console.error('Error processing data:', error);
-    return res.status(500).json({ error: 'Failed to patch data' });
-  }
-});
 
 app.post('/findSource', async (req, res) => {
-  console.log('server: post /findSource', req.body);
-
+  console.log('server: post /findSource', req.body.inlineRules.cssProperties);
   try {
     const result = req.body.inlineRules ? await findSourceInline(req.body) : await findSourceRegular(req.body);
     // console.log('server: findSource: result', result);
@@ -120,6 +104,19 @@ app.post('/openSourceFile', async (req, res) => {
   } catch (error) {
     console.error('Sever: Error opening path:', error);
     return res.status(500).json({ error: 'Server:Failed to open path' });
+  }
+});
+
+app.post('/patch', async (req, res) => {
+  console.log('server: post /patch, req.body', req.body);
+
+  try {
+    const result = await patchFile(req.body);
+    console.log('server: patch: result', result);
+    return res.json(result);
+  } catch (error) {
+    console.error('Error processing data:', error);
+    return res.status(500).json({ error: 'Failed to patch data' });
   }
 });
 

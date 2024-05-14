@@ -7,8 +7,8 @@ const patchFile = async ({data, target}) => {
   try {
     // properties with Prev are the previous values to be searched for and replaced in the matching file.
 
-    console.log('data', data);
-    console.log('target', target);
+    console.log('patchFile: data', data);
+    console.log('patchFile: target', target);
     const selector = target.targetSelector;
     const text = data.text;
     const textPrev = data.textPrev;
@@ -29,7 +29,7 @@ const patchFile = async ({data, target}) => {
 
       console.log('startLine', startLine, 'endLine', endLine, 'so this is a inline style');
 
-      const sourcePath = target.targetSourceInline.path;
+      const sourcePath = target.targetInline.path;
 
       // we need to convert the strings to js format
       // helper function to convert css string format to js format
@@ -74,7 +74,7 @@ const patchFile = async ({data, target}) => {
 
       // console.log('data updated', data);
 
-      const filePath = target.targetSourceInline.path;
+      const filePath = target.targetInline.path;
 
       console.warn('filePath', filePath);
 
@@ -102,14 +102,14 @@ const patchFile = async ({data, target}) => {
     else {
       console.log('startLine', startLine, 'endLine', endLine, 'so this is a regular style');
 
-      const sourcePath = target.targetSourceRegular.path;
-      const pathName = target.targetSourceRegular.pathName;
+      const sourcePath = target.targetRegular.path;
+      const pathFileName = target.targetRegular.pathFileName;
 
       console.log('sourcePath', sourcePath);
 
       // const filePath = sourcePath[0] === '.' ? `${targetDir}${sourcePath.slice(1)}` : sourcePath;
 
-      const filePath = target.targetSourceRegular.path
+      const filePath = target.targetRegular.path
 
       console.log('filePath', filePath);
 
@@ -120,7 +120,7 @@ const patchFile = async ({data, target}) => {
       const selectorContents = fileData.match(new RegExp(`${selector}\\s*\\{([^}]*)`));
 
       if (!selectorContents) {
-        console.log(`Selector ${selector} not found in file ${pathName}`);
+        console.log(`Selector ${selector} not found in file ${pathFileName}`);
         return false;
       }
 
@@ -129,7 +129,7 @@ const patchFile = async ({data, target}) => {
       const matches = selectorContentsStr.match(new RegExp(`\\s*${name}:([^;]*);`));
 
       if (!matches) {
-        console.log(`Line with ${name}: not found in selector ${selector} in file ${pathName}`);
+        console.log(`Line with ${name}: not found in selector ${selector} in file ${pathFileName}`);
         return false;
       }
 

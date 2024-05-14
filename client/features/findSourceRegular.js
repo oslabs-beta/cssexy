@@ -5,18 +5,21 @@ const findSourceRegular = async ({regularRules, data, targetDir}) => {
   try {
     // console.log('\n\n');
     // console.log('findSourceRegular');
-    // console.log('\n\n');
+    console.log('\n\n');
 
     console.log('findSourceRegular: data', data);
+    console.log('\n\n');
+    console.log('\n\n');
     console.log('findSourceRegular: regularRules', regularRules);
+    console.log('\n\n');
 
     // console.log('findSourceRegular: regularRules.style.cssProperties', regularRules.style.cssProperties);
     // console.log('\n\n');
     const selector = data.selector;
     console.log('findSourceRegular: selector', selector);
-    const selectorShort = selector.match(/^([^\s]*)/).pop();
+    // const selectorShort = selector.match(/^([^\s]*)/).pop();
     console.log('\n\n');
-    console.log('findSourceRegular: selectorShort', selectorShort);
+    // console.log('findSourceRegular: selectorShort', selectorShort);
 
     const sourcePath = regularRules.path;
     // const name = data.name;
@@ -44,12 +47,12 @@ const findSourceRegular = async ({regularRules, data, targetDir}) => {
     //   console.log(`Selector ${selectorShort} not found in file ${targetFilePath}`);
     //   return false;
     // }
-    // console.log('findSourceRegular: targetSourceRegularLineNumber is next');
+    // console.log('findSourceRegular: targetRegularLineNumber is next');
     // console.log('\n\n');
 
-    // const targetSourceRegularLineNumber = fileData.substring(0, selectorContents.index).split('\n').length;
+    // const targetRegularLineNumber = fileData.substring(0, selectorContents.index).split('\n').length;
 
-    // console.log('findSourceRegular: targetSourceRegularLineNumber', targetSourceRegularLineNumber);
+    // console.log('findSourceRegular: targetRegularLineNumber', targetRegularLineNumber);
 
     // const selectorContentsStr = selectorContents[0];
 

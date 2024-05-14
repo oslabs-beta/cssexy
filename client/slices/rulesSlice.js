@@ -29,8 +29,9 @@ const rulesSlice = createSlice({
       state.inlineRules = action.payload;
     },
     updateRegularRules: (state, action) => {
-      // console.log('rulesSlice: state.regularRules: updated', action.payload);
+      console.log('rulesSlice: state.regularRules: updated', action.payload);
       state.regularRules = action.payload;
+      console.log('rulesSlice: state.regularRules: updated', state.regularRules);
     },
     updateUserAgentRules: (state, action) => {
       // console.log('rulesSlice: state.userAgentRules: updated', action.payload);
@@ -288,7 +289,7 @@ const rulesSlice = createSlice({
         const score = {
           ['user-agent']: 0,
           regular: 10,
-          inline: 20 
+          inline: 20
         };
 
         if (score[obj1.origin] !== score[obj2.origin]) {
@@ -299,6 +300,7 @@ const rulesSlice = createSlice({
         // if specificities, origins and property names are all the same, keep the latter one reflecting cascading nature of css rules
         else if (score[obj1.origin] === score[obj2.origin] && obj1.source.name === obj2.source.name) return -1;
         // IF YOU'RE GETTING THE ERROR BELOW, COMMENT THE ELSE BLOCK OUT AND TELL ELENA TO INVESTIGATE
+        // ^😂
         else {
           throw new Error(`Error in rulesSlice.js: findActiveStyles reducer: compare func \n\nStyle-1: ${JSON.stringify(obj1)} \n\nStyle-2: ${JSON.stringify(obj2)}`);
         }
@@ -311,8 +313,10 @@ const rulesSlice = createSlice({
           const countCache = {};
 
           cache[key].forEach(curObj => {
+            // console.log('\n\n');
+            // console.log('curObj', curObj);
             // styles with !important tag have property 'important' set to true
-            // by adding 10 to their specificity we make their specificity higher than inline styles (which have specificity 999). But we want to maintain 'actual specificity + 10' for cases when there're multiple !important styles. In this case, !important styles will be higher than any other styles, but we want to compare among !important styles themselves and choose the prevailing one, that's why we keep their original specificity but increasing it by 10. 
+            // by adding 10 to their specificity we make their specificity higher than inline styles (which have specificity 999). But we want to maintain 'actual specificity + 10' for cases when there're multiple !important styles. In this case, !important styles will be higher than any other styles, but we want to compare among !important styles themselves and choose the prevailing one, that's why we keep their original specificity but increasing it by 10.
             if (curObj.source.important) {
               curObj.specificity.a += 10;
               curObj.specificity.b += 10;
@@ -327,7 +331,7 @@ const rulesSlice = createSlice({
             if (compareSpecificity(bestObj, curObj) === -1) {
               bestObj.source.isActive = false;
               bestObj = curObj;
-            }            
+            }
           })
 
           // Step 2: turn off isActive for everything that is less than max specificity
@@ -336,12 +340,12 @@ const rulesSlice = createSlice({
           });
 
           // Step 3: If there're more than 1 active max specificities, compare them by other parameters
-          // this comparison accounts for cases: 1) when specificities are same but origins are different, and 
+          // this comparison accounts for cases: 1) when specificities are same but origins are different, and
           // 2) when all specificities, origins and property names are the same - applying rule of cascading styles (latter overwrites previous)
           const maxSpecificity = `${bestObj.specificity.a}${bestObj.specificity.b}${bestObj.specificity.c}`;
           if (countCache[maxSpecificity] > 1) {
             const bestObjs = cache[key].filter(obj => obj.source.isActive === true);
-          
+
             let bestObj = bestObjs[0];
             for (let i = 1; i < bestObjs.length; i++) {
               const curObj = bestObjs[i];

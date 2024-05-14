@@ -54,8 +54,8 @@ const pupProcess = async (client, styleSheets, data) => {
         // // const { node: { contentDocument: { nodeId: iframeNodeId } } } = nodes.filter(each => each.node.nodeName === 'IFRAME' && each.node.contentDocument.baseURL === targetUrl)[0];
 
         const { node: { contentDocument: { nodeId: iframeNodeId } } } = nodes.filter(each => each.node?.contentDocument?.baseURL === targetUrl)[0];
-console.log('\n\n');
-        console.log('iframeNodeId', iframeNodeId);
+        // console.log('\n\n');
+        // console.log('pupProcess: iframeNodeId', iframeNodeId);
 
         // // Get the nodeId of the element node based on its selector.
         // DOM.querySelector only searches within the subtree of a specific node
@@ -64,8 +64,7 @@ console.log('\n\n');
             selector: selector
         });
 
-          console.log('\n\n');
-          console.log('elementNodeId', elementNodeId);
+        //   console.log('pupProcess: elementNodeId', elementNodeId);
 
         // // Create the directory before trying to add files.
         // await mkdir((new URL('../../data/output/', import.meta.url)), { recursive: true }, (err) => {
@@ -88,6 +87,8 @@ console.log('\n\n');
         // this retrieves the styles for the clicked element
         const result = await pupRules(client, elementNodeId);
         result.styleSheets = styleSheets;
+        // console.log('pupProcess: result', result);
+        // console.log('\n\n');
         return result;
 
     } catch (err) {

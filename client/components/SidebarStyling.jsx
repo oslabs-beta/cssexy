@@ -9,7 +9,7 @@ import { openSourceFile } from '../features/openSourceFile.js';
 
 
 function SidebarStyling(props) {
-    // console.log('SidebarStyling: props', props);
+    console.log('SidebarStyling: props', props);
     const dispatch = useDispatch();
 
     const rules = useSelector(state => state.rules)
@@ -18,6 +18,7 @@ function SidebarStyling(props) {
 
     // spread operator to make a deep copy of props, so that we can then modify it.
     const liveProps = { ...props };
+    console.warn('SidebarStyling: liveProps', liveProps);
 
     const [values, setValues] = useState({});
     const [clickedPropertyField, setClickedPropertyField] = useState('');
@@ -33,6 +34,8 @@ function SidebarStyling(props) {
                 return acc;
             }, {})
         );
+        console.warn('SidebarStyling: liveProps updated', liveProps);
+
     }, [props.cssProperties]);
 
     const handleSubmit = async (cssProp, item) => {

@@ -10,17 +10,36 @@ function RulesRegularComp() {
   // contains information about all of the .  css files that are currently loaded
   // const styleSheets = useSelector(state => state.rules.styleSheets);
 
-  const targetSourceRegular = useSelector(state => state.target.targetSourceRegular);
+  const targetRegular = useSelector(state => state.target.targetRegular);
 
-  // console.warn('RulesRegularComp: targetSourceRegular', targetSourceRegular);
+  // console.warn('RulesRegularComp: targetRegular', targetRegular);
 
-  const { path, pathName } = targetSourceRegular;
+  const { path, pathFileName } = targetRegular;
 
   const line = 1;
 
+  const compareSpecificityDescending = (obj1, obj2) => {
+    if (obj1.calculatedSpecificity.a !== obj2.calculatedSpecificity.a) {
+      return obj1.calculatedSpecificity.a < obj2.calculatedSpecificity.a ? 1 : -1;
+    }
+    // If 'a' values are equal, compare the 'b' values
+    else if (obj1.calculatedSpecificity.b !== obj2.calculatedSpecificity.b) {
+      return obj1.calculatedSpecificity.b < obj2.calculatedSpecificity.b ? 1 : -1;
+    }
+    // If 'b' values are equal, compare the 'c' values
+    else if (obj1.calculatedSpecificity.c !== obj2.calculatedSpecificity.c) {
+      return obj1.calculatedSpecificity.c < obj2.calculatedSpecificity.c ? 1 : -1;
+    }
+    else return 0;
+  };
 
+
+  const regularRulesSorted = regularRules.toSorted(compareSpecificityDescending);
   // map() to create an array of SidebarStyling components
-  const regularElements = regularRules.map((each, idx) => {
+  // const regularRulesElements = regularRulesSorted.map((each, idx) => {
+  // const regularRulesElements = regularRules.map((each, idx) => {
+    const regularRulesElements = [...regularRules].reverse().map((each, idx) => {
+
     return (
       <SidebarStyling
         key={`regular-style-${idx}`}
@@ -28,7 +47,7 @@ function RulesRegularComp() {
         cssProperties={each.rule.style.cssProperties}
         origin={each.rule.origin}
         path={path}
-        target={targetSourceRegular}
+        target={targetRegular}
       />
     )
   });
@@ -38,20 +57,20 @@ function RulesRegularComp() {
       <h4>regular</h4>
       {/* <a> 'a' for anchor. used as a hyperlink tag */}
       {/* href stands for 'hypertext reference' */}
-      {/* if targetSourceRegularPath is not null, open the source file */}
+      {/* if targetRegularPath is not null, open the source file */}
       {/* otherwise do nothing */}
       {/* added e and preventDefault in order to name the href and prevent clicking then navigating the site to that endpoint, which would reload the page. */}
       {/* even preventing default while maintaining the href would allow us to prevent the page from navigating to /#, which, while it doesn’t reload the page, simply isnt as clean of a user experience. */}
       {
         path ?
-          <h5 ><a href="targetSourcePath" className="target-source-path" onClick={(e) => { e.preventDefault(); openSourceFile(path, line) }}>{pathName}</a></h5>
+          <h5 ><a href="targetSourcePath" className="target-source-path" onClick={(e) => { e.preventDefault(); openSourceFile(path, line) }}>{pathFileName}</a></h5>
           :
           null
       }
-      {/* if there are inline styles, display them, otherwise display blank line */}
+      {/* if there are styles, display them, otherwise display blank line */}
       <>{
-        regularElements.length ?
-          regularElements
+        regularRulesElements.length ?
+          regularRulesElements
           :
           <br />}</>
     </div>

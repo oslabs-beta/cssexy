@@ -1,5 +1,5 @@
 import { updateInlineRules, updateRegularRules, updateUserAgentRules, updateInheritedRules, updateKeyframeRules, updateStyleSheets, findActiveStyles, updateShortLongMaps, setIsActiveFlag, updateMidShortMap } from '../slices/rulesSlice.js';
-import { updateTargetSelector, updateTargetSourceInline, updateTargetSourceRegular, updateTarget } from '../slices/targetSlice.js';
+import { updateTargetSelector, updateTargetInline, updateTargetRegular, updateTarget } from '../slices/targetSlice.js';
 
 import store from '../store.js';
 
@@ -9,8 +9,8 @@ const fetchElementRules = async ({ data, dispatch }) => {
   const target = state.target;
   const targetPort = target.targetPort;
   const targetDir = target.targetDir;
-  const targetInline = target.targetSourceInline;
-  const targetRegular = target.targetSourceRegular;
+  const targetInline = target.targetInline;
+  const targetRegular = target.targetRegular;
   const targetData = target.targetData;
   const selectorMemo = target?.targetSelector;
 
@@ -88,13 +88,13 @@ const fetchElementRules = async ({ data, dispatch }) => {
         // console.warn('fetchElementRules: absolutePaths', absolutePaths);
         console.warn('fetchElementRules: relativePaths', relativePaths);
 
-        const pathShort = relativePaths[0] ? relativePaths[0] : absolutePaths[0].replace(targetDir, '/')
-        const path = absolutePaths[0] ? absolutePaths[0] : `${targetDir}${pathShort}`;
+        const pathRelative = relativePaths[0] ? relativePaths[0] : absolutePaths[0].replace(targetDir, '/')
+        const path = absolutePaths[0] ? absolutePaths[0] : `${targetDir}${pathRelative}`;
 
-        // console.warn('pathShort', pathShort);
+        // console.warn('pathRelative', pathRelative);
         // console.warn('path', path);
 
-        dispatch(updateTargetSourceRegular({ absolutePaths, relativePaths, path, pathShort }));
+        dispatch(updateTargetRegular({ absolutePaths, relativePaths, path, pathRelative }));
 
         // KEITH TO-DO 2024-04-20_01-00-AM: need to build out the regularRule logic in findSourceRegular for the below to work.
 
@@ -108,7 +108,7 @@ const fetchElementRules = async ({ data, dispatch }) => {
           body: JSON.stringify({ regularRules, data, targetDir }),
         });
 
-        const targetSourceRegular = await responseRegular.json();
+        const targetRegular = await responseRegular.json();
         console.warn('fetchElementRules: resultRegular', resultRegular);
 
 
@@ -120,10 +120,10 @@ const fetchElementRules = async ({ data, dispatch }) => {
         console.log('fetchElementRules: regularRules: error', error);
       }
     }
-    // otherwise, there are no regular rules for the clicked element, so we set targetSourceRegular in our store to null
+    // otherwise, there are no regular rules for the clicked element, so we set targetRegular in our store to null
     else {
-      console.log('fetchElementRules: targetSourceRegular is empty. clearing targetSourceRegular');
-      dispatch(updateTargetSourceRegular());
+      console.log('fetchElementRules: targetRegular is empty. clearing targetRegular');
+      dispatch(updateTargetRegular());
     }
 
     const inlineRulesAll = result?.inlineRules;
@@ -140,7 +140,7 @@ const fetchElementRules = async ({ data, dispatch }) => {
       if (selector === selectorMemo) {
         console.log('fetchElementRules: selector is the same as previous selector.');
         console.log('fetchElementRules: inlineRules', inlineRules);
-        console.log('fetchElementRules: target.targetSourceInline', targetInline);
+        console.log('fetchElementRules: target.targetInline', targetInline);
       }
 
       try {
@@ -149,20 +149,20 @@ const fetchElementRules = async ({ data, dispatch }) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ inlineRules, data, target }),
         });
-        const targetSourceInline = await responseInline.json();
+        const targetInline = await responseInline.json();
 
-        // const targetSourceInline = await dispatch(findSourceInline({ inlineRules, data })).unwrap();
+        // const targetInline = await dispatch(findSourceInline({ inlineRules, data })).unwrap();
 
         console.log('\n\n');
-        console.warn('fetchElementRules: targetSourceInline', targetSourceInline);
+        console.warn('fetchElementRules: targetInline', targetInline);
         console.log('\n\n');
 
-        targetSourceInline.length ? dispatch(updateTargetSourceInline(targetSourceInline)) : console.log('fetchElementRules: targetSourceInline is empty.');
+        targetInline.length ? dispatch(updateTargetInline(targetInline)) : console.log('fetchElementRules: targetInline is empty.');
       } catch (error) {
         console.log('fetchElementRules: error', error);
       }
     } else {
-      dispatch(updateTargetSourceInline());
+      dispatch(updateTargetInline());
     }
 
     return true;

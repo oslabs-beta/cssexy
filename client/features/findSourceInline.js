@@ -5,9 +5,9 @@ import { cssToReact } from './cssToReact.js';
 
 const findSourceInline = async ({ inlineRules, data, target }) => {
 
-  // console.log('findSourceInline: inlineRules', inlineRules);
-  // console.log('findSourceInline: data', data);
-  console.warn('findSourceInline: target', target);
+  console.log('findSourceInline: inlineRules', inlineRules);
+  console.log('findSourceInline: data', data);
+  // console.warn('findSourceInline: target', target);
 
   const targetDir = target.targetDir;
   const cssText = inlineRules.cssText;
@@ -110,7 +110,9 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
     cssJsDx[kvSplit[0].trim()] = kvSplit[1].trim()
   }
 
-  console.log('cssJsDx', cssJsDx);
+  console.log('\n\n');
+  console.warn('findSourceInline: cssJsDx', cssJsDx);
+  console.log('\n\n');
 
   // Recursive function to find .jsx files in the target directory
   async function findJsxFiles(dir) {
@@ -266,7 +268,7 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
         type,
         typeValue: value,
         line,
-        pathShort: jsxFilePath.replace(targetDir + path.sep, '/'),
+        pathRelative: jsxFilePath.replace(targetDir + path.sep, '/'),
         path: jsxFilePath,
         lineText,
       };
