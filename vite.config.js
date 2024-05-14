@@ -18,7 +18,10 @@ export default defineConfig({
     proxy: {
       '/cdp': 'http://localhost:8888',
       '/patch': 'http://localhost:8888',
-      '/read': 'http://localhost:8888',
+      '/findSource': 'http://localhost:8888',
+      '/openSourceFile': 'http://localhost:8888',
+      // '/target': `http://localhost:${process.env.VITE_TARGET_PORT}`,
+      '/target': `http://localhost:8000`,
     }
   }
 });

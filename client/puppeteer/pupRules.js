@@ -10,9 +10,9 @@
 import fs from 'fs';
 
 const pupRules = async (client, elementNodeId) => {
-  console.log('pupRules: Getting inline styles for elementNodeId:', elementNodeId);
 
   // Get the inline styles for the element node
+  // console.log('pupRules: Getting inline styles for elementNodeId:', elementNodeId);
   const inlineRules = await getInlineRules(client, elementNodeId);
 
   // get all CSS rules that are applied to the node
@@ -52,8 +52,6 @@ const pupRules = async (client, elementNodeId) => {
   }
 
   // fs.writeFileSync('./data/output/allRules.json', JSON.stringify(allRules, null, 2));
-
-  // fs.writeFileSync('./data/output/result.json', JSON.stringify(result, null, 2));
   // fs.writeFileSync('./data/output/inlineRules.json', JSON.stringify(inlineRules, null, 2));
   // fs.writeFileSync('./data/output/regularRules.json', JSON.stringify(regularRules, null, 2));
   // fs.writeFileSync('./data/output/userAgentRules.json', JSON.stringify(userAgentRules, null, 2));

@@ -23,7 +23,7 @@ const rulesSlice = createSlice({
   name: 'rules',
   initialState,
   reducers: {
-    // every time user selects a DOM element, inline, regular, and user-agent rules are dispatched by the iFrameComp, updating the store via the reducers below.
+    // every time user selects a DOM element, inline, regular, and user-agent rules are dispatched by the iframeComp, updating the store via the reducers below.
     updateInlineRules: (state, action) => {
       // console.log('rulesSlice: state.inlineRules: updated', action.payload);
       state.inlineRules = action.payload;
@@ -369,27 +369,6 @@ const rulesSlice = createSlice({
   },
 });
 
-const initialNodeDataState = {
-  data: {},
-  error: null, // if we want to track errors
-};
-
-const nodeDataSlice = createSlice({
-  name: 'nodeData',
-  // createSlice expects the initial state to be passed as 'initialState'.
-  // so we pass initialNodeDataState as the value of 'initialState'.
-  initialState: initialNodeDataState,
-  reducers: {
-    // every time user selects a DOM element, inline, regular, and user-agent rules are dispatched by the iFrameComp, updating the store via the reducers below.
-    updateNodeData: (state, action) => {
-      // console.log('nodeDataSlice: state.nodeData: updated', action.payload);
-      // console.log('\n\n\n');
-      state.data = action.payload;
-    },
-  },
-});
-
-
 export const {
   updateInlineRules,
   updateRegularRules,
@@ -405,9 +384,4 @@ export const {
   resetCache
 } = rulesSlice.actions;
 
-export const {
-  updateNodeData
-} = nodeDataSlice.actions;
-
 export const rulesReducer = rulesSlice.reducer;
-export const nodeDataReducer = nodeDataSlice.reducer;

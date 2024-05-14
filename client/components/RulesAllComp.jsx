@@ -1,7 +1,7 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import SidebarStyling from './SidebarStyling.jsx';
+import React from 'react';
 import RulesUserAgentComp from "./RulesUserAgentComp.jsx";
+import RulesRegularComp from "./RulesRegularComp.jsx";
+import RulesInlineComp from "./RulesInlineComp.jsx";
 
 function RulesAllComp() {
     // contains all of the inline styles (styles specified directly on a component)
@@ -90,13 +90,8 @@ function RulesAllComp() {
 
     return (
         <div>
-            <h4>inline</h4>
-            {/* ternary to render a line break if there are no rules. Improves readability imo */}
-            <>{RulesInlineComp.length ? RulesInlineComp : <br/>}</>
-            {/* <h3>.css</h3> */}
-            <h4>{sourceName ? sourceName : 'css'}</h4>
-            {/* same ternary, same reason */}
-            <>{RulesRegularComp.length ? RulesRegularComp : <br/>}</>
+            <RulesInlineComp />
+            <RulesRegularComp />
             <RulesUserAgentComp />
         </div>
     )

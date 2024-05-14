@@ -4,3 +4,4 @@ data/*/*
 .env
 .vscode
 client/data
+data/css-properties.json

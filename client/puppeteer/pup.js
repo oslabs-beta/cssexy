@@ -4,6 +4,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
 
+// we import this so that we can call it from here, passing the client and styleSheets variables to it when we do.
+import { pupProcess } from './pupProcess.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const __envPath = path.resolve(__dirname, '../../.env')
@@ -13,20 +16,12 @@ config({ path: __envPath });
 // console.log('dirname:', __dirname);
 // console.log('path:', __envPath);
 
-// we import this so that we can call it from here, passing the client and styleSheets variables to it when we do.
-import { pupProcess } from './pupProcess.js';
-
-const puppeteerMode = process.env.PUPPETEER_MODE;
-
 const coder = process.env.CODER;
 
 // declaring client and styleSheets here (outside of the unnamed function) so we can have access to them in the 'callPupProcess' function further down.
 let client;
 const styleSheets = {};
 
-// if puppeteerMode is set to 1, then we start Puppeteer.
-if (puppeteerMode == 1) {
-// this is the equivalent of the calling startRemoteChrome in prior, pre-puppeteer versions of our code.
 // this entire file gets called in the server, and the function below is called immediately
 // as we have set it up to be an IIFE (Immediately Invoked Function Expression).
 (async () => {
@@ -41,13 +36,16 @@ if (puppeteerMode == 1) {
     // `--app=${cssxeUrl}`,
     // this is what so far allows us to pass data from inside of the iframe to the parent window, cssxe.
     '--disable-web-security',
+    // makes the empty browser window dark mode. no more white killing my eyes during development. turn this off in prod mode.
+    '--enable-features=WebContentsForceDark'
   ]
 
   // for keith's environemnt. opens the browser on second screen
   coder == 'KEITH' ? pupArgs.push('--window-position=2000,200') : null;
 
-  // puppeteer: library for controlling Chrome/Chromium over a network protocol.
-  const browser = await puppeteer.launch({
+  const coderProfile = !coder ? path.resolve(__dirname, `../../data/Chrome/Profiles/${coder}/`) : null
+
+  const pupOptions = {
     // open browser window
     headless: false,
     // don't set a default viewport size. without this, i get a funky view where cssxe and the target site only take up a third of the browser window.
@@ -55,8 +53,14 @@ if (puppeteerMode == 1) {
     // open devtools. good for cssxe development mode. prob should be false for prod.
     devtools: true,
     // array of command-line args we define above to pass to Chrome
-    args: pupArgs
-  });
+    args: pupArgs,
+    // for us to specify a chrome profile, which allows us to maintain history between puppeteer sessions.
+    // could be something we want to offer as a feature for users too. NOTE 2024-04-20_12-59-AM.
+    userDataDir: coderProfile
+  }
+
+  // puppeteer: library for controlling Chrome/Chromium over a network protocol.
+  const browser = await puppeteer.launch(pupOptions);
 
   // grab a reference to the single page that Puppeteer just opened up
   // the 'pages' method returns an array of all the pages that Puppeteer knows about, and we only want the one that it just created
@@ -99,7 +103,6 @@ if (puppeteerMode == 1) {
     // console.log('styleSheetAdded');
     const id = param.header.styleSheetId;
 
-    // passing these values now, so we have them in the store. none of them have yet been or are being used as of 2024-04-02.
     styleSheets[id] = {
       frameId: param.header.frameId,
       // the url from importing fonts and the like, ala 'https://fonts.googleapis.com/...'
@@ -116,8 +119,8 @@ if (puppeteerMode == 1) {
       length: param.header.length,
       endLine: param.header.endLine,
       endColumn: param.header.endColumn,
-
     }
+
     // if the sourceMapURL is present, add those paths to the styleSheets object.
     // this gets us the paths to the regular styles source files, i.e. .css, .scss.
     if (param.header.sourceMapURL) {
@@ -157,43 +160,9 @@ if (puppeteerMode == 1) {
     // console.log('\n\n');
   });
 })(pupProcess);
-} else {
-  console.log('pup.js: puppeteerMode set to 0. puppeteer will not be called');
-}
 // data passed from server = ...args
 const callPupProcess = async (...args) => await pupProcess(client, styleSheets, ...args);
 
 // callPupProcess is called when the the /cdp endpoint is hit.
-// // -> /cdp is hit by iFrameComp when a click event occurs inside of the iFrame.
+// // -> /cdp is hit by iframeComp when a click event occurs inside of the iframe.
 export { callPupProcess };
-
-
-
-
-
-// rob's initial puppeteer code, which shows how to get the styles for a specific node.
-// const doc = await session.send('DOM.getDocument');
-
-// //Query the nodes on the page by selector type use * to get all nodes on the page
-// const nodes = await session.send('DOM.querySelectorAll', {
-//     nodeId: doc.root.nodeId,
-//     selector: 'loadingText'
-// });
-
-// const stylesForNodes = []
-
-// for (const id of nodes.nodeIds) {
-//   stylesForNodes.push(await session.send('CSS.getMatchedRulesForNode', {nodeId: id}));
-// }
-// //See all the Nodes Requested
-// console.log("Rules for Nodes Array ===>", stylesForNodes)
-
-// //Get Rules for single Node Id
-// const styleForSingleNode = await session.send('CSS.getMatchedRulesForNode', {nodeId: 4});
-// console.log("Single Node Id: 4 ===>", styleForSingleNode)
-
-
-//Get Specificity
-// console.log("Specificity of specific Node ===> ", stylesForNodes[0].matchedCSSRules[0].rule.selectorList.selectors[0].specificity)
-
-// leave the browser open so we can inspect it

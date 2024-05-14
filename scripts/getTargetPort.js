@@ -5,6 +5,19 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { config } from 'dotenv';
 
+import { updateEnv } from './updateEnv.js';
+
+
+/**
+ * Retrieves the target port for the application.
+ * If the target directory is not 'cssxe', it searches for the process IDs of all open files in the target directory
+ * and retrieves the target port associated with the process ID.
+ * If the target port is found, it updates the 'VITE_TARGET_PORT' and 'TARGET_PORT' environment variables in the .env file.
+ * If the target port is not found, it throws an error.
+ * @returns {string} The target port.
+ * @throws {Error} If the target port is not found.
+ */
+
 const getTargetPort = async () => {
   try {
 
@@ -17,13 +30,14 @@ const getTargetPort = async () => {
     // passed in from the npm run sexy script in the target package.json
     const targetDir = process.env.TARGET_DIR ? process.env.TARGET_DIR : process.env.TARGET_DIR_BACKUP
 
-    console.log('getTargetPort: invoked');
-    console.log('getTargetPort: targetDir:', targetDir);
+    // console.log('getTargetPort: invoked');
+    // console.log('getTargetPort: targetDir:', targetDir);
     // console.log('targetDirBackup:', process.env.TARGET_DIR_BACKUP);
 
-    let proxy;
+    let targetPort;
 
     if (!targetDir.includes('cssxe')) {
+      console.log('getTargetPort: targetDir is not cssxe. Searching for open files in targetDir...');
       // getting the process IDs of all open files in the target directory
       // `lsof` (list open files)
       // +D flag: search in directories, instead of files
@@ -52,7 +66,7 @@ const getTargetPort = async () => {
         // -p flag: only show info for processes with the given ID
         // ${pid}: the given process ID being searched
         // grep ${pid}: regex to match any line that contains the process ID
-        proxy = execSync(`lsof -i -P -n -p ${pid} | grep ${pid}`)
+        targetPort = execSync(`lsof -i -P -n -p ${pid} | grep ${pid}`)
         .toString()
         .match(/(?<=..:)\d{4}/)
           // (?<=..:) : positive lookahead. only match if it's preceded by ..:
@@ -60,44 +74,27 @@ const getTargetPort = async () => {
           // {4} : four times
         ?.[0] // get the first match, if any
 
-        if (proxy) {
-          // if we found a proxy, we're done
-          // console.log('proxy:', proxy);
+        if (targetPort) {
+          // if we found a targetPort, we're done
+          console.log('targetPort found. break condition:', targetPort);
           break;
         }
       }
-      // if we didn't find a proxy, throw an error
-      if (!proxy) {
-        console.log('no proxy found');
-        throw new Error('proxy not found');
+      // if we didn't find a targetPort, throw an error
+      if (!targetPort) {
+        console.log('no targetPort found');
+        throw new Error('targetPort not found');
       }
     }
-
-    // getting the cssxe environment variables
-    const envVars = fs.readFileSync(__envPath, 'utf-8').split('\n');
-    // console.log('envVars:', envVars);
-
-    // setting the target port (the proxy) in the .env file if it doesn’t already exist, so that it can be used by our application.
-    // it gets called in App.jsx.
-    // finding the line that starts with 'VITE_PROXY=', if any.
-    const envVarIndex = envVars.findIndex(line => line.startsWith('VITE_PROXY='));
-    // if it exists
-    if (envVarIndex > -1) {
-      console.log('envVarIndex:', envVarIndex);
-      // update it
-      envVars[envVarIndex] = `VITE_PROXY=${proxy}`;
-      envVars[envVarIndex+1] = `PROXY=${proxy}`;
-    // if it doesn't exist
-    } else {
-      // add it
-      envVars.push(`VITE_PROXY=${proxy}`);
-      envVars.push(`PROXY=${proxy}`);
+    else {
+      // console.log('\n\n');
+      // console.log('targetDir is cssxe');
+      // console.log('\n');
     }
-    // write to .env
-    fs.writeFileSync('.env', envVars.join('\n'));
-
-    // console.log('proxy found:', proxy);
-    return proxy;
+    // return the targetPort
+    updateEnv('TARGET_PORT', targetPort);
+    // console.log('getTargetPort: targetPort:', targetPort);
+    return targetPort;
   } catch (err) {
     console.error(err);
   }
