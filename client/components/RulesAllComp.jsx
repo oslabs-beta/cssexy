@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import RulesUserAgentComp from "./RulesUserAgentComp.jsx";
 import RulesRegularComp from "./RulesRegularComp.jsx";
 import RulesInlineComp from "./RulesInlineComp.jsx";
