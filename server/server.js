@@ -60,7 +60,7 @@ if (environment === 'production') {
 spawn('node', ['../client/puppeteer/pup.js', browserPort]);
 
 app.post('/cdp', async (req, res) => {
-  // console.log('server: post /cdp, req.body', req.body);
+  console.log('server: post /cdp, req.body', req.body);
 
   try {
     // if puppeteerMode is set to true, then call the puppeteer process, otherwise call the cdp process
@@ -79,7 +79,7 @@ app.post('/cdp', async (req, res) => {
 
 
 app.post('/findSource', async (req, res) => {
-  console.log('server: post /findSource', req.body.inlineRules.cssProperties);
+  // console.log('server: post /findSource', req.body.inlineRules.cssProperties);
   try {
     const result = req.body.inlineRules ? await findSourceInline(req.body) : await findSourceRegular(req.body);
     // console.log('server: findSource: result', result);

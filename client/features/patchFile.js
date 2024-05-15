@@ -36,7 +36,7 @@ const patchFile = async ({data, target}) => {
       const cssToJsText = (prev) => {
         return prev.replace(new RegExp(`\: `, 'g'), `\: \'`)
           .replace(new RegExp(`\; `, 'g'), `', `)
-          .replace(new RegExp(`\;`, 'g'), `'`);
+          .replace(new RegExp(`\; `, 'g'), `'`);
       }
 
       // example: old values
@@ -51,6 +51,8 @@ const patchFile = async ({data, target}) => {
       // from: 'color: white;',
       //   to: "color: 'white'",
       const textPrevJs = cssToJsText(textPrev);
+
+      console.log('textPrevJs', textPrevJs);
 
       // new value
       // from: 'color: red;',

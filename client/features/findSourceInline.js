@@ -5,8 +5,8 @@ import { cssToReact } from './cssToReact.js';
 
 const findSourceInline = async ({ inlineRules, data, target }) => {
 
-  console.log('findSourceInline: inlineRules', inlineRules);
-  console.log('findSourceInline: data', data);
+  console.log('findSourceInline: inlineRules.cssProperties.length', inlineRules.cssProperties.length);
+  // console.log('findSourceInline: data', data);
   // console.warn('findSourceInline: target', target);
 
   const targetDir = target.targetDir;
@@ -195,6 +195,7 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
 
     // the piece of our regex that differs whether id/classname or textContent
     const targetString = (type === 'id' || type === 'className') ? `${type}\\W*=\\W*${value}` : value;
+    console.log('matchFunc targetString', targetString);
     // ${type} : the type we are looking for
     // \\W* : whitespace or symbols (i.e. non-alpha-numeric characters). 0 || more times
     // = : equals sign
@@ -250,14 +251,14 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
 
       }
       // console.log('\n\n');
-      // console.log('lineContext', lineContext);
+      console.log('lineContext', lineContext);
       try {
         const lineContextRegex = new RegExp({ lineContext }, 'gm');
         const lineContextMatch = lineContextRegex.exec(fileData);
         if (lineContextMatch) {
-          // console.log('lineContextMatch.index', lineContextMatch.index);
+          console.log('lineContextMatch.index', lineContextMatch.index);
           // console.log('lineContextMatch.input', lineContextMatch.input);
-          // console.log('actual line number', fileData.substring(0, lineContextMatch.index).split('\n').length);
+          console.log('actual line number', fileData.substring(0, lineContextMatch.index).split('\n').length);
         }
       } catch (e) {
         console.log('Error processing data:', e.name, e.message);

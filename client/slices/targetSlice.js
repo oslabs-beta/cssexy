@@ -42,6 +42,8 @@ const fetchElementRules = createAsyncThunk(
 
       const result = await response.json();
 
+      console.log('fetchElementRules: result.regularRules', result.regularRules);
+
       try {
 
         if (!result) {

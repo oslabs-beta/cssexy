@@ -23,15 +23,14 @@ const rulesSlice = createSlice({
   name: 'rules',
   initialState,
   reducers: {
-    // every time user selects a DOM element, inline, regular, and user-agent rules are dispatched by the iframeComp, updating the store via the reducers below.
+    // every time user selects a DOM element, inline, regular, and user-agent rules are dispatched by the iFrameComp, updating the store via the reducers below.
     updateInlineRules: (state, action) => {
       // console.log('rulesSlice: state.inlineRules: updated', action.payload);
       state.inlineRules = action.payload;
     },
     updateRegularRules: (state, action) => {
-      console.log('rulesSlice: state.regularRules: updated', action.payload);
+      // console.log('rulesSlice: state.regularRules: updated', action.payload);
       state.regularRules = action.payload;
-      console.log('rulesSlice: state.regularRules: updated', state.regularRules);
     },
     updateUserAgentRules: (state, action) => {
       // console.log('rulesSlice: state.userAgentRules: updated', action.payload);
@@ -300,7 +299,6 @@ const rulesSlice = createSlice({
         // if specificities, origins and property names are all the same, keep the latter one reflecting cascading nature of css rules
         else if (score[obj1.origin] === score[obj2.origin] && obj1.source.name === obj2.source.name) return -1;
         // IF YOU'RE GETTING THE ERROR BELOW, COMMENT THE ELSE BLOCK OUT AND TELL ELENA TO INVESTIGATE
-        // ^😂
         else {
           throw new Error(`Error in rulesSlice.js: findActiveStyles reducer: compare func \n\nStyle-1: ${JSON.stringify(obj1)} \n\nStyle-2: ${JSON.stringify(obj2)}`);
         }
@@ -313,8 +311,6 @@ const rulesSlice = createSlice({
           const countCache = {};
 
           cache[key].forEach(curObj => {
-            // console.log('\n\n');
-            // console.log('curObj', curObj);
             // styles with !important tag have property 'important' set to true
             // by adding 10 to their specificity we make their specificity higher than inline styles (which have specificity 999). But we want to maintain 'actual specificity + 10' for cases when there're multiple !important styles. In this case, !important styles will be higher than any other styles, but we want to compare among !important styles themselves and choose the prevailing one, that's why we keep their original specificity but increasing it by 10.
             if (curObj.source.important) {
@@ -373,6 +369,27 @@ const rulesSlice = createSlice({
   },
 });
 
+const initialNodeDataState = {
+  data: {},
+  error: null, // if we want to track errors
+};
+
+const nodeDataSlice = createSlice({
+  name: 'nodeData',
+  // createSlice expects the initial state to be passed as 'initialState'.
+  // so we pass initialNodeDataState as the value of 'initialState'.
+  initialState: initialNodeDataState,
+  reducers: {
+    // every time user selects a DOM element, inline, regular, and user-agent rules are dispatched by the iFrameComp, updating the store via the reducers below.
+    updateNodeData: (state, action) => {
+      // console.log('nodeDataSlice: state.nodeData: updated', action.payload);
+      // console.log('\n\n\n');
+      state.data = action.payload;
+    },
+  },
+});
+
+
 export const {
   updateInlineRules,
   updateRegularRules,
@@ -388,4 +405,9 @@ export const {
   resetCache
 } = rulesSlice.actions;
 
+export const {
+  updateNodeData
+} = nodeDataSlice.actions;
+
 export const rulesReducer = rulesSlice.reducer;
+export const nodeDataReducer = nodeDataSlice.reducer;

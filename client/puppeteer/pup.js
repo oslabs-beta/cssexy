@@ -134,7 +134,7 @@ const styleSheets = {};
 
       // console.log('decodedMap', decodedMap);
       // write the decodedMap to a file
-      writeFileSync('./data/output/decodedMap.json', JSON.stringify(decodedMap, null, 2));
+      // writeFileSync('./data/output/decodedMap.json', JSON.stringify(decodedMap, null, 2));
       const sources = decodedMap.sources;
       const absolutePaths = []
       const relativePaths = [];
@@ -154,11 +154,13 @@ const styleSheets = {};
       // add the various source paths of the id to its object in the styleSheets object.
       Object.assign(styleSheets[id], { sources, absolutePaths, relativePaths });
     }
-    // console.log('pup:styleSheets', styleSheets);
     // console.log('\n\n');
+    // console.log('pup:styleSheets', styleSheets);
     // console.log('END OF STYLESHEETS');
     // console.log('\n\n');
+
   });
+
 })(pupProcess);
 // data passed from server = ...args
 const callPupProcess = async (...args) => await pupProcess(client, styleSheets, ...args);

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import { fetchElementRules } from '../features/fetchElementRules.js';
 import { fetchElementRules } from '../slices/targetSlice.js';
 
 import { getCssValueOptions } from '../features/getCssValueOptions.js';
@@ -63,7 +62,7 @@ function SidebarStyling(props) {
             value: newValue,
             valuePrev: cssProp.value,
             textPrev: cssProp.text,
-            text: `${cssProp.name}: ${newValue},`,
+            text: `${cssProp.name}: ${newValue}`,
             path: cssProp.path,
             textPrevAll: inlineRules[0].rule.style.cssText,
             line: liveProps?.line,
@@ -77,7 +76,7 @@ function SidebarStyling(props) {
         // console.log('->');
         // console.log(data.value);
         // console.log('\n');
-        // console.log('data', data);
+        console.log('SidebarStyling: handleSubmit: data', data);
         // console.log('\n\n');
         // console.log('TRY: /patch');
         try {
@@ -229,7 +228,7 @@ function SidebarStyling(props) {
                             onClick={(e) => handleClickField(cssProp, e)}
                             onChange={(e) => {
                                 setValues({ ...values, [cssProp.name]: e.target.value })
-                                // console.log('values', values)
+                                console.log('values', values)
                             }}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
