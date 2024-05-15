@@ -18,6 +18,21 @@ function RulesAllComp() {
     // tracks the path of the first .s/css file in the array of .css files
     const [firstSourcePath, setFirstSourcePath] = useState(null);
 
+    const compareSpecificityDescending = (obj1, obj2) => {
+        if (obj1.calculatedSpecificity.a !== obj2.calculatedSpecificity.a) {
+          return obj1.calculatedSpecificity.a < obj2.calculatedSpecificity.a ? 1 : -1;
+        }
+        // If 'a' values are equal, compare the 'b' values
+        else if (obj1.calculatedSpecificity.b !== obj2.calculatedSpecificity.b) {
+          return obj1.calculatedSpecificity.b < obj2.calculatedSpecificity.b ? 1 : -1;
+        }
+        // If 'b' values are equal, compare the 'c' values
+        else if (obj1.calculatedSpecificity.c !== obj2.calculatedSpecificity.c) {
+          return obj1.calculatedSpecificity.c < obj2.calculatedSpecificity.c ? 1 : -1;
+        }
+        else return 0;
+    };
+
     useEffect(() => {
         if (regularRules.length > 0) {
             // styleSheetId is a variable that we use to keep track of which .css file we want to look at
@@ -43,18 +58,29 @@ function RulesAllComp() {
         return (
             <SidebarStyling
                 key={`inline-style-${idx}`}
-                selector={each.rule.selectorList?.selectors[0].text}
                 cssProperties={each.rule.style.cssProperties}
                 origin={each.rule.origin}
             />
         )
     });
 
-    const RulesRegularComp = regularRules.map((each, idx) => {
+    // sort all selector blocks rendered in UI - based on specificity, from highest to lowest
+    const regularRulesSorted = regularRules.toSorted(compareSpecificityDescending);
+    const RulesRegularComp = regularRulesSorted.map((each, idx) => {
+        let regularSelector = '';
+        if (each.matchingSelectors.length === 1) regularSelector = each.rule.selectorList.selectors[each.matchingSelectors[0]].text;
+        // combine selectors where there're multiple selectors in matchingSelectors array, e.g. '.btn, #active'
+        else if (each.matchingSelectors.length > 1) {
+            for (let i = 0; i < each.matchingSelectors.length; i++) {
+                const idx = each.matchingSelectors[i];
+                regularSelector += each.rule.selectorList.selectors[idx].text;
+                if (i !== each.matchingSelectors.length - 1) regularSelector += ', ';
+            }
+        };
         return (
             <SidebarStyling
                 key={`regular-style-${idx}`}
-                selector={each.rule.selectorList?.selectors[0].text}
+                selector={regularSelector}
                 cssProperties={each.rule.style.cssProperties}
                 origin={each.rule.origin}
                 sourcePath={firstSourcePath}

@@ -153,25 +153,86 @@ const rulesSlice = createSlice({
         })
       });
     },
+    // finds highest specificity among all selectors based on matchingSelectors array and sets it as a new property 'calculatedSpecificity' on each rule
+    setSpecificity: state => {
+      const allStyles = [state.userAgentRules, state.regularRules, state.inlineRules];
+
+      const compareSpecificity = (obj1, obj2) => {
+        if (obj1.specificity.a !== obj2.specificity.a) {
+          return obj1.specificity.a > obj2.specificity.a ? 1 : -1;
+        }
+        // If 'a' values are equal, compare the 'b' values
+        else if (obj1.specificity.b !== obj2.specificity.b) {
+          return obj1.specificity.b > obj2.specificity.b ? 1 : -1;
+        }
+        // If 'b' values are equal, compare the 'c' values
+        else if (obj1.specificity.c !== obj2.specificity.c) {
+          return obj1.specificity.c > obj2.specificity.c ? 1 : -1;
+        }
+        else return 0;
+      };
+
+      allStyles.forEach(array => {
+        array.forEach(each => {
+          let specificity;
+          if (each.rule.origin === 'inline') {
+            // inline styles have the highest specificity' => hard coding at 999 should ensure inline styles have the highest specificity among other styles
+            specificity = {
+              'a': 9,
+              'b': 9,
+              'c': 9
+            }
+          }
+          // origin is regular/ user-agent
+          else {
+            // matchingSelectors array contains indices of selectors matching css rules. In most cases there's only 1 selector
+            if (each.matchingSelectors.length === 1) {
+              specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
+            }
+            else {
+              // example of cases with multiple selectors:
+              // react: <button className='btn' id='active'></button>
+              // css file: .btn, #active { background: pink};
+              // in case above, matchingSelectors will point to 2 selectors inside selectorList.selectors array, and specificity for this rule set has to be set at highest specificity among the 2
+              let bestSelector = each.rule.selectorList.selectors[each.matchingSelectors[0]];
+              for (let selectorIdx of each.matchingSelectors) {
+                const curSelector = each.rule.selectorList.selectors[selectorIdx];
+                if (compareSpecificity(bestSelector, curSelector) === -1) bestSelector = curSelector;
+              };
+              specificity = bestSelector.specificity;
+            }
+          };
+
+          each.calculatedSpecificity = specificity;
+        });
+      });
+
+    },
     findActiveStyles: (state) => {
       const cache = {};
 
       const allStyles = [state.userAgentRules, state.regularRules, state.inlineRules];
 
+      const compareSpecificity = (obj1, obj2) => {
+        if (obj1.specificity.a !== obj2.specificity.a) {
+          return obj1.specificity.a > obj2.specificity.a ? 1 : -1;
+        }
+        // If 'a' values are equal, compare the 'b' values
+        else if (obj1.specificity.b !== obj2.specificity.b) {
+          return obj1.specificity.b > obj2.specificity.b ? 1 : -1;
+        }
+        // If 'b' values are equal, compare the 'c' values
+        else if (obj1.specificity.c !== obj2.specificity.c) {
+          return obj1.specificity.c > obj2.specificity.c ? 1 : -1;
+        }
+        else return 0;
+      };
+
       // for all types for styles, add the styles which have isActive property to cache
       // if parent and children properties are present (e.g. 'border', 'border-style', 'border-top-style'), they should be all added into an array corresponding to highest level property (border: [border obj, border-style obj, border-top-style obj])
       allStyles.forEach(array => {
         array.forEach(each => {
-          let specificity;
-          if (each.rule.origin === 'inline') {
-            // temporarily hardcoded until researched how to set specificity for inline styles (CDP returns inline styles without specificity and per Chat GPT 'inline styles have inherently highest specificity')
-            specificity = {
-              "a": 9,
-              "b": 9,
-              "c": 9
-            }
-          } else specificity = each.rule.selectorList.selectors[each.matchingSelectors[0]].specificity;
-
+          let specificity = each.calculatedSpecificity;
           let properties;
           if (each.rule.origin === 'user-agent') properties = [each.rule.style.shorthandEntries, each.rule.style.cssProperties];
           else properties = [each.rule.style.cssProperties];
@@ -189,7 +250,8 @@ const rulesSlice = createSlice({
                     if (!cache[highLevelProp]) cache[highLevelProp] = [];
                     cache[highLevelProp].push({
                       specificity,
-                      source: prop
+                      source: prop,
+                      origin
                     });
                   }
                   // checks if cur property is a longhand property which has a shorthand parent)
@@ -200,7 +262,8 @@ const rulesSlice = createSlice({
                     if (!cache[highLevelProp]) cache[highLevelProp] = [];
                     cache[highLevelProp].push({
                       specificity,
-                      source: prop
+                      source: prop,
+                      origin
                     });
                   }
                   // checks if cur property is high level property (e.g.'border') or standalone property with no corresponding shorthand/longhand
@@ -208,7 +271,8 @@ const rulesSlice = createSlice({
                     if (!cache[prop.name]) cache[prop.name] = [];
                     cache[prop.name].push({
                       specificity,
-                      source: prop
+                      source: prop,
+                      origin
                     });
                   };
                 };
@@ -220,46 +284,83 @@ const rulesSlice = createSlice({
         });
       });
 
-      const compareSpecificity = (specificity1, specificity2) => {
-        if (specificity1.a !== specificity2.a) {
-          return specificity1.a > specificity2.a ? 1 : -1;
+      const compareOriginsAndNames = (obj1, obj2) => {
+        const score = {
+          ['user-agent']: 0,
+          regular: 10,
+          inline: 20 
+        };
+
+        if (score[obj1.origin] !== score[obj2.origin]) {
+          return score[obj1.origin] > score[obj2.origin] ? 1 : -1;
         }
-        // If 'a' values are equal, compare the 'b' values
-        if (specificity1.b !== specificity2.b) {
-          return specificity1.b > specificity2.b ? 1 : -1;
+        // If specificity and origins are the same but property names are different, we want to keep both as active
+        else if (score[obj1.origin] === score[obj2.origin] && obj1.source.name !== obj2.source.name) return 1;
+        // if specificities, origins and property names are all the same, keep the latter one reflecting cascading nature of css rules
+        else if (score[obj1.origin] === score[obj2.origin] && obj1.source.name === obj2.source.name) return -1;
+        // IF YOU'RE GETTING THE ERROR BELOW, COMMENT THE ELSE BLOCK OUT AND TELL ELENA TO INVESTIGATE
+        else {
+          throw new Error(`Error in rulesSlice.js: findActiveStyles reducer: compare func \n\nStyle-1: ${JSON.stringify(obj1)} \n\nStyle-2: ${JSON.stringify(obj2)}`);
         }
-        // If 'b' values are equal, compare the 'c' values
-        if (specificity1.c !== specificity2.c) {
-          return specificity1.c > specificity2.c ? 1 : -1;
-        }
-        // If all values are equal, the specificities are equal
-        return 0;
       };
 
-      // go through cache and update isActive flag to false when needed
       for (let key in cache) {
-        // if only 1 prop in array, it means there're no similar styles => no need to update isActive
         if (cache[key].length > 1) {
-          // find the max specificity for all related properties
-          let maxSpecificity = cache[key][0].specificity;
+          // Step 1: find max specificity and count how many objs have max specificity. Also handles !important tags
+          let bestObj = cache[key][0];
+          const countCache = {};
 
-          for (let i = 1; i < cache[key].length; i++) {
-            const item = cache[key][i];
-            const result = compareSpecificity(maxSpecificity, item.specificity);
-            if (result === -1) maxSpecificity = item.specificity;
-          };
+          cache[key].forEach(curObj => {
+            // styles with !important tag have property 'important' set to true
+            // by adding 10 to their specificity we make their specificity higher than inline styles (which have specificity 999). But we want to maintain 'actual specificity + 10' for cases when there're multiple !important styles. In this case, !important styles will be higher than any other styles, but we want to compare among !important styles themselves and choose the prevailing one, that's why we keep their original specificity but increasing it by 10. 
+            if (curObj.source.important) {
+              curObj.specificity.a += 10;
+              curObj.specificity.b += 10;
+              curObj.specificity.c += 10;
+            }
 
-          // turn isActive to true for styles matching max specificity and to false for styles with lower specificity
-          for (let i = 0; i < cache[key].length; i++) {
-            const item = cache[key][i];
-            const result = compareSpecificity(maxSpecificity, item.specificity);
-            if (result === 1) item.source.isActive = false;
-            else if (result === 0) item.source.isActive = true;
+            // find max specificity and count how many objs have max specificity
+            const curSpecificity = `${curObj.specificity.a}${curObj.specificity.b}${curObj.specificity.c}`;
+            if (!countCache[curSpecificity]) countCache[curSpecificity] = 0;
+            countCache[curSpecificity]++;
+
+            if (compareSpecificity(bestObj, curObj) === -1) {
+              bestObj.source.isActive = false;
+              bestObj = curObj;
+            }            
+          })
+
+          // Step 2: turn off isActive for everything that is less than max specificity
+          cache[key].forEach(obj => {
+            if (compareSpecificity(bestObj, obj) === 1) obj.source.isActive = false;
+          });
+
+          // Step 3: If there're more than 1 active max specificities, compare them by other parameters
+          // this comparison accounts for cases: 1) when specificities are same but origins are different, and 
+          // 2) when all specificities, origins and property names are the same - applying rule of cascading styles (latter overwrites previous)
+          const maxSpecificity = `${bestObj.specificity.a}${bestObj.specificity.b}${bestObj.specificity.c}`;
+          if (countCache[maxSpecificity] > 1) {
+            const bestObjs = cache[key].filter(obj => obj.source.isActive === true);
+          
+            let bestObj = bestObjs[0];
+            for (let i = 1; i < bestObjs.length; i++) {
+              const curObj = bestObjs[i];
+              if (compareOriginsAndNames(bestObj, curObj) === -1) {
+                bestObj.source.isActive = false;
+                bestObj = curObj;
+              }
+            }
           }
         }
-      };
+      }
 
       state.isActiveCache = cache;
+    },
+    resetCache: (state) => {
+      state.shortToLongMap = {};
+      state.longToShortMap = {};
+      state.midToShortMap = {};
+      state.isActiveCache = {};
     },
     updateStyleSheets: (state, action) => {
       // console.log('rulesSlice: state.styleSheets: updated', action.payload);
@@ -299,7 +400,9 @@ export const {
   findActiveStyles,
   updateShortLongMaps,
   updateMidShortMap,
-  setIsActiveFlag
+  setIsActiveFlag,
+  setSpecificity,
+  resetCache
 } = rulesSlice.actions;
 
 export const {
