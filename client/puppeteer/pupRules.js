@@ -23,12 +23,6 @@ const pupRules = async (client, elementNodeId) => {
 
   // console.log('pupRules: matchedCSSRules:', matchedCSSRules);
 
-  // filter out cssProperties that have less than 3 properties,
-  // e.g. {name: 'text-align', value: 'center'}
-
-  // const filterCssProps = (cssProps) => cssProps.filter(({ length }) => length > 2).reduce((obj, cssProp) => ({ ...obj, [cssProp.name]: cssProp.value }), {});
-
-
   // this separates the matchedCSSRules into regularRules and userAgentRules
   // ahead of them being returned to iframeComp, where they then update the store
   // via dispatches.
@@ -36,8 +30,9 @@ const pupRules = async (client, elementNodeId) => {
     await matchedCSSRules.forEach((each) => {
       if (each.rule.origin === 'regular') {
         // console.log('pupRules: each regularRule:', each);
-        const cssPropsNoTwoProp = each.rule.style.cssProperties.filter(eachCssProp => Object.keys(eachCssProp).length > 2);
-        console.log('pupRules: regularRules.style.cssProperties has more than 2 values:', cssPropsNoTwoProp);
+        // 2024-05-14: for some reason, the inline and regular rules both have been displaying duplicates of each style per rule. Perhaps OI didn’t merge something correctly from a prior build of Dev. In any case, this seems to solve it. We filter out those cssProperties that have less than 3 properties, e.g. {name: 'text-align', value: 'center'}
+        const cssPropertiesFiltered = each.rule.style.cssProperties.filter(eachCssProp => Object.keys(eachCssProp).length > 2);
+        // console.log('pupRules: regularRules.style.cssProperties has more than 2 values:', cssPropertiesFiltered);
 
         regularRules.push({
           ...each,
@@ -45,17 +40,10 @@ const pupRules = async (client, elementNodeId) => {
             ...each.rule,
             style: {
               ...each.rule.style,
-              cssProperties: cssPropsNoTwoProp
+              cssProperties: cssPropertiesFiltered
             }
           }
         });
-        console.log('\n\n');
-        // if (each.rule.style.cssProperties.length) {
-        //   console.log('pupRules: regularRules.style.cssProperties:', each.rule.style.cssProperties);
-        // }
-        // else {
-        //   console.log('pupRules: regularRules: NO cssProperties:', each.rule.style);
-        // }
       }
       else if (each.rule.origin === 'user-agent') {
         userAgentRules.push(each);
@@ -63,23 +51,6 @@ const pupRules = async (client, elementNodeId) => {
     })
   }
   parseMatchedRules(matchedCSSRules);
-
-//   for (let each of regularRules) {
-//     if (!each.rule.style.cssProperties.length) {
-// console.log('no cssProperties in rule:', each);
-//       continue
-//     }
-//     const { cssProperties } = each.rule.style;
-//     if (cssProperties.length) {
-//       console.log('pupRules: regularRules: cssProperties:', cssProperties);
-//       for (let prop of cssProperties) {
-//         // console.log('pupRules: regularRules: cssProperties: prop:', prop);
-
-//       }
-//     }
-
-//   }
-
 
   const getInlineRules = async () => {
     // retrieve the inline styles for the node with the provided elementNodeId
@@ -110,7 +81,7 @@ const pupRules = async (client, elementNodeId) => {
 
         // })
 
-        console.log('pupInlineRules: inlineStyle.cssProperties line 110:', inlineStyle.cssProperties);
+        // console.log('pupInlineRules: inlineStyle.cssProperties line 110:', inlineStyle.cssProperties);
         inlineRule.push({
           "rule": {
             "origin": "inline",

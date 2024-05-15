@@ -8,7 +8,7 @@ import { openSourceFile } from '../features/openSourceFile.js';
 
 
 function SidebarStyling(props) {
-    console.log('SidebarStyling: props', props);
+    // console.log('SidebarStyling: props', props);
     const dispatch = useDispatch();
 
     const rules = useSelector(state => state.rules)
@@ -17,7 +17,7 @@ function SidebarStyling(props) {
 
     // spread operator to make a deep copy of props, so that we can then modify it.
     const liveProps = { ...props };
-    console.warn('SidebarStyling: liveProps', liveProps);
+    // console.warn('SidebarStyling: liveProps', liveProps);
 
     const [values, setValues] = useState({});
     const [clickedPropertyField, setClickedPropertyField] = useState('');
@@ -26,36 +26,23 @@ function SidebarStyling(props) {
 
     // this useEffect ensures that 'values' is updated only when props.cssProperties changes, rather than on every re-render.
     // i was getting some rerendering errors prior to this when modifying source files.
-    useEffect(() => {
-        setValues(
-            liveProps.cssProperties.reduce((acc, cssProp) => {
-                acc[cssProp.name] = cssProp.value;
-                return acc;
-            }, {})
-        );
-        console.warn('SidebarStyling: liveProps updated', liveProps);
+    // useEffect(() => {
+    //     setValues(
+    //         liveProps.cssProperties.reduce((acc, cssProp) => {
+    //             acc[cssProp.name] = cssProp.value;
+    //             return acc;
+    //         }, {})
+    //     );
+    //     console.warn('SidebarStyling: liveProps updated', liveProps);
 
-    }, [props.cssProperties]);
+    // }, [props.cssProperties]);
 
     const handleSubmit = async (cssProp, item) => {
-        // setShowDropdown(false);
+        // console.log('SidebarStyling: handleSubmit: cssProp', cssProp);
+        // console.log('SidebarStyling: handleSubmit: item', item);
+        setShowDropdown(false);
 
         const newValue = typeof item === 'string' ? item : values[cssProp.name];
-        // console.log('newValue', newValue);
-
-        // console.log('cssProp', cssProp);
-        // const data = { ...cssProp }
-        // data.value = newValue;
-        // data.valuePrev = cssProp.value;
-        // data.textPrev = cssProp.text;
-        // data.text = `${cssProp.name}: ${newValue};`;
-        // data.path = cssProp.path;
-        // data.textPrevAll = inlineRules[0].rule.style.cssText;
-        // data.line = liveProps?.line;
-        // data.lineText = liveProps?.lineText;
-        // data.type = liveProps?.type;
-        // data.typeValue = liveProps?.typeValue;
-        // data.selector = target.targetSelector;
 
         const data = {
             ...cssProp,
@@ -71,12 +58,10 @@ function SidebarStyling(props) {
             typeValue: liveProps?.typeValue,
             selector: target.targetSelector,
         }
-        // console.log(cssProp.name);
-        // console.log(cssProp.value);
-        // console.log('->');
-        // console.log(data.value);
-        // console.log('\n');
+
         console.log('SidebarStyling: handleSubmit: data', data);
+        console.log('SidebarStyling: handleSubmit: target', target);
+
         // console.log('\n\n');
         // console.log('TRY: /patch');
         try {
@@ -85,10 +70,12 @@ function SidebarStyling(props) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({data, target}),
+                body: JSON.stringify({ data, target }),
 
             });
             const result = await response.json();
+
+            console.log('SidebarStyling: handleSubmit: result', result);
 
             if (result === true) {
                 console.log('result, true', result);
@@ -100,7 +87,7 @@ function SidebarStyling(props) {
                 await new Promise(resolve => data.type ? setTimeout(resolve, 1000) : setTimeout(resolve, 1000));
 
                 // running CDP again to update our redux store after patching the file.
-                fetchElementRules({data});
+                fetchElementRules({ data });
                 setValues({});
 
 
@@ -121,11 +108,24 @@ function SidebarStyling(props) {
         console.warn('sidebar styling: clicked field', cssProp);
     };
 
+    const handleFieldChange = (e) => {
+        if (e.target.value.length > -1) {
+            // console.log('values not null', values)
+            setValues({ ...values, [clickedPropertyField]: e.target.value });
+        }
+        else {
+            setValues({ [clickedPropertyField]: null });
+            console.log('values should be null', values)
+        }
+
+    };
+
     const dropdownRef = useRef(null);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                // console.log('dropdown should get hidden', dropdownRef.current);
                 setShowDropdown(false);
             }
         };
@@ -134,10 +134,11 @@ function SidebarStyling(props) {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, []);
-    // USER AGENT STYLE
+    }, [dropdownRef]);
     const styleParagraphs = liveProps.cssProperties.map((cssProp, idx) => {
+        // USER AGENT STYLE
         if ((liveProps.origin === 'user-agent')) {
+            // console.warn('user agent style', cssProp);
             return (
                 <p key={`styleParagraphs-${idx}`} className='style-paragraph'>
                     <span className={`style-property-span ${!cssProp.isActive ? 'style-property-overwritten-span' : ''}`}>
@@ -164,10 +165,7 @@ function SidebarStyling(props) {
                             className={`style-value-input-span ${!cssProp.isActive ? 'style-value-input-overwritten-span' : ''}`}
                             value={values[cssProp.name] || cssProp.value || ''}
                             onClick={(e) => handleClickField(cssProp, e)}
-                            onChange={(e) => {
-                                setValues({ ...values, [cssProp.name]: e.target.value })
-                                // console.log('values', values)
-                            }}
+                            onChange={(e) => handleFieldChange(e)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                     // console.log('e.target.value', e.target.value);
@@ -179,7 +177,9 @@ function SidebarStyling(props) {
                             spellCheck='false' /* Disable spellcheck, i.e. no more red squiggles under the values when clicked/edited but not a complete word */
                         />
                     </p>
+
                     {showDropdown && clickedPropertyField === cssProp.name && (
+                        // the dropdown of standard css values for the given property
                         <div className='property-dropdown'
                             ref={dropdownRef}
                             style={{ left: `${cssProp.name.length * 8 + 5}px` }}>
@@ -188,21 +188,9 @@ function SidebarStyling(props) {
                                     className='property-dropdown-item'
                                     key={`property-dropdown-item-${index}`}
                                     onClick={(e) => {
-                                        // console.log('click in dropdown', item);
-                                        // console.log('cssProp', cssProp);
-                                        // setValues({ ...values, [cssProp.name]: item })
-                                        // console.log('values', values)
                                         setShowDropdown(false);
                                         handleSubmit(cssProp, item)
                                     }}
-                                //     onMouseOver={
-                                //         () => {
-                                //      console.log('item hovered', item)
-                                //     if (liveProps.origin === 'regular') {
-                                //         handleSubmit(cssProp, item)
-                                //     }
-                                //     }
-                                // }
                                 >
                                     {item}
                                 </div>
@@ -226,10 +214,7 @@ function SidebarStyling(props) {
                             className={`style-value-input-span ${!cssProp.isActive ? 'style-value-input-overwritten-span' : ''}`}
                             value={values[cssProp.name] || cssProp.value || ''}
                             onClick={(e) => handleClickField(cssProp, e)}
-                            onChange={(e) => {
-                                setValues({ ...values, [cssProp.name]: e.target.value })
-                                console.log('values', values)
-                            }}
+                            onChange={(e) => handleFieldChange(e)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                     // console.log('e.target.value', e.target.value);
@@ -250,21 +235,9 @@ function SidebarStyling(props) {
                                     className='property-dropdown-item'
                                     key={`property-dropdown-item-${index}`}
                                     onClick={(e) => {
-                                        // console.log('click in dropdown', item);
-                                        // console.log('cssProp', cssProp);
-                                        // setValues({ ...values, [cssProp.name]: item })
-                                        // console.log('values', values)
                                         setShowDropdown(false);
                                         handleSubmit(cssProp, item)
                                     }}
-                                //     onMouseOver={
-                                //         () => {
-                                //      console.log('item hovered', item)
-                                //     if (liveProps.origin === 'regular') {
-                                //         handleSubmit(cssProp, item)
-                                //     }
-                                //     }
-                                // }
                                 >
                                     {item}
                                 </div>

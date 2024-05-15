@@ -31,7 +31,7 @@ const IframeComp = () => {
   // waiting for the iframe DOM to load before we add event listeners
 
   const handleClick = (element) => {
-    console.warn('iframeComp: handleClick');
+    // console.warn('iframeComp: handleClick');
     // console.log('\n\n');
     // console.log('iframeComp: element', element);
 

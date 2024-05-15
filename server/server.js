@@ -108,6 +108,7 @@ app.post('/openSourceFile', async (req, res) => {
 });
 
 app.post('/patch', async (req, res) => {
+  console.log('server: post /patch');
   console.log('server: post /patch, req.body', req.body);
 
   try {

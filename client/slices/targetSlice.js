@@ -14,7 +14,7 @@ const fetchElementRules = createAsyncThunk(
       console.log('fetchElementRules: data is undefined');
       return;
     }
-    console.log('fetchElementRules: data', data);
+    // console.log('fetchElementRules: data', data);
 
     const state = getState();
     const target = selectTargetState(state);
@@ -33,7 +33,7 @@ const fetchElementRules = createAsyncThunk(
 
     try {
 
-      console.log('fetchElementRules: fetch cdp');
+      // console.log('fetchElementRules: fetch cdp');
       const response = await fetch('/cdp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -71,9 +71,9 @@ const fetchElementRules = createAsyncThunk(
         dispatch(setIsActiveFlag());
         dispatch(setSpecificity());
         dispatch(findActiveStyles());
-        console.log('\n\n');
-        console.warn('targetSlice: fetchElementRules: result', result);
-        console.log('\n\n');
+        // console.log('\n\n');
+        // console.warn('targetSlice: fetchElementRules: result', result);
+        // console.log('\n\n');
 
       } catch (error) {
         console.log('fetchElementRules: dispatch error', error);
@@ -100,14 +100,14 @@ const fetchElementRules = createAsyncThunk(
             // we set the firstSourcePath variable to the absolute path (if it exists) or the relative path of the first .css file returned by the styleSheets object for the clicked element.
 
             const { origin, scopes, ruleTypes, selectorList, style } = regularRules0;
-            console.log('\n\n');
+            // console.log('\n\n');
             // console.warn('targetSlice: fetchElementRules: regularRules0', regularRules0);
-            console.log('\n\n');
+            // console.log('\n\n');
             const regularRules = { ...styleSheets[styleSheetId], origin, scopes, ruleTypes, selectorList, style, selector };
 
             // console.log('\n\n');
             // console.warn('targetSlice: fetchElementRules: regularRules', regularRules);
-            console.log('\n\n');
+            // console.log('\n\n');
 
             const absolutePaths = [...regularRules?.absolutePaths];
             const relativePaths = [...regularRules?.relativePaths].map(relativePath => relativePath.slice(1));
@@ -166,8 +166,8 @@ const fetchElementRules = createAsyncThunk(
         if (inlineRules.cssProperties.length > 0 || selector === selectorMemo) {
           if (selector === selectorMemo) {
             console.log('fetchElementRules: selector is the same as previous selector.');
-            console.log('fetchElementRules: inlineRules', inlineRules);
-            console.log('fetchElementRules: target.targetInline', targetInline);
+            // console.log('fetchElementRules: inlineRules', inlineRules);
+            // console.log('fetchElementRules: target.targetInline', targetInline);
           }
 
           if (inlineRulesAll?.length > 1) {
@@ -184,9 +184,9 @@ const fetchElementRules = createAsyncThunk(
             });
             const targetInline = await responseInline.json();
 
-            console.log('\n\n');
-            console.warn('fetchElementRules: targetInline', targetInline);
-            console.log('\n\n');
+            // console.log('\n\n');
+            // console.warn('fetchElementRules: targetInline', targetInline);
+            // console.log('\n\n');
 
             targetInline.length ? dispatch(updateTargetInline(targetInline)) : console.log('fetchElementRules: targetInline is empty.');
           } catch (error) {
@@ -261,7 +261,7 @@ const targetSlice = createSlice({
   reducers: {
     updateTargetRegular: (state, action) => {
 
-      console.log('state.targetDir', state.targetDir);
+      // console.log('state.targetDir', state.targetDir);
 
       if (!action.payload) {
         // console.log('state.targetRegular before clearing:', state.targetRegular);
@@ -271,8 +271,8 @@ const targetSlice = createSlice({
       }
       if (action.payload.length === 0) {
         console.log('\n\n');
-        console.warn('targetSlice: updateTargetRegular: action.payloads length is 0.', action.payload);
-        console.log('\n\n');
+        // console.warn('targetSlice: updateTargetRegular: action.payloads length is 0.', action.payload);
+        // console.log('\n\n');
         return
       }
 
@@ -280,16 +280,16 @@ const targetSlice = createSlice({
         if (state.targetRegular.hasOwnProperty(key)) {
           state.targetRegular[key] = action.payload[key];
 
-          console.log(`targetSlice updated: state.targetRegular:
-          \n${key}: ${state.targetRegular[key]}`);
+          // console.log(`targetSlice updated: state.targetRegular:
+          // \n${key}: ${state.targetRegular[key]}`);
         }
       });
 
       const pathSplit = (state.targetRegular.path)?.split('/');
       // console.log('targetSlice: state.targetRegularName: pathSplit', pathSplit);
       state.targetRegular.pathFileName = pathSplit.length > 0 ? `/${pathSplit[pathSplit.length - 1]}` : ''
-      console.log('\n\n');
-      console.warn('targetSlice: state.targetRegular: updated', JSON.parse(JSON.stringify(state.targetRegular)));
+      // console.log('\n\n');
+      // console.warn('targetSlice: state.targetRegular: updated', JSON.parse(JSON.stringify(state.targetRegular)));
 
     },
     updateTargetInline: (state, action) => {
@@ -316,8 +316,8 @@ const targetSlice = createSlice({
       const pathSplit = (state.targetInline.path).split('/');
 
       state.targetInline.pathFileName = `/${pathSplit[pathSplit.length - 1]}`
-      console.log('\n\n');
-      console.warn('targetSlice: state.targetInline: updated', JSON.parse(JSON.stringify(state.targetInline)));
+      // console.log('\n\n');
+      // console.warn('targetSlice: state.targetInline: updated', JSON.parse(JSON.stringify(state.targetInline)));
     },
     updateTargetDir: (state, action) => {
       // console.log('targetSlice: state.targetDir: updated', action.payload);
@@ -336,12 +336,12 @@ const targetSlice = createSlice({
       state.targetData = action.payload;
     },
     updateTarget: (state, action) => {
-      console.log('\n\n');
+      // console.log('\n\n');
       let key = Object.keys(action.payload)[0];
-      console.log('targetSlice: state.target: UPDATE TARGET', action.payload);
+      // console.log('targetSlice: state.target: UPDATE TARGET', action.payload);
       if (typeof action.payload !== 'object') {
         console.log('targetSlice: updateTarget: action.payload is not an object. It needs to be for this action to work.');
-        console.log('targetSlice: state.target: action.payload', action.payload);
+        // console.log('targetSlice: state.target: action.payload', action.payload);
         return
       }
       Object.keys(action.payload).forEach((key) => {
