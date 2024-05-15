@@ -60,7 +60,7 @@ if (environment === 'production') {
 spawn('node', ['../client/puppeteer/pup.js', browserPort]);
 
 app.post('/cdp', async (req, res) => {
-  console.log('server: post /cdp, req.body', req.body);
+  // console.log('server: post /cdp, req.body', req.body);
 
   try {
     // if puppeteerMode is set to true, then call the puppeteer process, otherwise call the cdp process
@@ -75,8 +75,6 @@ app.post('/cdp', async (req, res) => {
     return res.status(500).json({ error: 'Failed to process data' });
   }
 });
-
-
 
 app.post('/findSource', async (req, res) => {
   // console.log('server: post /findSource', req.body.inlineRules.cssProperties);
@@ -109,7 +107,7 @@ app.post('/openSourceFile', async (req, res) => {
 
 app.post('/patch', async (req, res) => {
   console.log('server: post /patch');
-  console.log('server: post /patch, req.body', req.body);
+  // console.log('server: post /patch, req.body', req.body);
 
   try {
     const result = await patchFile(req.body);

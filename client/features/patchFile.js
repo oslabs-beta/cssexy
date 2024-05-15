@@ -26,6 +26,11 @@ const patchFile = async ({data, target}) => {
     // Checking if textPrevAll has content and sourcePath is not provided.
     // if that's the case, we have an inline style.
     if (!startLine && !endLine) {
+      console.log('patchFile: inline style');
+      console.log('\n\n');
+      console.log('patchFile: inline style: data', data);
+      console.log('\n\n');
+      console.log('patchFile: inline style: target', target);
 
       console.log('startLine', startLine, 'endLine', endLine, 'so this is a inline style');
 
@@ -33,48 +38,48 @@ const patchFile = async ({data, target}) => {
 
       // we need to convert the strings to js format
       // helper function to convert css string format to js format
-      const cssToJsText = (prev) => {
-        return prev.replace(new RegExp(`\: `, 'g'), `\: \'`)
-          .replace(new RegExp(`\; `, 'g'), `', `)
-          .replace(new RegExp(`\; `, 'g'), `'`);
-      }
+      // const cssToJsText = (prev) => {
+      //   return prev.replace(new RegExp(`\: `, 'g'), `\: \'`)
+      //     .replace(new RegExp(`\; `, 'g'), `', `)
+      //     .replace(new RegExp(`\; `, 'g'), `'`);
+      // }
 
-      // example: old values
-      // from: 'position: absolute; top: 60%; color: white;'
-      //   to: "position: 'absolute', top: '60%', color: 'white'"
-      const textPrevAllJs = cssToJsText(textPrevAll);
-      // console.log('textPrevAll', textPrevAll);
+      // // example: old values
+      // // from: 'position: absolute; top: 60%; color: white;'
+      // //   to: "position: 'absolute', top: '60%', color: 'white'"
+      // const textPrevAllJs = cssToJsText(textPrevAll);
+      // // console.log('textPrevAll', textPrevAll);
 
-      console.log('textPrevAllJs', textPrevAllJs);
+      // console.log('textPrevAllJs', textPrevAllJs);
 
-      // the property and its old value to be replaced
-      // from: 'color: white;',
-      //   to: "color: 'white'",
-      const textPrevJs = cssToJsText(textPrev);
+      // // the property and its old value to be replaced
+      // // from: 'color: white;',
+      // //   to: "color: 'white'",
+      // const textPrevJs = cssToJsText(textPrev);
 
-      console.log('textPrevJs', textPrevJs);
+      // console.log('textPrevJs', textPrevJs);
 
-      // new value
-      // from: 'color: red;',
-      //   to: "color: 'red'",
-      const textJs = cssToJsText(text);
+      // // new value
+      // // from: 'color: red;',
+      // //   to: "color: 'red'",
+      // const textJs = cssToJsText(text);
 
-      // Replacing textPrevJs occurrences with textJs in textPrevAllJs
-      // We will eventually replace textPrevAllJs with textAllJs in the matching file
-      // from: "position: 'absolute', top: '60%', color: 'white'"
-      //   to: "position: 'absolute', top: '60%', color: 'red'",
-      const textAllJs = textPrevAllJs.replace(new RegExp(textPrevJs, 'g'), textJs);
+      // // Replacing textPrevJs occurrences with textJs in textPrevAllJs
+      // // We will eventually replace textPrevAllJs with textAllJs in the matching file
+      // // from: "position: 'absolute', top: '60%', color: 'white'"
+      // //   to: "position: 'absolute', top: '60%', color: 'red'",
+      // const textAllJs = textPrevAllJs.replace(new RegExp(textPrevJs, 'g'), textJs);
 
-      const textPrevAllJsArr = textPrevAllJs.split(', ');
-      console.log('textPrevAllArr', textPrevAllJsArr[0]);
+      // const textPrevAllJsArr = textPrevAllJs.split(', ');
+      // console.log('textPrevAllArr', textPrevAllJsArr[0]);
 
-      // adding them to data, in case we want to console log the object to see the changes. This has no functional role beyond that.
-      data.textPrevAllJs = textPrevAllJs;
-      data.textPrevJs = textPrevJs;
-      data.textAllJs = textAllJs;
-      data.textJs = textJs;
+      // // adding them to data, in case we want to console log the object to see the changes. This has no functional role beyond that.
+      // data.textPrevAllJs = textPrevAllJs;
+      // data.textPrevJs = textPrevJs;
+      // data.textAllJs = textAllJs;
+      // data.textJs = textJs;
 
-      // console.log('data updated', data);
+      // // console.log('data updated', data);
 
       const filePath = target.targetInline.path;
 

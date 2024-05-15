@@ -55,9 +55,12 @@ const IframeComp = () => {
     // console.log('iframeComp: selectorAlt', selectorAlt);
 
     const data = {
+       // id is used by findSourceInline to string match
       id: element.id,
       innerHTML: element.innerHTML,
       nodeName: element.nodeName,
+             // className is used by findSourceInline to string match
+
       className: element.className,
       nodeType: element.nodeType,
       textContent: element.textContent,

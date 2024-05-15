@@ -57,6 +57,7 @@ const fetchElementRules = createAsyncThunk(
         dispatch(updateTargetDir(targetDir));
         dispatch(updateTarget({ targetData: data }));
 
+
         // update rules state
         dispatch(updateInlineRules(result.inlineRules));
         dispatch(updateRegularRules(result.regularRules));
@@ -88,7 +89,7 @@ const fetchElementRules = createAsyncThunk(
             // const regularRulesAll = result.regularRules[0].rule;
 
 
-            // console.warn('fetchElementRules: regularRulesAll', regularRulesAll);
+            console.warn('fetchElementRules: regularRulesAll', regularRulesAll);
 
             const regularRules0 = regularRulesAll[0].rule;
 
@@ -106,7 +107,7 @@ const fetchElementRules = createAsyncThunk(
             const regularRules = { ...styleSheets[styleSheetId], origin, scopes, ruleTypes, selectorList, style, selector };
 
             // console.log('\n\n');
-            // console.warn('targetSlice: fetchElementRules: regularRules', regularRules);
+            console.warn('targetSlice: fetchElementRules: regularRules', regularRules);
             // console.log('\n\n');
 
             const absolutePaths = [...regularRules?.absolutePaths];
@@ -225,15 +226,17 @@ const initialState = {
   targetPort: '',
   targetSelector: '',
   targetInline: {
+    selector: '',
     path: '',
     pathFileName: '',
     pathRelative: '',
     line: '',
     lineText: '',
+    lineContext: '',
     type: '',
     typeValue: '',
-    allPaths: [],
-    selector: '',
+    stylesJsArr: [],
+    stylesJsDx: {},
   },
   targetRegular: {
     path: '',
@@ -247,9 +250,14 @@ const initialState = {
     typeValue: '',
     absolutePaths: [],
     relativePaths: [],
+    allPaths: [],
     selector: '',
   },
   targetData: {},
+  targetSubmitted: {
+    name: '',
+    value: '',
+  },
   error: null, // if we want to track errors
 }
 

@@ -58,30 +58,19 @@ const pupRules = async (client, elementNodeId) => {
 
       const { inlineStyle } = await client.send('CSS.getInlineStylesForNode', { nodeId: elementNodeId });
 
-      // console.log('pupInlineRules: inlineStyle:', inlineStyle);
+      // console.log('pupRules: inlineStyle:', inlineStyle);
 
       const inlineRule = [];
 
       // check if there are any inline styles for this node
       if (inlineStyle) {
 
-        console.warn(`Found: inline styles for elementNodeId ${elementNodeId}.
-        \n
-        ${inlineStyle}`);
-        console.log('pupInlineRules: inlineStyle:', inlineStyle);
+        // console.warn(`Found: inline styles for elementNodeId ${elementNodeId}`);
+        // console.log('pupRules: inlineStyle:', inlineStyle);
         // push the inline styles to the inlineRule array
 
         inlineStyle.cssProperties = inlineStyle.cssProperties.filter(eachCssProp => Object.keys(eachCssProp).length > 2);
 
-        // .forEach((prop) => {
-        //   if (prop.length <= 2) {
-        //     console.log('pupRules: inlineStyle.cssProperties line 105:', prop);
-        //     inlineStyle.cssProperties.splice(inlineStyle.cssProperties.indexOf(prop), 1);
-        //   }
-
-        // })
-
-        // console.log('pupInlineRules: inlineStyle.cssProperties line 110:', inlineStyle.cssProperties);
         inlineRule.push({
           "rule": {
             "origin": "inline",
@@ -96,7 +85,7 @@ const pupRules = async (client, elementNodeId) => {
       return inlineRule;
 
     } catch (error) {
-      console.log('pupInlineRules: error:', error);
+      console.log('pupRules: getInlineRules error:', error);
     }
   }
 

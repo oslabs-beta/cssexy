@@ -8,6 +8,7 @@ import { openSourceFile } from '../features/openSourceFile.js';
 
 
 function SidebarStyling(props) {
+    console.log('sidebarStyling');
     // console.log('SidebarStyling: props', props);
     const dispatch = useDispatch();
 
@@ -26,16 +27,16 @@ function SidebarStyling(props) {
 
     // this useEffect ensures that 'values' is updated only when props.cssProperties changes, rather than on every re-render.
     // i was getting some rerendering errors prior to this when modifying source files.
-    // useEffect(() => {
-    //     setValues(
-    //         liveProps.cssProperties.reduce((acc, cssProp) => {
-    //             acc[cssProp.name] = cssProp.value;
-    //             return acc;
-    //         }, {})
-    //     );
-    //     console.warn('SidebarStyling: liveProps updated', liveProps);
+    useEffect(() => {
+        setValues(
+            liveProps.cssProperties.reduce((acc, cssProp) => {
+                acc[cssProp.name] = cssProp.value;
+                return acc;
+            }, {})
+        );
+        console.warn('SidebarStyling: liveProps updated', liveProps);
 
-    // }, [props.cssProperties]);
+    }, [props.cssProperties]);
 
     const handleSubmit = async (cssProp, item) => {
         // console.log('SidebarStyling: handleSubmit: cssProp', cssProp);
@@ -49,7 +50,8 @@ function SidebarStyling(props) {
             value: newValue,
             valuePrev: cssProp.value,
             textPrev: cssProp.text,
-            text: `${cssProp.name}: ${newValue}`,
+            // todo 2024-05-15_07-46-AM: remove this property, as it doesn’t string match to textPrev.
+            text: `${cssProp.name}: ${newValue},`,
             path: cssProp.path,
             textPrevAll: inlineRules[0].rule.style.cssText,
             line: liveProps?.line,
@@ -59,8 +61,8 @@ function SidebarStyling(props) {
             selector: target.targetSelector,
         }
 
-        console.log('SidebarStyling: handleSubmit: data', data);
-        console.log('SidebarStyling: handleSubmit: target', target);
+        // console.log('SidebarStyling: handleSubmit: data', data);
+        // console.log('SidebarStyling: handleSubmit: target', target);
 
         // console.log('\n\n');
         // console.log('TRY: /patch');
@@ -78,27 +80,28 @@ function SidebarStyling(props) {
             console.log('SidebarStyling: handleSubmit: result', result);
 
             if (result === true) {
-                console.log('result, true', result);
+                console.warn('sidebarStyling: result, true', result);
                 // console.log('TRY: /runCdp');
 
                 // wait for .5 seconds. not doing this atm leads to a mismatch between the value in the input field and the corresponding value in the file, which then prevents further editing of that value (until the element is clicked again) because our patchFile function matches one to the other in order to replace the value with the new value.
                 // inline styles need a bit more time, so if theres no source path, wait 1 second.
-                // 2024-04-29_02-03-AM: this doesn’t have an effect atm.
-                await new Promise(resolve => data.type ? setTimeout(resolve, 1000) : setTimeout(resolve, 1000));
+                // 2024-05-15_07-46-AM: doesn’t maintain the modified regular value in the sidebar at the moment.
+                await new Promise(resolve => data.type ? setTimeout(resolve, 1000) : setTimeout(resolve, 1500));
 
                 // running CDP again to update our redux store after patching the file.
+        console.warn('SidebarStyling: handleSubmit: result true: passing data to fetchElementRules. looking for the value of our modified property', data);
+
                 fetchElementRules({ data });
-                setValues({});
+                // setValues({});
 
 
                 // probably around here is where we'll track undo/redo.
             }
         }
         catch (error) {
-            console.log('error in runCdp', error);
+            console.log('sidebarStyling: error in runCdp', error);
         }
     };
-
 
     const handleClickField = (cssProp) => {
         const possibleValues = getCssValueOptions(cssProp);
@@ -115,9 +118,8 @@ function SidebarStyling(props) {
         }
         else {
             setValues({ [clickedPropertyField]: null });
-            console.log('values should be null', values)
+            console.log('sidebarStyling: values should be null', values)
         }
-
     };
 
     const dropdownRef = useRef(null);
@@ -217,13 +219,11 @@ function SidebarStyling(props) {
                             onChange={(e) => handleFieldChange(e)}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
-                                    // console.log('e.target.value', e.target.value);
                                     handleSubmit(cssProp, e)
-                                    // 'blur': makes the input field lose focus, i.e. the cursor disappears, it won't be editable until it's clicked again
                                     e.currentTarget.blur()
                                 }
                             }}
-                            spellCheck='false' /* Disable spellcheck, i.e. no more red squiggles under the values when clicked/edited but not a complete word */
+                            spellCheck='false'
                         />
                     </p>
                     {showDropdown && clickedPropertyField === cssProp.name && (
