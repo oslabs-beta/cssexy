@@ -14,11 +14,12 @@ export default defineConfig({
     devSourcemap: true
   },
   server: {
-    proxy: {
-      '/cdp': 'http://localhost:8888',
-      '/patch': 'http://localhost:8888',
-      '/read': 'http://localhost:8888',
-      '/app': 'http://localhost:8888/'
-    }
-  }
+   middlewareMode:true,
+   proxy:{
+    
+    '/app': 'http://localhost:6969/app',
+    '/cdp': 'http://localhost:6969/cdp'
+   }
+  },
+  base:'/app'
 });

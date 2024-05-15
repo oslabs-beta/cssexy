@@ -1,18 +1,28 @@
+// Import Vite Middleware
+import {createServer} from 'vite';
+import {router} from './getMainApplication.js';
+import { cdpRouter } from './cdp.js';
+import path from 'path';
 // import express from 'express';
-const express = require('express');
-const PORT = 8888;
+import express from 'express';
+const PORT = 6969;
 const app = express();
 
 app.use(express.json());
 
-/***** Setup for Server Rendered Main Application */
+  // Create Vite server in middleware mode
+  const vite = await createServer({
+    server: { middlewareMode: true},
+    appType: 'spa', // don't include Vite's default HTML handling middlewares
+    configFile: path.resolve(import.meta.dirname,'../vite.config.js')
+  })
+  
+  // Use vite's connect instance as middleware
+  app.use('/app', vite.middlewares)
+  app.use('/cdp',cdpRouter)
+  app.use('/', router)
 
-// import {router} from './getMainApplication.js'
-const router = require('./getMainApplication');
-
-app.use('/', router)
-
-
+/** 404 and errors */
 app.use((req, res) => res.sendStatus(404));
 
 app.use((err, req, res, next) => {
@@ -20,6 +30,8 @@ app.use((err, req, res, next) => {
   res.sendStatus(500);
 });
 
+
+/*** Serve Application on Port 6969 */
 app.listen(PORT, () =>
   console.log('\n'),
   console.log('\n'),
