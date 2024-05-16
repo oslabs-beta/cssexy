@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer'
 import { writeFileSync, mkdir } from 'node:fs';
+import { readdir, unlink } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
@@ -100,6 +101,7 @@ const mapsDx = {};
   await Promise.all(domains.map(async (domain) => {
     await client.send(`${domain}.enable`, () => { })
   }))
+  console.log('\n\n');
   console.log('pup: domains enabled');
   // recursive = true: if the folder already exists, it doesn't throw an error
   // mkdir((new URL('../../data/output/page', import.meta.url)), { recursive: true }, (err) => {
@@ -115,6 +117,41 @@ const mapsDx = {};
   //   // console.warn('pup: load: content', content);
   // })
   // styleSheetAdded is a CDP event that is fired whenever a new stylesheet is added to the stylesheet cache.
+
+  const outputDirectory = path.join(__dirname, '../../data/output/');
+  const outputSourceMaps = path.join(outputDirectory, 'decodedSourceMaps');
+
+  mkdir((new URL(outputSourceMaps, import.meta.url)), { recursive: true }, (err) => {
+    if (err) throw err;
+  });
+
+  readdir(outputSourceMaps, (err, files) => {
+    if (err) throw err;
+
+    for (const file of files) {
+      unlink(path.join(outputSourceMaps, file), err => {
+        if (err) throw err;
+      });
+    }
+  });
+
+
+  try {
+    // the 'flag: w' is important here, as without it, if the file already exists,
+    // it will throw an error instead of overwriting it.
+    // EISDIR means it's a directory instead of a file, so we can't open it.
+    // we can safely ignore this error, as the file will be overwritten anyway.
+    // more info: https://nodejs.org/api/errors.html#errors_common_system_errors
+  } catch ({ code, syscall, path }) {
+    if (code === 'EISDIR' && syscall === 'open' && path === './data/output/decodedSourceMaps') {
+      // console.log('pup: skipping overwrite of directory', path);
+    } else {
+      console.error('pup: unknown error when trying to write to', path);
+      console.error(err);
+    }
+  }
+
+
   client.on('CSS.styleSheetAdded', async (param) => {
     // console.log('styleSheetAdded');
     const id = param.header.styleSheetId;
@@ -188,11 +225,8 @@ const mapsDx = {};
     pathsDx.styleSheetId = { sources, pathsAbsolute, pathsRelative, pathsAll };
     mapsDx.styleSheetId = decodedMap;
 
-    mkdir((new URL('../../data/output/decodedSourceMaps', import.meta.url)), { recursive: true }, (err) => {
-      if (err) throw err;
-    });
     // // console.log('pupProcess: calling writeFileSync');
-    writeFileSync(`./data/output/decodedSourceMaps/${styleSheetId}.json`, JSON.stringify(decodedMap, null, 2));
+    writeFileSync(`${outputSourceMaps}/${styleSheetId}.json`, JSON.stringify(decodedMap, null, 2));
 
     // console.log('\n\n');
     // console.warn('styleSheetAdded: pathsDx', pathsDx);
@@ -206,6 +240,8 @@ const mapsDx = {};
   );
 
 })(pupProcess);
+
+
 // data passed from server = ...args
 const callPupProcess = async (...args) => await pupProcess(client, styleSheets, ...args);
 

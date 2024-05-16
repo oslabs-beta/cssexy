@@ -5,7 +5,7 @@ import { cssToReact } from './cssToReact.js';
 
 const findSourceInline = async ({ inlineRules, data, target }) => {
 
-  console.log('findSourceInline: inlineRules.cssProperties.length', inlineRules.cssProperties.length);
+  // console.log('findSourceInline: inlineRules.cssProperties.length', inlineRules.cssProperties.length);
   // console.log('findSourceInline: data', data);
   // console.warn('findSourceInline: target', target);
 
@@ -22,8 +22,8 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
     className,
     textContent,
   };
-  console.log('\n\n');
-  console.log('findSourceInline: dataContext', dataContext);
+  // console.log('\n\n');
+  // console.log('findSourceInline: dataContext', dataContext);
 
   const gitignorePath = path.join(targetDir, '.gitignore');
   const gitignore = fs.readFileSync(gitignorePath, 'utf-8');
@@ -134,7 +134,7 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
 
   const jsxFiles = await findJsxFiles(targetDir); // Call the findJsxFiles function to get .jsx file paths
 
-  console.log('findSourceInline: cssText', cssText);
+  // console.log('findSourceInline: cssText', cssText);
   if (!cssText) { return null };
 
 
@@ -144,15 +144,15 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
 
   const callCssToReact = (string) => {
     let arr = []
-    const rules = string.split(';').filter(rule => rule.trim() !== '');
+    const styles = string.split(';').filter(style => style.trim() !== '');
 
-    console.log('findSourceInline: rules', rules);
+    // console.log('findSourceInline: styles', styles);
 
-    for (let rule of rules) {
-      const res = cssToReact(rule);
+    for (let style of styles) {
+      const res = cssToReact(style);
       const count = res.split(":").length - 1;
 
-      console.log('findSourceInline: callCssToReact: res for', res);
+      // console.log('findSourceInline: callCssToReact: res for', res);
       // console.log('count', count);
       if (count > 1) {
         arr.push(...res.split(", "));
@@ -176,17 +176,25 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
     'background: transparent'
   ]
   */
-  // console.log('\n\n');
-  console.log('findSourceInline: cssArr', cssJsArr);
-  // console.log('\n\n');
-
+  // console.log('findSourceInline: cssArr', cssJsArr)
   const cssJsDx = {}
-
   for (const typeValue of cssJsArr) {
     const keyValuePair = typeValue.split(':');
-
     cssJsDx[keyValuePair[0].trim()] = keyValuePair[1].trim()
   }
+  /*
+example:
+cssJsDx {
+  position: 'fixed',
+  top: '0',
+  right: '0',
+  bottom: '0',
+  left: '0',
+  background: 'transparent'
+}
+*/
+  // console.log('findSourceInline: cssJsDx', cssJsDx);
+  // console.log('findSourceInline: potential selectors', dataContext);
 
   const stylesSet = new Set(
     cssJsArr.map(entry => {
@@ -195,33 +203,20 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
     })
   );
 
-  /*
-  example:
-  cssJsDx {
-    position: 'fixed',
-    top: '0',
-    right: '0',
-    bottom: '0',
-    left: '0',
-    background: 'transparent'
-  }
-  */
-
-  console.warn('findSourceInline: cssJsDx', cssJsDx);
 
   const matchFunc = async ({ jsxFilePath, type, value }) => {
     // Read the content of each .jsx file into memory
     const fileData = await fs.promises.readFile(jsxFilePath, 'utf8');
 
     // Split the file content into an array of lines
-    const allLines = fileData.split('\n');
+    const linesAll = fileData.split('\n');
 
-    console.log('matchFunc type', type);
-    console.log('matchFunc value', value);
+    // console.log('matchFunc type', type);
+    // console.log('matchFunc value', value);
 
     // the piece of our regex that differs whether id/classname or textContent
     const selectorString = (type === 'id' || type === 'className') ? `${type}\\W*=\\W*${value}` : value;
-    // console.log('findSourceInline: matchFunc selectorString', selectorString);
+
     // ${type} : the type we are looking for
     // \\W* : whitespace or symbols (i.e. non-alpha-numeric characters). 0 || more times
     // = : equals sign
@@ -229,7 +224,7 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
     // ${value} : the value we are looking for
 
     // the regex including the
-    // let selectorRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${selectorString}(?:\\W)`, 'gm');
+    let selectorRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${selectorString}(?:\\W)`, 'gm');
     //   // const selectorRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\s*${type}\\s*=\\s*['"]${value}['"](?!\\w)`, 'gm');
     // const selectorRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${string}(?:\\W)`, 'gm');
     // ^ : beginning of string
@@ -246,15 +241,21 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
     // \\W : ""
     // gm : global and multiline
 
-  //   let stylesRegex = /\s*([^:\s]+)\s*:\s*['"]?([^'"]+)['"]?\s*(,|$)/g;
-  //   let stylesMatch = stylesRegex.exec(fileData);
+    //   let stylesRegex = /\s*([^:\s]+)\s*:\s*['"]?([^'"]+)['"]?\s*(,|$)/g;
+    //   let stylesMatch = stylesRegex.exec(fileData);
 
-  //  if (stylesMatch !== null) {
-  //     console.log(`findSourceInline: stylesMatch: ${match[1]}, Value: ${match[2]}`);
-  //   }
+    //  if (stylesMatch !== null) {
+    //     console.log(`findSourceInline: stylesMatch: ${match[1]}, Value: ${match[2]}`);
+    //   }
 
 
     let selectorMatch = selectorRegex.exec(fileData);
+    // if (value === null || value === '' || value === undefined) {
+    //   selectorMatch = null
+    // }
+    let matchData = {};
+    let inlineStyleMatchBool = false;
+
     if (selectorMatch !== null) {
       // let selectorMatch;
       // while ((selectorMatch = selectorRegex.exec(fileData)) !== null) {
@@ -266,57 +267,123 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
       // split('\n') : split the fileData into an array of lines
       // length : the total number of lines in the file (i.e. 1-indexed)
 
-      // let line = allLines.slice(0, selectorMatch.index).findIndex(line => line.match(selectorMatch)) + 1;
-      // allLines : the contents of the current .jsx file, split into an array of lines
+      // let line = linesAll.slice(0, selectorMatch.index).findIndex(line => line.match(selectorMatch)) + 1;
+      // linesAll : the contents of the current .jsx file, split into an array of lines
       // trim() : remove whitespace from the start and end of the line
-
-      console.log('findSourceInline: 238 line', line);
-      console.log('\n');
-
       // [line - 1] : the line of code that the RegExp found a match on
 
-      const lastElement = cssJsArr[cssJsArr.length - 1];
       let lastElementRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${selectorString}(?:\\W)`, 'gm');
+      const lastElement = cssJsArr[cssJsArr.length - 1];
       const lastElementIndexInFileData = fileData.indexOf(lastElement);
       const lineContextEnd = fileData.substring(0, lastElementIndexInFileData).split('\n').length;
-      const lineContext = allLines.slice(line - 2, lineContextEnd).join('\n');
+      const lineContext = linesAll.slice(line - 2, lineContextEnd).join('\n');
 
 
       // console.log('\n\n');
       // console.log('findSourceInline: lineContext', lineContext);
-      try {
-        const lineContextRegex = new RegExp({ lineContext }, 'gm');
-        const lineContextMatch = lineContextRegex.exec(fileData);
-        if (lineContextMatch) {
-          // console.log('findSourceInline: lineContextMatch', lineContextMatch);
-          // console.log('findSourceInline: lineContextMatch.index', lineContextMatch.index);
-          // console.log('findSourceInline: lineContextMatch.input', lineContextMatch.input);
-          // console.log('findSourceInline: actual line number', fileData.substring(0, lineContextMatch.index).split('\n').length);
-        }
-      } catch (e) {
-        console.log('findSourceInline: Error processing data:', e.name, e.message);
-      }
+      // try {
+      //   const lineContextRegex = new RegExp({ lineContext }, 'gm');
+      //   const lineContextMatch = lineContextRegex.exec(fileData);
+      //   if (lineContextMatch) {
+      //     // console.log('findSourceInline: lineContextMatch', lineContextMatch);
+      //     // console.log('findSourceInline: lineContextMatch.index', lineContextMatch.index);
+      //     // console.log('findSourceInline: lineContextMatch.input', lineContextMatch.input);
+      //     // console.log('findSourceInline: actual line number', fileData.substring(0, lineContextMatch.index).split('\n').length);
+      //   }
+      // } catch (e) {
+      //   console.log('findSourceInline: Error processing data:', e.name, e.message);
+      // }
 
-      console.log('findSourceInline: line', line);
+      // console.log('findSourceInline: line', line);
 
-      console.log('findSourceInline: lineContext', lineContext);
-      console.log('findSourceInline: cssJsArr', cssJsArr);
-      console.log('findSourceInline: cssJsDx', cssJsDx);
+      // console.log('findSourceInline: lineContext', lineContext);
+      // console.log('findSourceInline: cssJsArr', cssJsArr);
+      // console.log('findSourceInline: cssJsDx', cssJsDx);
 
 
-      const matchData = {
+      matchData = {
         type,
         typeValue: value,
         path: jsxFilePath,
         pathRelative: jsxFilePath.replace(targetDir + path.sep, '/'),
+        pathFileName: path.basename(jsxFilePath),
         line,
-
         lineContext,
         stylesJsArr: cssJsArr,
         stylesJsDx: cssJsDx,
       };
 
+      inlineStyleMatchBool = true;
+      console.log('findSourceInline: selectorMatch found');
+    }
+    else {
+      const stylesRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*(style\\W*(?:\\W*(?:[^}]*}})))`, 'gmi');
+      let styleMatches;
+
+      while ((styleMatches = stylesRegex.exec(fileData)) !== null && !inlineStyleMatchBool) {
+        let styleMatch = styleMatches[0];
+        let styleMatchArr = styleMatch.split('\n')
+        let lineMatchStartIndex = fileData.substring(0, styleMatches.index).split('\n').length;
+
+        if (!styleMatchArr[0].includes('style')) {
+          styleMatch = styleMatches[1]
+          styleMatchArr = styleMatch.split('\n')
+          lineMatchStartIndex++
+        }
+        let styleMatchString = styleMatches[1]
+        let linesMatchedArr = styleMatchString.split('\n');
+
+        let linesRemainingCount = (linesAll.length - lineMatchStartIndex);
+        let styleLineString = linesMatchedArr[0]
+        let linesRemaining = linesAll.slice(lineMatchStartIndex - 1, linesAll.length);
+        let linesRemainingString = linesRemaining.join('\n');
+        let i = 0;
+
+        for (let value of stylesSet.values()) {
+          // console.log(lineMatchStartIndex);
+          const key = Object.keys(value)[0];
+          const val = value[key];
+          const keyValRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${key}\\W*${val}(?:\\W)`, 'gm');
+          const keyValMatch = keyValRegex.exec(styleMatchString);
+
+          if (!keyValMatch) {
+            // breaking out of the for loop, starting the next iteration of the while loop
+            break;
+          }
+          i++
+        }
+        // console.log('lineMatchStartIndex', lineMatchStartIndex);
+
+        i === stylesSet.size ? inlineStyleMatchBool = true : null
+        if (!inlineStyleMatchBool) {
+          // continuing the next iteration of the while loop, as the current stylesSet did not contain all of the styles we're looking for.
+          continue
+        }
+        // console.log('\n\n');
+        console.log('findSourceInline: stylesMatch found');
+        // console.log('\n');
+
+        matchData = {
+          type,
+          typeValue: value,
+          path: jsxFilePath,
+          pathRelative: jsxFilePath.replace(targetDir + path.sep, '/'),
+          pathFileName: path.basename(jsxFilePath),
+          line: lineMatchStartIndex,
+          lineEnd: lineMatchStartIndex + linesMatchedArr.length - 1,
+          lineContext: styleMatchString,
+          stylesJsArr: cssJsArr,
+          stylesJsDx: cssJsDx,
+          stylesSet: stylesSet,
+        };
+
+      }
+
+    }
+
+    if (inlineStyleMatchBool) {
       fileMatches.push(matchData);
+      return
     }
   }
 
@@ -331,6 +398,7 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
       }
       await matchFunc({ jsxFilePath, type, value });
     }
+    // await matchFunc({ jsxFilePath, type: 'inlineStyle', value: null });
 
   }
 
@@ -341,9 +409,9 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
     // console.log('\n\n');
     // console.log(`findSourceInline: : inlineStyle: ${selector} found in: ${filePaths}`);
 
-    for (let [type, value] of Object.entries(cssJsDx)) {
-      // console.log('findSourceInline: ', type, ': ', value);
-    }
+    // for (let [type, value] of Object.entries(cssJsDx)) {
+    //   // console.log('findSourceInline: ', type, ': ', value);
+    // }
     // console.log('fileMatches', fileMatches);
 
   }

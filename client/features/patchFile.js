@@ -9,7 +9,7 @@ const patchFile = async ({data, target}) => {
 
     console.log('patchFile: data', data);
     console.log('patchFile: target', target);
-    const selector = target.targetSelector;
+    const selectorShort = target.targetData.selectorShort;
     const text = data.text;
     const textPrev = data.textPrev;
     const textPrevJs = data.textPrevJs;
@@ -22,9 +22,12 @@ const patchFile = async ({data, target}) => {
     const endLine = data.range.endLine;
     const targetDir = target.targetDir;
 
+    console.log('selectorShort', selectorShort);
+
     // INLINE STYLE
     // Checking if textPrevAll has content and sourcePath is not provided.
     // if that's the case, we have an inline style.
+    // 2024-05-16_03-41-AM: broken atm
     if (!startLine && !endLine) {
       console.log('patchFile: inline style');
       console.log('\n\n');
@@ -81,26 +84,26 @@ const patchFile = async ({data, target}) => {
 
       // // console.log('data updated', data);
 
-      const filePath = target.targetInline.path;
+      // const filePath = target.targetInline.path;
 
-      console.warn('filePath', filePath);
+      // console.warn('filePath', filePath);
 
-      const fileData = await fs.promises.readFile(filePath, 'utf8'); // Read the content of each .jsx file
+      // const fileData = await fs.promises.readFile(filePath, 'utf8'); // Read the content of each .jsx file
 
-      // Use regex to find matches of textPrevAllJs in the file content
-      const inlineContents = fileData.match(new RegExp(textPrevAllJs));
-      if (!inlineContents) {
-        // If no matches found, move on to the next .jsx file
-        return;
-      }
+      // // Use regex to find matches of textPrevAllJs in the file content
+      // const inlineContents = fileData.match(new RegExp(textPrevAllJs));
+      // if (!inlineContents) {
+      //   // If no matches found, move on to the next .jsx file
+      //   return;
+      // }
 
-      // console.log('inlineContents', inlineContents);
+      // // console.log('inlineContents', inlineContents);
 
-      const inlineContentsStr = inlineContents[0]; // Get the matched content
-      // Replace inlineContentsStr with textAllJs
-      const newFileData = fileData.replace(new RegExp(inlineContentsStr, 'g'), textAllJs);
-      // Write the modified content back to the file
-      await fs.promises.writeFile(filePath, newFileData, 'utf8');
+      // const inlineContentsStr = inlineContents[0]; // Get the matched content
+      // // Replace inlineContentsStr with textAllJs
+      // const newFileData = fileData.replace(new RegExp(inlineContentsStr, 'g'), textAllJs);
+      // // Write the modified content back to the file
+      // await fs.promises.writeFile(filePath, newFileData, 'utf8');
     }
 
     // otherwise
@@ -118,25 +121,27 @@ const patchFile = async ({data, target}) => {
 
       const filePath = target.targetRegular.path
 
-      console.log('filePath', filePath);
-
       // Read file contents
       const fileData = await fs.promises.readFile(filePath, 'utf8');
 
       // Use regex to find matches
-      const selectorContents = fileData.match(new RegExp(`${selector}\\s*\\{([^}]*)`));
+      // const cssSelectorMatch = fileData.match(new RegExp(`${selectorShort}\\s*\\{([^}]*)`));
 
-      if (!selectorContents) {
-        console.log(`Selector ${selector} not found in file ${pathFileName}`);
+      const cssSelectorRegex = new RegExp(`${selectorShort}\\s*\\{([^}]*)`);
+const cssSelectorMatch = cssSelectorRegex.exec(fileData);
+
+      if (!cssSelectorMatch) {
+        console.log(selectorShort);
+        console.log(`${selectorShort} not found in file ${pathFileName}`);
         return false;
       }
 
-      const selectorContentsStr = selectorContents[0];
+      const selectorContentsStr = cssSelectorMatch[0];
 
       const matches = selectorContentsStr.match(new RegExp(`\\s*${name}:([^;]*);`));
 
       if (!matches) {
-        console.log(`Line with ${name}: not found in selector ${selector} in file ${pathFileName}`);
+        console.log(`Line with ${name}: ${selectorShort} not found in file ${pathFileName}`);
         return false;
       }
 

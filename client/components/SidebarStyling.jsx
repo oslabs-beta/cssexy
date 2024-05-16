@@ -57,7 +57,7 @@ function SidebarStyling(props) {
             line: liveProps?.line,
             type: liveProps?.type,
             typeValue: liveProps?.typeValue,
-            selector: target.targetSelector,
+            selector: liveProps?.selector || target.targetSelector,
         }
 
         // console.log('SidebarStyling: handleSubmit: data', data);

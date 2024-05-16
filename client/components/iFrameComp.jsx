@@ -51,22 +51,25 @@ const IframeComp = () => {
     const selectorAltObj = iframe.current.contentDocument.documentElement.querySelectorAll(DOMPath.fullQualifiedSelector(element))[0];
 
     const selectorAlt = `${selectorAltObj.nodeName.toLowerCase()}${selectorAltObj.id ? '#' + selectorAltObj.id : ''}${selectorAltObj.className ? '.' + selectorAltObj.className.split(' ').join('.') : ''}`;
-
+    const selectorShort = selector.replace(selectorAltObj, '')
+    console.log('iframeComp: selectorObj', selectorAltObj);
+    console.log('iframeComp: selectorShort', selectorShort);
     // console.log('iframeComp: selectorAlt', selectorAlt);
 
     const data = {
-       // id is used by findSourceInline to string match
+      // id is used by findSourceInline to string match
       id: element.id,
       innerHTML: element.innerHTML,
       nodeName: element.nodeName,
-             // className is used by findSourceInline to string match
+      // className is used by findSourceInline to string match
 
       className: element.className,
       nodeType: element.nodeType,
       textContent: element.textContent,
       // attributes: element.attributes,
       selector,
-      selectorAlt
+      selectorAlt,
+      selectorShort
     };
 
     try {
