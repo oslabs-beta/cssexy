@@ -12,8 +12,7 @@ const RulesInlineComp = () => {
 
     const targetInline = useSelector(state => state.target.targetInline);
 
-
-    const { path, pathRelative, pathFileName, line, lineText, type, typeValue } = targetInline;
+    const { path, pathRelative, pathFileName, line, type, typeValue } = targetInline;
 
     path.length ? console.warn('RulesInlineComp: targetInline', targetInline) : console.log('RulesInlineComp: targetInline is empty.');
 
@@ -27,7 +26,6 @@ const RulesInlineComp = () => {
                 path={path}
                 pathRelative={pathRelative}
                 line={line}
-                lineText={lineText}
                 type={type}
                 typeValue={typeValue}
                 target={targetInline}

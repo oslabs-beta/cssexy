@@ -101,13 +101,13 @@ const IframeComp = () => {
       // Calling the handleClick function
       handleClick(element);
 
-      // switch the focus to cssxe when the user clicks on something that isnt an input, textarea, or dropdown (select) field.
+      // switch the focus to cssexy when the user clicks on something that isnt an input, textarea, or dropdown (select) field.
       // without this their interaction with those elements is broken/interrupted, e.g. clicking in a text field in bookswap.
       if (localName !== 'input' && localName !== 'textarea' && localName !== 'select') {
 
         // Set focus back to the parent document
-        // This allows CSSxe to receive keyboard events again after a click has taken place inside the iframe.
-        // before doing this, CSSxe would not receive keyboard events again until we clicked inside of the sidebar
+        // This allows cssexy to receive keyboard events again after a click has taken place inside the iframe.
+        // before doing this, cssexy would not receive keyboard events again until we clicked inside of the sidebar
         window.parent.focus();
       }
 

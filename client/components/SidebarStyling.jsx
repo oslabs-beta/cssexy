@@ -55,7 +55,6 @@ function SidebarStyling(props) {
             path: cssProp.path,
             textPrevAll: inlineRules[0].rule.style.cssText,
             line: liveProps?.line,
-            lineText: liveProps?.lineText,
             type: liveProps?.type,
             typeValue: liveProps?.typeValue,
             selector: target.targetSelector,

@@ -188,6 +188,13 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
     cssJsDx[keyValuePair[0].trim()] = keyValuePair[1].trim()
   }
 
+  const stylesSet = new Set(
+    cssJsArr.map(entry => {
+      const [key, value] = entry.split(':');
+      return { [key.trim()]: value.trim() };
+    })
+  );
+
   /*
   example:
   cssJsDx {
@@ -209,12 +216,12 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
     // Split the file content into an array of lines
     const allLines = fileData.split('\n');
 
-    // console.log('matchFunc type', type);
-    // console.log('matchFunc value', value);
+    console.log('matchFunc type', type);
+    console.log('matchFunc value', value);
 
     // the piece of our regex that differs whether id/classname or textContent
-    const targetString = (type === 'id' || type === 'className') ? `${type}\\W*=\\W*${value}` : value;
-    // console.log('findSourceInline: matchFunc targetString', targetString);
+    const selectorString = (type === 'id' || type === 'className') ? `${type}\\W*=\\W*${value}` : value;
+    // console.log('findSourceInline: matchFunc selectorString', selectorString);
     // ${type} : the type we are looking for
     // \\W* : whitespace or symbols (i.e. non-alpha-numeric characters). 0 || more times
     // = : equals sign
@@ -222,9 +229,9 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
     // ${value} : the value we are looking for
 
     // the regex including the
-    let targetRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${targetString}(?:\\W)`, 'gm');
-    //   // const targetRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\s*${type}\\s*=\\s*['"]${value}['"](?!\\w)`, 'gm');
-    // const targetRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${string}(?:\\W)`, 'gm');
+    // let selectorRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${selectorString}(?:\\W)`, 'gm');
+    //   // const selectorRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\s*${type}\\s*=\\s*['"]${value}['"](?!\\w)`, 'gm');
+    // const selectorRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${string}(?:\\W)`, 'gm');
     // ^ : beginning of string
     // (?!...) : a negative lookahead assertion, i.e. anything that doesn't match the included string
     // .* : any number of any characters (including newlines)
@@ -233,7 +240,7 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
     // so what we have done is a positive lookahead inside of a negative lookahead, i.e. do not include any x that includes y.
     // .* : look for the lookaheads anywhere up to this point in the string
     // \\W* : whitespace or symbols (i.e. non-alpha-numeric characters). 0 || more times
-    // targetString : the string we are looking for
+    // selectorString : the string we are looking for
     // \\W* : ""
     // (?:...) : ""
     // \\W : ""
@@ -247,12 +254,12 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
   //   }
 
 
-    let selectorMatch = targetRegex.exec(fileData);
+    let selectorMatch = selectorRegex.exec(fileData);
     if (selectorMatch !== null) {
       // let selectorMatch;
-      // while ((selectorMatch = targetRegex.exec(fileData)) !== null) {
+      // while ((selectorMatch = selectorRegex.exec(fileData)) !== null) {
 
-      let line = fileData.substring(0, selectorMatch.index).split('\n').length;
+      const line = fileData.substring(0, selectorMatch.index).split('\n').length;
       // fileData : the contents of the current .jsx file we are searching
       // substring(start, end) : extract a substring from the fileData starting at index start and ending at index end (not inclusive)
       // selectorMatch.index : the index at which the RegExp found a match
@@ -264,24 +271,17 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
       // trim() : remove whitespace from the start and end of the line
 
       console.log('findSourceInline: 238 line', line);
-      let lineText = allLines[line - 1].trim();
       console.log('\n');
+
       // [line - 1] : the line of code that the RegExp found a match on
-      let lineContext = allLines.slice(line - 2, line + 2).join('\n');
+
+      const lastElement = cssJsArr[cssJsArr.length - 1];
+      let lastElementRegex = new RegExp(`^(?!.*(?://|{/\\*)).*\\W*${selectorString}(?:\\W)`, 'gm');
+      const lastElementIndexInFileData = fileData.indexOf(lastElement);
+      const lineContextEnd = fileData.substring(0, lastElementIndexInFileData).split('\n').length;
+      const lineContext = allLines.slice(line - 2, lineContextEnd).join('\n');
 
 
-      if (!lineText.includes(value)) {
-        // includes() : return true if the given string is contained within the calling string.
-        // console.log('\n\n');
-        // console.log('line does not contain value. adding 1 to line');
-        // console.log('\n\n');
-        // if the previous line does not contain the value, we have a multi-line match
-        // so we increment the line count by 1
-        line += 1;
-        lineText = allLines[line - 1].trim();
-        lineContext = allLines.slice(line - 2, line + 2).join('\n');
-
-      }
       // console.log('\n\n');
       // console.log('findSourceInline: lineContext', lineContext);
       try {
@@ -298,7 +298,7 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
       }
 
       console.log('findSourceInline: line', line);
-      console.log('findSourceInline: lineText', lineText);
+
       console.log('findSourceInline: lineContext', lineContext);
       console.log('findSourceInline: cssJsArr', cssJsArr);
       console.log('findSourceInline: cssJsDx', cssJsDx);
@@ -310,7 +310,7 @@ const findSourceInline = async ({ inlineRules, data, target }) => {
         path: jsxFilePath,
         pathRelative: jsxFilePath.replace(targetDir + path.sep, '/'),
         line,
-        lineText,
+
         lineContext,
         stylesJsArr: cssJsArr,
         stylesJsDx: cssJsDx,

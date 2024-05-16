@@ -10,7 +10,7 @@ import { updateEnv } from './updateEnv.js';
 
 /**
  * Retrieves the target port for the application.
- * If the target directory is not 'cssxe', it searches for the process IDs of all open files in the target directory
+ * If the target directory is not 'cssexy', it searches for the process IDs of all open files in the target directory
  * and retrieves the target port associated with the process ID.
  * If the target port is found, it updates the 'VITE_TARGET_PORT' and 'TARGET_PORT' environment variables in the .env file.
  * If the target port is not found, it throws an error.
@@ -36,8 +36,8 @@ const getTargetPort = async () => {
 
     let targetPort;
 
-    if (!targetDir.includes('cssxe')) {
-      console.log('getTargetPort: targetDir is not cssxe. Searching for open files in targetDir...');
+    if (!targetDir.includes('cssexy')) {
+      console.log('getTargetPort: targetDir is not cssexy. Searching for open files in targetDir...');
       // getting the process IDs of all open files in the target directory
       // `lsof` (list open files)
       // +D flag: search in directories, instead of files
@@ -88,7 +88,7 @@ const getTargetPort = async () => {
     }
     else {
       // console.log('\n\n');
-      // console.log('targetDir is cssxe');
+      // console.log('targetDir is cssexy');
       // console.log('\n');
     }
     // return the targetPort

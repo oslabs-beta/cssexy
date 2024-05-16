@@ -9,11 +9,11 @@
     "preview": "vite preview --port 8888",
     "vite-dev": "concurrently --kill-others-on-fail \"PORT=5555 vite\" \"NODE_ENV=development BROWSER_PORT=5555 PORT=8888 nodemon server/server.js\"",
     "dev": "npm run vite-dev",
-    "cssxe:dev": "TARGET_DIR=$TARGET_DIR npm run getTargetPort && TARGET_DIR=$TARGET_DIR npm run vite-dev",
+    "cssexy:dev": "TARGET_DIR=$TARGET_DIR npm run getTargetPort && TARGET_DIR=$TARGET_DIR npm run vite-dev",
     "dev-cdp": "concurrently \"PORT=5555 npm run startRemoteChromeJs\" \"npm run vite-dev\"",
     "dev-sh": "PORT=5555 npm run startRemoteChrome && npm run vite-dev",
     "prod": "concurrently \"npm run build\" \"npm run start\"",
-    "cssxe:prod": "npm run getTargetPort && TARGET_DIR=$TARGET_DIR npm run prod",
+    "cssexy:prod": "npm run getTargetPort && TARGET_DIR=$TARGET_DIR npm run prod",
     "prod-sh": "npm run build && PORT=8888 npm run startRemoteChromeJs && npm run start",
     "postInstall": "node ./scripts/postInstall.js",
     "getTargetPort": "node ./scripts/getTargetPort.js"
@@ -21,7 +21,7 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oslabs-beta/cssxe.git"
+    "url": "git+https://github.com/oslabs-beta/cssexy.git"
   },
   "bin": {
     "remoteChrome": "startRemoteChrome.sh"
@@ -60,7 +60,7 @@
     "vite": "^5.1.4"
   },
   "bugs": {
-    "url": "https://github.com/oslabs-beta/cssxe/issues"
+    "url": "https://github.com/oslabs-beta/cssexy/issues"
   },
-  "homepage": "https://github.com/oslabs-beta/cssxe#readme"
+  "homepage": "https://github.com/oslabs-beta/cssexy#readme"
 }

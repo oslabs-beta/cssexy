@@ -26,7 +26,7 @@ function RulesAllComp() {
     //         // styleSheetId is a variable that we use to keep track of which .css file we want to look at
     //         const styleSheetId = regularRules[0]?.rule.style.styleSheetId;
     //         // we set the firstSourcePath variable to the absolute path (if it exists) or the relative path of the first .css file returned by the styleSheets object for the clicked element.
-    //         setFirstSourcePath(styleSheets[styleSheetId]?.absolutePaths[0] ? styleSheets[styleSheetId].absolutePaths[0] : styleSheets[styleSheetId]?.relativePaths[0]);
+    //         setFirstSourcePath(styleSheets[styleSheetId]?.pathsAbsolute[0] ? styleSheets[styleSheetId].pathsAbsolute[0] : styleSheets[styleSheetId]?.pathsRelative[0]);
     //         // if the first .css file is different from the currently selected .css file, we update the sourcePath variable to reflect the new selection
     //         if (styleSheets[styleSheetId] && sourcePath !== firstSourcePath) {
     //             setSourcePath(firstSourcePath);

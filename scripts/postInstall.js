@@ -8,8 +8,8 @@ const __dirname = dirname(__filename);
 
 // new script commands to add to user's package.json
 const newScripts = {
-  "sexy": "TARGET_DIR=$(pwd) npm run cssxe:dev --prefix node_modules/cssxe",
-  "sexy-prod": "TARGET_DIR=$(pwd) npm run cssxe:prod --prefix node_modules/cssxe",
+  "sexy": "TARGET_DIR=$(pwd) npm run cssexy:dev --prefix node_modules/cssexy",
+  "sexy-prod": "TARGET_DIR=$(pwd) npm run cssexy:prod --prefix node_modules/cssexy",
 };
 
 function updateScripts(scripts) {

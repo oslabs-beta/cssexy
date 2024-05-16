@@ -18,7 +18,7 @@ const updateEnv = async (property, value) => {
     config({ path: __envPath });
 
 
-    // getting the cssxe environment variables
+    // getting the cssexy environment variables
     const envVars = fs.readFileSync(__envPath, 'utf-8').split('\n');
     // console.log('envVars:', envVars);
 

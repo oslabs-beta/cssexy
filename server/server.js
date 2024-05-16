@@ -23,7 +23,7 @@ const __scripts = path.join(__dirname, '../scripts/');
 // normally we could just use config(), as that looks for the .env file in the root directory.
 // but once this is an npm package installed in a given repo, the root directory
 // will be that repo. so instead we use config({ path: path.resolve(__dirname, '.env') })
-// to point it at cssxe's own root directory.
+// to point it at cssexy's own root directory.
 config({ path: __envPath });
 
 const PORT = process.env.PORT
@@ -34,7 +34,7 @@ const targetPort = process.env.TARGET_PORT
 
 const targetDir = process.env.TARGET_DIR ? process.env.TARGET_DIR.toString().split('\n').slice(-1)[0] : process.env.TARGET_DIR_BACKUP;
 
-// to run CSSxe in puppeteer mode, set this to 1 in .env.
+// to run cssexy in puppeteer mode, set this to 1 in .env.
 const puppeteerMode = process.env.PUPPETEER_MODE;
 
 // updating the environment variables in the .env file
@@ -46,7 +46,7 @@ app.use(express());
 app.use(express.json());
 
 if (environment === 'production') {
-  // Serve static files (CSSxe UI) when in prod mode
+  // Serve static files (cssexy UI) when in prod mode
   app.use(express.static(path.join(__dirname, '../dist')));
 }
 !browserPort ? console.log('server: error: BROWSER_PORT is not set') && process.exit(1) : null;

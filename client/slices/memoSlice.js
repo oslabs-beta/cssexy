@@ -114,19 +114,19 @@ const fetchElementRules = createAsyncThunk(
           console.warn(' memoSlice: fetchElementRules: regularRules', regularRules);
           console.log('\n\n');
 
-          const absolutePaths = [...regularRules?.absolutePaths];
-          const relativePaths = [...regularRules?.relativePaths].map(relativePath => relativePath.slice(1));
+          const pathsAbsolute = [...regularRules?.pathsAbsolute];
+          const pathsRelative = [...regularRules?.pathsRelative].map(relativePath => relativePath.slice(1));
 
-          // console.warn('fetchElementRules: absolutePaths', absolutePaths);
-          console.warn('fetchElementRules: relativePaths', relativePaths);
+          // console.warn('fetchElementRules: pathsAbsolute', pathsAbsolute);
+          console.warn('fetchElementRules: pathsRelative', pathsRelative);
 
-          const pathRelative = relativePaths[0] ? relativePaths[0] : absolutePaths[0].replace(targetDir, '/')
-          const path = absolutePaths[0] ? absolutePaths[0] : `${targetDir}${pathRelative}`;
+          const pathRelative = pathsRelative[0] ? pathsRelative[0] : pathsAbsolute[0].replace(targetDir, '/')
+          const path = pathsAbsolute[0] ? pathsAbsolute[0] : `${targetDir}${pathRelative}`;
 
           // console.warn('pathRelative', pathRelative);
           // console.warn('path', path);
 
-          dispatch(updateTargetRegular({ absolutePaths, relativePaths, path, pathRelative }));
+          dispatch(updateTargetRegular({ pathsAbsolute, pathsRelative, path, pathRelative }));
 
           // KEITH TO-DO 2024-04-20_01-00-AM: need to build out the regularRule logic in findSourceRegular for the below to work.
 
@@ -229,7 +229,7 @@ const initialState = {
     lineText: '',
     type: '',
     typeValue: '',
-    allPaths: [],
+    pathsAll: [],
     selector: '',
   },
   targetRegular: {
@@ -242,8 +242,8 @@ const initialState = {
     lineText: '',
     type: '',
     typeValue: '',
-    absolutePaths: [],
-    relativePaths: [],
+    pathsAbsolute: [],
+    pathsRelative: [],
     selector: '',
   },
   targetData: {},
@@ -297,7 +297,7 @@ const  memoSlice = createSlice({
       }
       if (action.payload.length > 1) {
         console.warn(' memoSlice: updateTargetInline: MORE THAN 1 MATCHING inline style FILE.', action.payload);
-        state.targetInline.allPaths = action.payload;
+        state.targetInline.pathsAll = action.payload;
         return
       }
 

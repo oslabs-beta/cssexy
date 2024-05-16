@@ -21,6 +21,8 @@ const coder = process.env.CODER;
 // declaring client and styleSheets here (outside of the unnamed function) so we can have access to them in the 'callPupProcess' function further down.
 let client;
 const styleSheets = {};
+const pathsDx = {};
+const mapsDx = {};
 
 // this entire file gets called in the server, and the function below is called immediately
 // as we have set it up to be an IIFE (Immediately Invoked Function Expression).
@@ -28,13 +30,14 @@ const styleSheets = {};
 
   // console.log('pup.js', process);
   const browserPort = process.env.BROWSER_PORT;
-  const cssxeUrl = `http://localhost:${browserPort}/`;
+  const targetDir = process.env.TARGET_DIR;
+  const cssexyUrl = `http://localhost:${browserPort}/`;
 
   const pupArgs = [
     // uncomment this to turn on 'app' mode, i.e. no visible address bar and dev tools opens in a separate window.
     // probably do this for prod.
-    // `--app=${cssxeUrl}`,
-    // this is what so far allows us to pass data from inside of the iframe to the parent window, cssxe.
+    // `--app=${cssexyUrl}`,
+    // this is what so far allows us to pass data from inside of the iframe to the parent window, cssexy.
     '--disable-web-security',
     // makes the empty browser window dark mode. no more white killing my eyes during development. turn this off in prod mode.
     '--enable-features=WebContentsForceDark'
@@ -48,9 +51,9 @@ const styleSheets = {};
   const pupOptions = {
     // open browser window
     headless: false,
-    // don't set a default viewport size. without this, i get a funky view where cssxe and the target site only take up a third of the browser window.
+    // don't set a default viewport size. without this, i get a funky view where cssexy and the target site only take up a third of the browser window.
     defaultViewport: null,
-    // open devtools. good for cssxe development mode. prob should be false for prod.
+    // open devtools. good for cssexy development mode. prob should be false for prod.
     devtools: true,
     // array of command-line args we define above to pass to Chrome
     args: pupArgs,
@@ -66,12 +69,12 @@ const styleSheets = {};
   // the 'pages' method returns an array of all the pages that Puppeteer knows about, and we only want the one that it just created
   // so we use array destructuring to pull out the first (and only) element of that array, and assign it to our variable 'page'
   // now we can interact with the page, e.g. navigate to a URL, fill out a form, click a button, take a screenshot, etc.
-  let [ page ] = await browser.pages();
+  let [page] = await browser.pages();
 
-  // if pupArgs doesn't include --app, we need to navigate the Page to the cssxeUrl
+  // if pupArgs doesn't include --app, we need to navigate the Page to the cssexyUrl
   if (!pupArgs[0].includes('--app')) {
     // console.log('pupArgs does not include --app');
-    await page.goto(cssxeUrl);
+    await page.goto(cssexyUrl);
   }
 
   // setting client as the main connection to the Page,
@@ -88,7 +91,7 @@ const styleSheets = {};
   // Network: to inspect network activity and manage network conditions.
   // Page: to control page navigation, lifecycle, and size.
   // Overlay: to control the browser overlay, such as the inspector.
-  const domains = [ 'DOM', 'CSS', 'Network', 'Page', 'Overlay' ];
+  const domains = ['DOM', 'CSS', 'Network', 'Page', 'Overlay'];
 
   // 'enable' is a prerequisite step before we can use the methods provided by each of the CDP domains.
   // enabling a domain starts the flow of events and allows command execution within that domain.
@@ -97,7 +100,20 @@ const styleSheets = {};
   await Promise.all(domains.map(async (domain) => {
     await client.send(`${domain}.enable`, () => { })
   }))
+  console.log('pup: domains enabled');
+  // recursive = true: if the folder already exists, it doesn't throw an error
+  // mkdir((new URL('../../data/output/page', import.meta.url)), { recursive: true }, (err) => {
+  //   if (err) throw err;
+  // });
 
+  // page.on('response', async () => {
+  //   const content = await page.content();
+  //   // writeFileSync(`./data/output/page/content`, JSON.stringify(content, null, 2));
+  //   writeFileSync(`./data/output/page/content`, content);
+
+  //   console.log('pup: page: content retrieved');
+  //   // console.warn('pup: load: content', content);
+  // })
   // styleSheetAdded is a CDP event that is fired whenever a new stylesheet is added to the stylesheet cache.
   client.on('CSS.styleSheetAdded', async (param) => {
     // console.log('styleSheetAdded');
@@ -123,43 +139,71 @@ const styleSheets = {};
 
     // if the sourceMapURL is present, add those paths to the styleSheets object.
     // this gets us the paths to the regular styles source files, i.e. .css, .scss.
-    if (param.header.sourceMapURL) {
-      // console.log('styleSheetAdded: sourceMapURL TRUE');
-      // console.log('styleSheetParamHeader:', new Date().toISOString(), param.header);
-
-      // the sourceMapURL comes in as a base64 string, so we need to decode it
-      const sourceMapData = Buffer.from(param.header.sourceMapURL.split(',')[1], 'base64').toString('utf-8');
-      // parse the JSON
-      const decodedMap = JSON.parse(sourceMapData);
-
-      // console.log('decodedMap', decodedMap);
-      // write the decodedMap to a file
-      // writeFileSync('./data/output/decodedMap.json', JSON.stringify(decodedMap, null, 2));
-      const sources = decodedMap.sources;
-      const absolutePaths = []
-      const relativePaths = [];
-      // loop through the sources
-      sources.forEach(source => {
-        // we see this for s/css files when using webpack. it's the path relative to the project root
-        if (source.includes('://')) {
-          // splitting the source string on the '://', getting the second part, which is the relative path
-          relativePaths.push(source.split('://')[1]);
-        }
-        // otherwise, it's an absolute path. havent seen these recently but i did at some point in development.
-        else {
-          absolutePaths.push(source);
-        }
-      })
-
-      // add the various source paths of the id to its object in the styleSheets object.
-      Object.assign(styleSheets[id], { sources, absolutePaths, relativePaths });
+    if (!param.header.sourceMapURL) {
+      return;
     }
+    // console.log('styleSheetAdded: sourceMapURL', param.header.sourceMapURL);
+    // console.log('styleSheetAdded: sourceMapURL TRUE');
+    // console.log('styleSheetParamHeader:', new Date().toISOString(), param.header);
+
+    // the sourceMapURL comes in as a base64 string, so we need to decode it
+    const sourceMapData = Buffer.from(param.header.sourceMapURL.split(',')[1], 'base64').toString('utf-8');
+    // parse the JSON
+    const decodedMap = JSON.parse(sourceMapData);
+
+
+    const sources = decodedMap.sources;
+    const pathsAbsolute = []
+    const pathsRelative = [];
+    const pathsAll = [];
+    // loop through the sources
+    sources.forEach(source => {
+      // we see this for s/css files when using webpack. it's the path relative to the project root
+      if (source.includes('://')) {
+        // splitting the source string on the '://', getting the second part, which is the relative path
+        const pathRelative = source.split('://.')[1];
+        pathsRelative.push(pathRelative);
+
+
+      }
+      // otherwise, it's an absolute path. havent seen these recently but i did at some point in development.
+      else {
+        pathsAbsolute.push(source);
+
+      }
+    })
+
+    for (let i = Math.max(pathsAbsolute.length - 1, pathsRelative.length - 1); i >= 0; i--) {
+      if (!pathsAbsolute[i] && !pathsRelative[i]) {
+        break;
+      }
+      pathsAll.push(pathsAbsolute[i] ? pathsAll[i] : `${targetDir}${pathsRelative[i]}`);
+    }
+
+    // add the various source paths of the id to its object in the styleSheets object.
+
+    Object.assign(styleSheets[id], { sources, pathsAbsolute, pathsRelative, pathsAll });
+    const styleSheetId = styleSheets[id].styleSheetId;
+    console.log('pup:styleSheet', styleSheetId);
+    pathsDx.styleSheetId = { sources, pathsAbsolute, pathsRelative, pathsAll };
+    mapsDx.styleSheetId = decodedMap;
+
+    mkdir((new URL('../../data/output/decodedSourceMaps', import.meta.url)), { recursive: true }, (err) => {
+      if (err) throw err;
+    });
+    // // console.log('pupProcess: calling writeFileSync');
+    writeFileSync(`./data/output/decodedSourceMaps/${styleSheetId}.json`, JSON.stringify(decodedMap, null, 2));
+
+    // console.log('\n\n');
+    // console.warn('styleSheetAdded: pathsDx', pathsDx);
+    // console.log('\n\n');
+  }
     // console.log('\n\n');
     // console.log('pup:styleSheets', styleSheets);
     // console.log('END OF STYLESHEETS');
     // console.log('\n\n');
 
-  });
+  );
 
 })(pupProcess);
 // data passed from server = ...args

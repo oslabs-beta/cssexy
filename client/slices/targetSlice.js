@@ -110,19 +110,14 @@ const fetchElementRules = createAsyncThunk(
             console.warn('targetSlice: fetchElementRules: regularRules', regularRules);
             // console.log('\n\n');
 
-            const absolutePaths = [...regularRules?.absolutePaths];
-            const relativePaths = [...regularRules?.relativePaths].map(relativePath => relativePath.slice(1));
+            const pathsAbsolute = [...regularRules?.pathsAbsolute];
+            const pathsRelative = [...regularRules?.pathsRelative];
+            const pathsAll = [...regularRules?.pathsAll];
 
-            // console.warn('fetchElementRules: absolutePaths', absolutePaths);
-            // console.warn('fetchElementRules: relativePaths', relativePaths);
+            const pathRelative = pathsRelative[0] ? pathsRelative[0] : pathsAbsolute[0].replace(targetDir, '/')
+            const path = pathsAbsolute[0] ? pathsAbsolute[0] : `${targetDir}${pathRelative}`;
 
-            const pathRelative = relativePaths[0] ? relativePaths[0] : absolutePaths[0].replace(targetDir, '/')
-            const path = absolutePaths[0] ? absolutePaths[0] : `${targetDir}${pathRelative}`;
-
-            // console.warn('pathRelative', pathRelative);
-            // console.warn('path', path);
-
-            dispatch(updateTargetRegular({ absolutePaths, relativePaths, path, pathRelative }));
+            dispatch(updateTargetRegular({ pathsAbsolute, pathsRelative, pathsAll, path, pathRelative }));
 
             // KEITH TO-DO 2024-04-20_01-00-AM: need to build out the regularRule logic in findSourceRegular for the below to work.
 
@@ -231,7 +226,6 @@ const initialState = {
     pathFileName: '',
     pathRelative: '',
     line: '',
-    lineText: '',
     lineContext: '',
     type: '',
     typeValue: '',
@@ -245,12 +239,11 @@ const initialState = {
     lines: [],
     selectors: [],
     selectorsDx: {},
-    lineText: '',
     type: '',
     typeValue: '',
-    absolutePaths: [],
-    relativePaths: [],
-    allPaths: [],
+    pathsAbsolute: [],
+    pathsRelative: [],
+    pathsAll: [],
     selector: '',
   },
   targetData: {},
@@ -311,7 +304,7 @@ const targetSlice = createSlice({
       }
       if (action.payload.length > 1) {
         console.warn('targetSlice: updateTargetInline: MORE THAN 1 MATCHING inline style FILE.', action.payload);
-        state.targetInline.allPaths = action.payload;
+        state.targetInline.pathsAll = action.payload;
         return
       }
 
