@@ -2,6 +2,7 @@
 import {createServer} from 'vite';
 import {router} from './getMainApplication.js';
 import { cdpRouter } from './cdp.js';
+import { domRouter } from './dom/dom.js';
 import path from 'path';
 // import express from 'express';
 import express from 'express';
@@ -20,6 +21,7 @@ app.use(express.json());
   // Use vite's connect instance as middleware
   app.use('/app', vite.middlewares)
   app.use('/cdp',cdpRouter)
+  app.use('/dom', domRouter)
   app.use('/', router)
 
 /** 404 and errors */

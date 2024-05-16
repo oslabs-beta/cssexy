@@ -2,7 +2,7 @@ import path from 'path';
 import DomManipulationPlugin from './domInjection.js';
 import { customLoader } from './customLoader.js';
 /** We can set this to a Environment Variable to get the main applicaiton dynamically **/
-const MAIN_APPLICATION_LOCATION = '../../shopster/shopster/'; 
+const MAIN_APPLICATION_LOCATION = '../../../backtrack2/'; 
 
 
 /***  This is EXTREMELY IMPORTANT for loading the same version of Webpack that is in the Main Application *****/
