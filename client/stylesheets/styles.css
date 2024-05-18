@@ -1,0 +1,137 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  /* background: #252134; */
+  color: #e5e0e9;
+
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.site-frame {
+  flex-grow: 1; /* Allow the site frame to fill the available space */
+  border: none;
+  overflow: hidden;
+}
+
+.sidebar-container, .sidebar {
+  background: #252134;
+}
+
+
+.sidebar-container {
+  position: relative;
+  width: 30%;
+  height: 100%;
+  border-right: 3px solid #1B1929; /* darker purple for the border */
+  /* max-width: 25%; */
+  /* overflow-y: scroll; */
+
+    /* scrollbar-width: thin; */
+  /* scrollbar-color: rgba(74, 67, 139, 0.1) transparent; */
+
+}
+
+.sidebar {
+  height: 97%; /* 97% of the container height. this + 100% for the sidebar container is the combo that allows for the interior to scroll without adding a scrollbar to the right side of the window. */
+  padding: 0px 20px 20px 20px; /* top, right, bottom, left */
+
+  /* allows the sidebar to be scrollable. in this case, this being true allows it to be hidden when the user clicks the collapse button */
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(74, 67, 139, 0.1) transparent;
+
+  /* enable these below to make the sidebar horizontally scrollable */
+  /* however, it only scrolls about 10% of the container */
+  /* width: calc(93% - 20px); 80% of the container width, minus padding */
+  /* max-width: calc(93% - 20px); 80% of the container width, minus padding */
+  /* min-width: calc(93% - 20px); 80% of the container width, minus padding */
+  /* resize: horizontal; */
+
+
+
+}
+
+.sidebar.collapsed, .sidebar-container.collapsed {
+  width: 0;
+  min-width: 0;
+  max-width: 0;
+  padding: 0;
+}
+
+.collapse-button {
+  position: absolute;
+  right: -28px;
+  top: 50%;
+  font-size: 20px;
+  cursor: pointer; /* Change cursor to pointer */
+  background-color: transparent;
+  border: none; /* Remove border */
+  color: rgba(229, 224, 233, 0.7); /* semi-transparent white */
+}
+
+.style-container {
+  border-bottom: 1px solid #504C63; /* Separator beetween rules */
+}
+
+.selector-div, .style-source-span, .style-container p, .style-paragraph,  .style-property-span {
+  /* color: #D0C9D6; */
+  color: #e5e0e9;
+  margin: 1px 0; /* Margin for spacing around style entries */
+}
+
+.selector-div {
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+/* .style-value-form {
+  /* not beign used atm */
+  /* display: flex; */
+  /* display: inline;
+} */
+
+.style-property-span, .style-value-span, .style-value-input-span {
+  font-size: 12px;
+  padding-left: 5px;
+}
+
+.style-value-span, .style-value-input-span {
+  padding-right: 0px;
+  color: #906bc7;
+  font-weight: 300;
+  border: none;
+  outline: none;
+  /* color: #8D86C9; */
+  /* width: var(--style-value-span-width); */
+}
+
+.style-value-input-span {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+  cursor: text;
+}
+
+.style-value-input-overwritten-span {
+  background: rgba(0,0,0,0.3);
+  text-decoration: line-through #906bc7;
+}
+
+
+.style-value-overwritten-span {
+  text-decoration: line-through #906bc7;
+}
+
+.style-value-input-span:focus {
+  outline: 0.5px solid #906bc7;
+}
+
+.style-property-overwritten-span {
+  text-decoration: line-through white;
+}
